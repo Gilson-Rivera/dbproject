@@ -24,7 +24,7 @@ class FuelDAO:
         result = []
         for row in FuelDB:
             for col in row:
-                if col[2] == ftype:
+                if col[1] == ftype:
                     result.append(row)
         return result
 
@@ -40,7 +40,7 @@ class FuelDAO:
         result = []
         for row in FuelDB:
             for col in row:
-                if col[2] == fquantity:
+                if col[3] == fquantity:
                     result.append(row)
         return result
 
@@ -48,7 +48,7 @@ class FuelDAO:
         result = []
         for row in FuelDB:
             for col in row:
-                if col[2] == flocation:
+                if col[5] == flocation:
                     result.append(row)
         return result
 

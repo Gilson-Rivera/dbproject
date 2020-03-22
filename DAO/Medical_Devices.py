@@ -3,7 +3,7 @@
 rows, columns = (5, 6)
 MedDevDB = [[0 for x in range(rows)] for y in range(columns)]
 MedDevDB[0] = [1, 'Syringes', 'Walgreens', 'GE Healthcare', 100, 'San Juan']
-MedDevDB[1] = [2, 'Bandages', 'Angel', 10, 'Philips', 'Mayaguez']
+MedDevDB[1] = [2, 'Bandages', 'Angel', 'Philips', 10, 'Mayaguez']
 MedDevDB[2] = [3, 'Bandages', 'Jonathan', 'Philips', 10, 'Mayaguez']
 MedDevDB[3] = [4, 'Thermometer', 'Johnson & Johnson', 'Johnson & Johnson', 1000, 'Isabela']
 MedDevDB[4] = [5, 'Humidifier', 'Gilson', 'Medtronic', 3, 'Mayaguez']
@@ -24,7 +24,7 @@ class MedDevDAO:
         result = []
         for row in MedDevDB:
             for col in row:
-                if col[2] == mdtype:
+                if col[1] == mdtype:
                     result.append(row)
         return result
 
@@ -40,7 +40,7 @@ class MedDevDAO:
         result = []
         for row in MedDevDB:
             for col in row:
-                if col[2] == mdbrand:
+                if col[3] == mdbrand:
                     result.append(row)
         return result
 
@@ -48,7 +48,7 @@ class MedDevDAO:
         result = []
         for row in MedDevDB:
             for col in row:
-                if col[2] == mdquantity:
+                if col[4] == mdquantity:
                     result.append(row)
         return result
 
@@ -56,7 +56,7 @@ class MedDevDAO:
         result = []
         for row in MedDevDB:
             for col in row:
-                if col[2] == mdlocation:
+                if col[5] == mdlocation:
                     result.append(row)
         return result
 
