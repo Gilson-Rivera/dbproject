@@ -37,6 +37,22 @@ class FuelHandler:
             fuel = self.build_fuel_dict(row)
             return jsonify(Fuel = fuel)
 
+    def searchFuel(self, args):
+        if len(args) > 1:
+            return jsonify(Error="Malformed search string."), 400
+        else:
+            location = args.get("location")
+            if location:
+                dao = FuelDAO()
+                fuel_list = dao.getFuelByLocation(location)
+                result_list = []
+                for row in fuel_list:
+                    result = self.build_fuel_dict(row)
+                    result_list.append(row)
+                return jsonify(Fuel=result_list)
+            else:
+                return jsonify(Error="Malformed search string."), 400
+
     def insertFuel(self, form):
         print("form: ", form)
         if len(form) != 5:
