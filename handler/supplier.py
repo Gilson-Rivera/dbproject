@@ -11,16 +11,6 @@ class SupplierHandler:
         result['sphone'] = row[3]
         return result
 
-    def build_part_dict(self, row):
-        result = {}
-        result['pid'] = row[0]
-        result['pname'] = row[1]
-        result['pmaterial'] = row[2]
-        result['pcolor'] = row[3]
-        result['pprice'] = row[4]
-        result['quantity'] = row[5]
-        return result
-
     def getAllSuppliers(self):
         dao = SupplierDAO()
         suppliers_list = dao.getAllSuppliers()
@@ -31,16 +21,6 @@ class SupplierHandler:
         result = dao.getSupplierById(sid)
         return jsonify(Supplier=result)
 
-    def getPartsBySupplierId(self, sid):
-        dao = SupplierDAO()
-        if not dao.getSupplierById(sid):
-            return jsonify(Error="Supplier Not Found"), 404
-        parts_list = dao.getPartsBySupplierId(sid)
-        result_list = []
-        for row in parts_list:
-            result = self.build_part_dict(row)
-            result_list.append(result)
-        return jsonify(PartsSupply=result_list)
 
     def searchSuppliers(self, args):
         if len(args) > 1:
