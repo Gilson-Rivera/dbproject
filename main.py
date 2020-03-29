@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from handler.consumers import ConsumerHandler
 from handler.supplier import SupplierHandler
 from handler.fuel import FuelHandler
+from handler.fuel_supplies import FuelSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
 # services on other ports on this machine or on other
@@ -46,7 +47,7 @@ def getConsumerById(cid):
 @app.route('/DBApp1/suppliers', methods=['GET', 'POST'])
 def getAllSuppliers():
     if request.method == 'POST':
-        return SupplierHandler().insertSupplier(request.form)
+        return SupplierHandler().insertSupplierJson(request.json)
     else :
         if not request.args:
             return SupplierHandler().getAllSuppliers()
@@ -87,6 +88,17 @@ def getFuelById(fuid):
         return FuelHandler().deleteFuel(fuid)
     else:
         return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/fuel_supplies', methods=['GET', 'POST'])
+def getAllFuelSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return FuelSuppliesHandler().insertFuelSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return FuelSuppliesHandler().getAllFuelSupplies()
+        else:
+            return FuelSuppliesHandler().searchFuelSupplies(request.args)
 
 
 # @app.route('/PartApp/suppliers/<int:sid>/parts')
