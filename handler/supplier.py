@@ -55,27 +55,17 @@ class SupplierHandler:
             else:
                 return jsonify(Error="Malformed search string."), 400
 
-    def insertSupplier(self, form):
-        if form and len(form) == 4:
-            sfirstname = form['sfirstname']
-            slastname = form['slastname']
-            sorganization = form['sorganization']
-            sphone = form['sphone']
-            slocation = form['slocation']
-            if sfirstname and slastname and sorganization and sphone and slocation:
-                dao = SupplierDAO()
-                sid = dao.insert(sfirstname, slastname, sorganization, sphone, slocation)
-                result = {}
-                result["sid"] = sid
-                result["sfirstname"] = sfirstname
-                result["slastname"] = slastname
-                result["sorganization"] = sorganization
-                result["sphone"] = sphone
-                result["slocation"] = slocation
-                return jsonify(Supplier=result), 201
-            else:
-                return jsonify(Error="Malformed post request")
+    def insertSupplierJson(self, json):
+        sfirstname = json['sfirstname']
+        slastname = json['slastname']
+        sorganization = json['sorganization']
+        sphone = json['sphone']
+        slocation = json['slocation']
+        if sfirstname and slastname and sorganization and sphone and slocation:
+            dao = SupplierDAO()
+            result = dao.insert(sfirstname, slastname, sorganization, sphone, slocation)
+            return jsonify(Supplier=result), 201
         else:
-            return jsonify(Error="Malformed post request")
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
 
