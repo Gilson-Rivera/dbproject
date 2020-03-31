@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.e_supplies import ESuppliesDAO
+from dao.esupplies import EquipmentSuppliesDAO
 
 class ESuppliesHandler:
     def build_e_supplies_dict(self, row):
@@ -20,7 +20,7 @@ class ESuppliesHandler:
         return result
 
     def getAllESupplies(self):
-        dao = MDSuppliesDAO()
+        dao = EquipmentSuppliesDAO()
         result_list = dao.getAllESupplies()
         return jsonify(FuelSupplies=result_list)
 
@@ -31,12 +31,12 @@ class ESuppliesHandler:
             date = args.get("date")
             price = args.get("price")
             if date:
-                dao = MDSuppliesDAO()
+                dao = EquipmentSuppliesDAO()
                 result_list = dao.getESupplyByDate(date)
                 return jsonify(FuelSupplies=result_list)
 
             elif price:
-                dao = MDSuppliesDAO()
+                dao = EquipmentSuppliesDAO()
                 result_list = dao.getESupplyByPrice(price)
                 return jsonify(FuelSupplies=result_list)
             else:
@@ -47,7 +47,7 @@ class ESuppliesHandler:
         esupply_date = json['esupply_date']
         esupply_quantity = json['esupply_quantity']
         if esupply_price and esupply_quantity and esupply_date:
-            dao = ESuppliesDAO()
+            dao = EquipmentSuppliesDAO()
             result = dao.insert(esupply_price, esupply_quantity, esupply_date)
             return jsonify(E_Supply=result), 201
         else:

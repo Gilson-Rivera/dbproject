@@ -16,7 +16,7 @@ class FuelDAO:
         return result
 
     def getFuelByID(self, fuid):
-        result = FuelDB[fuid]
+        result = "This is fuel with requested ID"
         return result
 
     def getFuelByType(self, ftype):
@@ -54,12 +54,12 @@ class FuelDAO:
     #fuid entry only for phase 1 for examples
     #Remove fuid for CRUD operations for later phases!
     #Must return the primary key as well
-    def insert(self, fuid, ftype, fsupplier, fquantity, flocation):
-        FuelDB.append(fuid, ftype, fsupplier, fquantity, flocation)
-        return fuid
+    def insert(self, ftype, fsupplier, fquantity, flocation):
+        result = "Fuel inserted"
+        return result
 
     def delete(self, fuid):
-        FuelDB.pop(fuid)
+        fuid = "Fuel deleted"
         return fuid
 
     def update(self, fuid, ftype, fsupplier, fquantity, flocation):
