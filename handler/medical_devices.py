@@ -32,7 +32,7 @@ class MedDevHandler:
 
     def getMedDevByID(self, mdid):
         dao = MedDevDAO()
-        row = dao.getMedDevByID(mdid)
+        row = dao.getMedDevByID()
         if not row:
             return jsonify(Error = "MedDev Not Found"), 404
         else:
@@ -47,7 +47,7 @@ class MedDevHandler:
             location = args.get("location")
             if location:
                 dao = MedDevDAO()
-                MedDev_list = dao.getMedDevByLocation(location)
+                MedDev_list = dao.getMedDevByLocation()
                 result_list = []
                 for row in MedDev_list:
                     result = self.build_MedDev_dict(row)

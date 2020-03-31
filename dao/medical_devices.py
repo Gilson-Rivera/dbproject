@@ -1,62 +1,32 @@
-#hardcoded DB entries, just for Phase 1, remove later!
-rows, columns = (6, 5)
-MedDevDB = [[0 for x in range(rows)] for y in range(columns)]
-MedDevDB[0] = [1, 'Syringes', 'Walgreens', 'GE Healthcare', 100, 'San Juan']
-MedDevDB[1] = [2, 'Bandages', 'Angel', 'Philips', 10, 'Mayaguez']
-MedDevDB[2] = [3, 'Bandages', 'Jonathan', 'Philips', 10, 'Mayaguez']
-MedDevDB[3] = [4, 'Thermometer', 'Johnson & Johnson', 'Johnson & Johnson', 1000, 'Isabela']
-MedDevDB[4] = [5, 'Humidifier', 'Gilson', 'Medtronic', 3, 'Mayaguez']
 
 class MedDevDAO:
 
     def getAllMedDev(self):
-        result = []
-        for row in MedDevDB:
-            result.append(row)
+        result = "This is a list of medical devices."
         return result
 
-    def getMedDevByID(self, mdid):
-        result = MedDevDB[mdid]
+    def getMedDevByID(self):
+        result = "This is a specific medical devices."
         return result
 
-    def getMedDevByType(self, mdtype):
-        result = []
-        for row in MedDevDB:
-            for col in row:
-                if col[1] == mdtype:
-                    result.append(row)
+    def getMedDevByType(self, fname):
+        result = "This is a list of medical devices by type."
         return result
 
-    def getMedDevBySupplier(self, mdsupplier):
-        result = []
-        for row in MedDevDB:
-            for col in row:
-                if col[2] == mdsupplier:
-                    result.append(row)
+    def getMedDevBySupplier(self, fsupplier):
+        result = "This is a list of medical devices by supplier."
         return result
 
-    def getMedDevByBrand(self, mdbrand):
-        result = []
-        for row in MedDevDB:
-            for col in row:
-                if col[3] == mdbrand:
-                    result.append(row)
+    def getMedDevByBrand(self, fbrand):
+        result = "This is a list of medical devices by a specific brand."
         return result
 
-    def getMedDevByQuantity(self, mdquantity):
-        result = []
-        for row in MedDevDB:
-            for col in row:
-                if col[4] == mdquantity:
-                    result.append(row)
+    def getMedDevByQuantity(self, fquantity):
+        result = "This is a list of medical devices by quantity."
         return result
 
-    def getMedDevByLocation(self, mdlocation):
-        result = []
-        for row in MedDevDB:
-            for col in row:
-                if col[5] == mdlocation:
-                    result.append(row)
+    def getMedDevByLocation(self, flocation):
+        result = "This is a list of medical devices by location."
         return result
 
     #fuid entry only for phase 1 for examples

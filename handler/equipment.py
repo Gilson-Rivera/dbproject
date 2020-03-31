@@ -32,7 +32,7 @@ class EquipHandler:
 
     def getEquipmentByID(self, eid):
         dao = EquipDAO()
-        row = dao.getEquipmentByID(eid)
+        row = dao.getEquipmentByID()
         if not row:
             return jsonify(Error = "Equipment Not Found"), 404
         else:
@@ -47,7 +47,7 @@ class EquipHandler:
             location = args.get("location")
             if location:
                 dao = EquipDAO()
-                equipment_list = dao.getEquipByLocation(location)
+                equipment_list = dao.getEquipByLocation()
                 result_list = []
                 for row in equipment_list:
                     result = self.build_Equipment_dict(row)

@@ -34,7 +34,7 @@ class FoodHandler:
 
     def getFoodByID(self, fid):
         dao = FoodDAO()
-        row = dao.getFoodByID(fid)
+        row = dao.getFoodByID()
         if not row:
             return jsonify(Error = "Food Not Found"), 404
         else:
@@ -49,7 +49,7 @@ class FoodHandler:
             location = args.get("location")
             if location:
                 dao = FoodDAO()
-                Food_list = dao.getFoodByLocation(location)
+                Food_list = dao.getFoodByLocation()
                 result_list = []
                 for row in Food_list:
                     result = self.build_Food_dict(row)
