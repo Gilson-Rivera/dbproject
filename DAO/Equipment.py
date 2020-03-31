@@ -1,3 +1,6 @@
+from Config.dbconfig import pg_config
+import psycopg2
+
 #hardcoded DB entries, just for Phase 1, remove later!
 rows, columns = (5, 6)
 EquipDB = [[0 for x in range(rows)] for y in range(columns)]
@@ -8,6 +11,12 @@ EquipDB[3] = [4, 'Generator', 'Angel', 'Powerlite', 1, 'Mayaguez']
 EquipDB[4] = [5, 'Generator', 'Gilson', 'Powerlite', 1, 'Mayaguez']
 
 class EquipDAO:
+    def __init__(self):
+
+        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
+                                                                           pg_config['user'],
+                                                                           pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllEquip(self):
         result = []

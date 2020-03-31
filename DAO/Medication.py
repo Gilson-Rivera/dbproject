@@ -1,3 +1,6 @@
+from Config.dbconfig import pg_config
+import psycopg2
+
 
 #hardcoded DB entries, just for Phase 1, remove later!
 rows, columns = (5, 7)
@@ -9,6 +12,12 @@ MedDB[3] = [4, 'Norvasc', 'Oct 2025', 'Johnson & Johnson', 'Johnson & Johnson', 
 MedDB[4] = [5, 'Prilosec', 'Dec 2023', 'Gilson', 'Bayer', 5, 'Mayaguez']
 
 class MedDAO:
+    def __init__(self):
+
+        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
+                                                                           pg_config['user'],
+                                                                           pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllMed(self):
         result = []

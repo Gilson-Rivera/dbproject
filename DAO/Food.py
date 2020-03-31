@@ -1,3 +1,6 @@
+from Config.dbconfig import pg_config
+import psycopg2
+
 #hardcoded DB entries, just for Phase 1, remove later!
 rows, columns = (5, 7)
 FoodDB = [[0 for x in range(rows)] for y in range(columns)]
@@ -8,6 +11,12 @@ FoodDB[3] = [4, 'Rice', 'Oct 2021', 'Econo', 'Econo', 1000, 'Isabela']
 FoodDB[4] = [5, 'Rice', 'Dec 2021', 'Gilson', 'Mago', 3, 'Mayaguez']
 
 class FoodDAO:
+    def __init__(self):
+
+        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
+                                                                           pg_config['user'],
+                                                                           pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllFood(self):
         result = []

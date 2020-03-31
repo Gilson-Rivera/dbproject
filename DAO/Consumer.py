@@ -1,4 +1,4 @@
-from config.dbconfig import pg_config
+from Config.dbconfig import pg_config
 import psycopg2
 class ConsumersDAO:
     def __init__(self):

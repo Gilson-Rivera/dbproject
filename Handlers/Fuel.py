@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.fuel import FuelDAO
+from DAO.Fuel import FuelDAO
 
 class FuelHandler:
     def build_fuel_dict(self, row):

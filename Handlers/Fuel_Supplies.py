@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.fuel_supplies import FuelSuppliesDAO
+from DAO.Fuel_Supplies import FuelSuppliesDAO
 
 class FuelSuppliesHandler:
     def build_fuel_supplies_dict(self, row):

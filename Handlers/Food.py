@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.food import FoodDAO
+from DAO.Food import FoodDAO
 
 class FoodHandler:
     def build_Food_dict(self, row):

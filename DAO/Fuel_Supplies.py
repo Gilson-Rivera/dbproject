@@ -1,5 +1,6 @@
-from config.dbconfig import pg_config
+from Config.dbconfig import pg_config
 import psycopg2
+
 class FuelSuppliesDAO:
     def __init__(self):
 
