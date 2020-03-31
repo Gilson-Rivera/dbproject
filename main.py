@@ -10,6 +10,8 @@ from handler.fuel_supplies import FuelSuppliesHandler
 from handler.food_supplies import FoodSuppliesHandler
 from handler.esupplies import ESuppliesHandler
 from handler.mdsupplies import MDSuppliesHandler
+from handler.medication import MedHandler
+from handler.med_supplies import MedSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
 # services on other ports on this machine or on other

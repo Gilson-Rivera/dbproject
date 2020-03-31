@@ -104,6 +104,6 @@ class EquipHandler:
     def updateEquipment(self, eid, form):
         dao = EquipDAO()
         if not dao.getEquipByID(eid):
-            return jsonify(Error="Consumer not found."), 404
+            return jsonify(Error="Equiment not found."), 404
         else:
             return jsonify(dao.getEquipByID(eid)), 201
