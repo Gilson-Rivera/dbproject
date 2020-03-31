@@ -1,5 +1,5 @@
 #hardcoded DB entries, just for Phase 1, remove later!
-rows, columns = (5, 7)
+rows, columns = (7, 5)
 MedDB = [[0 for x in range(rows)] for y in range(columns)]
 MedDB[0] = [1, 'Lipitor', 'Apr 2022', 'Walgreens', 'Walgreens', 150, 'San Juan']
 MedDB[1] = [2, 'Panadol', 'Apr 2022', 'Angel', 'Walgreens', 10, 'Mayaguez']

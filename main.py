@@ -232,13 +232,38 @@ def getFoodById(fid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-# @app.route('/PartApp/suppliers/<int:sid>/parts')
-# def getPartsBySuplierId(sid):
-#     return SupplierHandler().getPartsBySupplierId(sid)
+@app.route('/DBApp1/med', methods=['GET', 'POST'])
+def getAllMed():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedHandler().insertMedJson(request.json)
+    else:
+        if not request.args:
+            return MedHandler().getAllMed()
+        else:
+            return MedHandler().searchMed(request.args)
 
-# @app.route('/PartApp/parts/countbypartid')
-# def getCountByPartId():
-#     return ConsumerHandler().getCountByPartId()
+@app.route('/DBApp1/med/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
+def getMedById(mid):
+    if request.method == 'GET':
+        return MedHandler().getMedByID(mid)
+    elif request.method == 'PUT':
+        return MedHandler().updateMed(mid, request.form)
+    elif request.method == 'DELETE':
+        return MedHandler().deleteMed(mid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/med_supplies', methods=['GET', 'POST'])
+def getAllMedSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedSuppliesHandler().insertMedSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return MedSuppliesHandler().getAllMedSupplies()
+        else:
+            return MedSuppliesHandler().searchMedSupplies(request.args)
 
 if __name__ == '__main__':
     app.run()

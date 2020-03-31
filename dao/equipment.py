@@ -1,5 +1,5 @@
 #hardcoded DB entries, just for Phase 1, remove later!
-rows, columns = (5, 6)
+rows, columns = (6, 5)
 EquipDB = [[0 for x in range(rows)] for y in range(columns)]
 EquipDB[0] = [1, 'Generator', 'Wal-Mart', 'Yamaha', 5, 'San Juan']
 EquipDB[1] = [2, 'Tools', 'Amazon', 30, 'Dewalt', 'San Juan']

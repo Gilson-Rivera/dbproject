@@ -1,5 +1,5 @@
 #hardcoded DB entries, just for Phase 1, remove later!
-rows, columns = (5, 7)
+rows, columns = (7, 5)
 FoodDB = [[0 for x in range(rows)] for y in range(columns)]
 FoodDB[0] = [1, 'Fruits', 'Apr 2020', 'Wal-Mart', 'Wal-Mart', 100, 'San Juan']
 FoodDB[1] = [2, 'Vegetables', 'Apr 2020', 'Angel', 'Marketside', 10, 'Mayaguez']
