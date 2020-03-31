@@ -85,9 +85,9 @@ def getFuelById(fuid):
     if request.method == 'GET':
         return FuelHandler().getFuelByID(fuid)
     elif request.method == 'PUT':
-        return FuelHandler().updateFuel(fuid, request.form)
+        pass
     elif request.method == 'DELETE':
-        return FuelHandler().deleteFuel(fuid)
+        pass
     else:
         return jsonify(Error="Method not allowed."), 405
 

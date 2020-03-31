@@ -35,7 +35,7 @@ class FuelHandler:
             return jsonify(Error = "Fuel Not Found"), 404
         else:
             fuel = self.build_fuel_dict(row)
-            return jsonify(Fuel = fuel)
+            return jsonify(Fuel=fuel)
 
     def searchFuel(self, args):
         if len(args) > 1:
