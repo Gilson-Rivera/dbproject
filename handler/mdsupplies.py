@@ -10,16 +10,16 @@ class MDSuppliesHandler:
         result['mdsupply_date'] = row[3]
         result['mdsupply_quantity'] = row[4]
 
-    def build_md_attr(self, fuid, stype, mdsupply_price, mdsupply_date, mdsupply_quantity):
+    def build_md_attr(self, mdid, stype, mdsupply_price, mdsupply_date, mdsupply_quantity):
         result = {}
-        result['mdid'] = fuid
+        result['mdid'] = mdid
         result['stype'] = stype
         result['mdsupply_price'] = mdsupply_price
         result['mdsupply_date'] = mdsupply_date
         result['mdsupply_quantity'] = mdsupply_quantity
         return result
 
-    def getAllFuelSupplies(self):
+    def getAllMDSupplies(self):
         dao = MDSuppliesDAO()
         result_list = dao.getAllMDSupplies()
         return jsonify(MDSupplies=result_list)
@@ -32,8 +32,8 @@ class MDSuppliesHandler:
             price = args.get("price")
             if date:
                 dao = MDSuppliesDAO()
-                result_list = dao.getFuelSupplyByDate(date)
-                return jsonify(FuelSupplies=result_list)
+                result_list = dao.getMDSupplyByDate(date)
+                return jsonify(MDSupplies=result_list)
 
             elif price:
                 dao = MDSuppliesDAO()

@@ -141,24 +141,24 @@ def getAllFoodSupplies():
 @app.route('/DBApp1/e_supplies', methods=['GET', 'POST'])
 def getAllESupplies():
     if request.method == 'POST':
-	print("REQUEST: ", request.json)
-	return ESuppliesHandler().insertESuppliesJson(request.json)
+        print("REQUEST: ", request.json)
+        return ESuppliesHandler().insertESuppliesJson(request.json)
     else:
-	if not request.args:
-	   return ESuppliesHandler().getAllESupplies()
-	else:
-	    return ESuppliesHandler().searchESupplies(request.args)
+        if not request.args:
+            return ESuppliesHandler().getAllESupplies()
+        else:
+            return ESuppliesHandler().searchESupplies(request.args)
 
 @app.route('/DBApp1/mdsupplies', methods=['GET',  'POST'])
 def getAllMDSupplies():
     if request.method =='POST':
-	print("REQUEST: ", request.json)
-	return MDSuppliesHandler().insertMDSuppliesJson(request.json)
+        print("REQUEST: ", request.json)
+        return MDSuppliesHandler().insertMDSuppliesJson(request.json)
     else:
-	if not request.args:
-	   return MDSuppliesHandler().getAllMDSupplies()
-	else:
-	   return MDSuppliesHandler().searchMDSupplies(request.args)
+        if not request.args:
+            return MDSuppliesHandler().getAllMDSupplies()
+        else:
+            return MDSuppliesHandler().searchMDSupplies(request.args)
 
 # @app.route('/PartApp/suppliers/<int:sid>/parts')
 # def getPartsBySuplierId(sid):
