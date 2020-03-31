@@ -24,15 +24,7 @@ class FuelSuppliesHandler:
         result_list = dao.getAllFuelSupplies()
         return jsonify(FuelSupplies=result_list)
 
-    # def getFuelByID(self, fuid):
-    #     dao = FuelDAO()
-    #     row = dao.getFuelByID(fuid)
-    #     if not row:
-    #         return jsonify(Error = "Fuel Not Found"), 404
-    #     else:
-    #         fuel = self.build_fuel_dict(row)
-    #         return jsonify(Fuel = fuel)
-    #
+
     def searchFuelSupplies(self, args):
         if len(args) > 1:
             return jsonify(Error="Malformed search string."), 400
@@ -50,26 +42,6 @@ class FuelSuppliesHandler:
                 return jsonify(FuelSupplies=result_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
-    #
-    # def insertFuel(self, form):
-    #     print("form: ", form)
-    #     if len(form) != 5:
-    #         return jsonify(Error = "Malformed post request"), 400
-    #     else:
-    #         #remove fuid later
-    #         fuid = form['fuid']
-    #         ftype = form['ftype']
-    #         fsupplier = form['fsupplier']
-    #         fquantity = form['fquantity']
-    #         flocation = form['flocation']
-    #         if ftype and fsupplier and fquantity and flocation:
-    #             dao = FuelDAO
-    #             fuid = dao.insert(fuid, ftype, fsupplier, fquantity, flocation)
-    #             result = self.build_fuel_attr(fuid, ftype, fsupplier, fquantity, flocation)
-    #             return jsonify(Fuel=result), 201
-    #         else:
-    #             return jsonify(Error="Unexpected attributes in post request"), 400
-    #
 
     def insertFuelSuppliesJson(self, json):
         fuelsupply_price = json['fuelsupply_price']
@@ -81,31 +53,3 @@ class FuelSuppliesHandler:
             return jsonify(Fuel_Supply=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
-
-    # def deleteFuel(self, fuid):
-    #     dao = FuelDAO()
-    #     if not dao.getFuelByID(fuid):
-    #         return jsonify(Error = "Fuel not found."), 404
-    #     else:
-    #         dao.delete(fuid)
-    #         return jsonify(DeleteStatus = "OK"), 200
-
-    # def updateFuel(self, fuid, form):
-    #     dao = FuelDAO()
-    #     if not dao.getFuelByID(fuid):
-    #         return jsonify(Error = "Fuel not found."), 404
-    #     else:
-    #         if len(form) != 4:
-    #             return jsonify(Error="Malformed update request"), 400
-    #         else:
-    #             fuid = form['fuid']
-    #             ftype = form['ftype']
-    #             fsupplier = form['fsupplier']
-    #             fquantity = form['fquantity']
-    #             flocation = form['flocation']
-    #             if ftype and fsupplier and fquantity and flocation:
-    #                 dao.update(fuid, ftype, fsupplier, fquantity, flocation)
-    #                 result = self.build_fuel_attr(fuid, ftype, fsupplier, fquantity, flocation)
-    #                 return jsonify(Fuel=result), 200
-    #             else:
-    #                 return jsonify(Error="Unexpected attributes in update request"), 400

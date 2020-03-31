@@ -3,31 +3,25 @@ from dao.consumer import ConsumersDAO
 
 
 class ConsumerHandler:
-    # def build_part_dict(self, row):
-    #     result = {}
-    #     result['pid'] = row[0]
-    #     result['pname'] = row[1]
-    #     result['pmaterial'] = row[2]
-    #     result['pcolor'] = row[3]
-    #     result['pprice'] = row[4]
-    #     return result
-    #
-    # def build_supplier_dict(self, row):
-    #     result = {}
-    #     result['sid'] = row[0]
-    #     result['sname'] = row[1]
-    #     result['scity'] = row[2]
-    #     result['sphone'] = row[3]
-    #     return result
-    #
-    # def build_part_attributes(self, pid, pname, pcolor, pmaterial, pprice):
-    #     result = {}
-    #     result['pid'] = pid
-    #     result['pname'] = pname
-    #     result['pmaterial'] = pcolor
-    #     result['pcolor'] = pmaterial
-    #     result['pprice'] = pprice
-    #     return result
+    def build_consumer_dict(self, row):
+        result = {}
+        result['cid'] = row[0]
+        result['cfirstname'] = row[1]
+        result['clastname'] = row[2]
+        result['clocation'] = row[3]
+        result['cage'] = row[4]
+        result['cphone'] = row[5]
+        return result
+
+    def build_consumer_attributes(self, cid, cfirstname, clastname, clocation, cage, cphone):
+        result = {}
+        result['cid'] = cid
+        result['cfirstname'] = cfirstname
+        result['clastname'] = clastname
+        result['clocation'] = clocation
+        result['cage'] = cage
+        result['cphone'] = cphone
+        return result
 
     def getAllConsumers(self):
         dao = ConsumersDAO()
@@ -50,31 +44,33 @@ class ConsumerHandler:
         return jsonify(Consumers=results_list)
 
 
-    # def insertPart(self, form):
-    #     print("form: ", form)
-    #     if len(form) != 4:
-    #         return jsonify(Error = "Malformed post request"), 400
-    #     else:
-    #         pname = form['pname']
-    #         pprice = form['pprice']
-    #         pmaterial = form['pmaterial']
-    #         pcolor = form['pcolor']
-    #         if pcolor and pprice and pmaterial and pname:
-    #             dao = PartsDAO()
-    #             pid = dao.insert(pname, pcolor, pmaterial, pprice)
-    #             result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
-    #             return jsonify(Part=result), 201
-    #         else:
-    #             return jsonify(Error="Unexpected attributes in post request"), 400
+    def insertConsumer(self, form):
+        print("form: ", form)
+        if len(form) != 4:
+            return jsonify(Error = "Malformed post request"), 400
+        else:
+            cfirstname = form['cfirstname']
+            clastname = form['clastname']
+            clocation = form['clocation']
+            cage = form['cage']
+            cphone = form['cphone']
+
+            if cfirstname and clastname and clocation and cage and cphone:
+                dao = ConsumersDAO()
+                cid = dao.insert(cfirstname, clastname, clocation, cage, cphone)
+                result = self.build_consumer_attributes(cid, cfirstname, clastname, clocation, cage, cphone)
+                return jsonify(Part=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertConsumerJson(self, json):
         cfirstname = json['cfirstname']
         clastname = json['clastname']
         clocation = json['clocation']
-        c_age = json['c_age']
-        if cfirstname and clastname and clocation and c_age:
+        cage = json['cage']
+        if cfirstname and clastname and clocation and cage:
             dao = ConsumersDAO()
-            result = dao.insert(cfirstname, clastname, clocation, c_age)
+            result = dao.insert(cfirstname, clastname, clocation, cage)
             return jsonify(Consumer=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -94,22 +90,6 @@ class ConsumerHandler:
         else:
             return jsonify(dao.getConsumerById(cid)), 201
 
-    # def build_part_counts(self, part_counts):
-    #     result = []
-    #     #print(part_counts)
-    #     for P in part_counts:
-    #         D = {}
-    #         D['id'] = P[0]
-    #         D['name'] = P[1]
-    #         D['count'] = P[2]
-    #         result.append(D)
-    #     return result
-    #
-    # def getCountByPartId(self):
-    #     dao = ConsumersDAO()
-    #     result = dao.getCountByPartId()
-    #     #print(self.build_part_counts(result))
-    #     return jsonify(PartCounts = self.build_part_counts(result)), 200
 
 
 

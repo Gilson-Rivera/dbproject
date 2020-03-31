@@ -23,34 +23,7 @@ class ConsumersDAO:
     def getConsumerByName(self, name):
         result = "This is consumer with given name"
         return result
-    #
-    # def getPartsByMaterial(self, material):
-    #     cursor = self.conn.cursor()
-    #     query = "select * from part where pmaterial = %s;"
-    #     cursor.execute(query, (material,))
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
-    #
-    # def getPartsByColorAndMaterial(self, color, material):
-    #     cursor = self.conn.cursor()
-    #     query = "select * from part where pmaterial = %s and pcolor = %s;"
-    #     cursor.execute(query, (material,color))
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
-    #
-    # def getSuppliersByPartId(self, pid):
-    #     cursor = self.conn.cursor()
-    #     query = "select sid, sname, scity, sphone from part natural inner join supplier natural inner join supplies where pid = %s;"
-    #     cursor.execute(query, (pid,))
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
-    #
+
     def insert(self, cfirstname, clastname, clocation, cage):
         result = "consumer inserted"
         return result
@@ -58,21 +31,13 @@ class ConsumersDAO:
     def delete(self, cid):
         result = "Consumer deleted"
         return result
-    #
-    # def update(self, pid, pname, pcolor, pmaterial, pprice):
-    #     cursor = self.conn.cursor()
-    #     query = "update part set pname = %s, pcolor = %s, pmaterial = %s, pprice = %s where pid = %s;"
-    #     cursor.execute(query, (pname, pcolor, pmaterial, pprice, pid,))
-    #     self.conn.commit()
-    #     return pid
-    #
-    # def getCountByPartId(self):
-    #     cursor = self.conn.cursor()
-    #     query = "select pid, pname, sum(stock) from part natural inner join supplies group by pid, pname order by pname;"
-    #     cursor.execute(query)
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
+
+    def update(self, cid, cfirstname, clastname, clocation, cage, cphone):
+        cursor = self.conn.cursor()
+        query = "update consumer set cfirstname = %s, clastname = %s, clocation = %s, cage, cphone = %s where cid = %s;"
+        cursor.execute(query, (cid, cfirstname, clastname, clocation, cage, cphone,))
+        self.conn.commit()
+        return cid
+
 
 

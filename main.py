@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
 from handler.consumers import ConsumerHandler
+from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
 from handler.fuel import FuelHandler
 from handler.fuel_supplies import FuelSuppliesHandler
+from handler.food_supplies import FoodSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
 # services on other ports on this machine or on other
@@ -17,6 +19,28 @@ CORS(app)
 @app.route('/')
 def greeting():
     return 'Hello, this is the DB project App!'
+
+@app.route('/DBApp1/administrators', methods=['GET', 'POST'])
+def getAllAdministrators():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return AdministratorHandler().insertAdministratorJson(request.json)
+    else:
+        if not request.args:
+            return AdministratorHandler().getAllAdministrators()
+        else:
+            return AdministratorHandler().searchAdministrators(request.args)
+
+@app.route('/DBApp1/administrators/<int:aid>', methods=['GET', 'PUT', 'DELETE'])
+def getAdministratorById(aid):
+    if request.method == 'GET':
+        return AdministratorHandler().getAdministratorById(aid)
+    elif request.method == 'PUT':
+        return AdministratorHandler().updateAdministrator(aid, request.form)
+    elif request.method == 'DELETE':
+        return AdministratorHandler().deleteAdministrator(aid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/DBApp1/consumers', methods=['GET', 'POST'])
 def getAllConsumers():
@@ -99,6 +123,17 @@ def getAllFuelSupplies():
             return FuelSuppliesHandler().getAllFuelSupplies()
         else:
             return FuelSuppliesHandler().searchFuelSupplies(request.args)
+
+@app.route('/DBApp1/food_supplies', methods=['GET', 'POST'])
+def getAllFoodSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return FoodSuppliesHandler().insertFoodSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return FoodSuppliesHandler().getAllFoodSupplies()
+        else:
+            return FoodSuppliesHandler().searchFoodSupplies(request.args)
 
 
 # @app.route('/PartApp/suppliers/<int:sid>/parts')

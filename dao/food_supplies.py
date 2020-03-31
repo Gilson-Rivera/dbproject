@@ -1,6 +1,6 @@
 from config.dbconfig import pg_config
 import psycopg2
-class FuelSuppliesDAO:
+class FoodSuppliesDAO:
     def __init__(self):
 
         connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
@@ -8,26 +8,26 @@ class FuelSuppliesDAO:
                                                             pg_config['passwd'])
         self.conn = psycopg2._connect(connection_url)
 
-    def getAllFuelSupplies(self):
-        result = "This is a list of fuel supplies"
+    def getAllFoodSupplies(self):
+        result = "This is a list of food supplies"
         return result
 
 
-    def getFuelSupplyByDate(self, date):
-        result = "This are fuel supplies with given date"
+    def getFoodSupplyByDate(self, date):
+        result = "This are food supplies with given date"
         return result
 
-    def getFuelSupplyByPrice(self, price):
-        result = "This are fuel supplies with given price"
+    def getFoodSupplyByPrice(self, price):
+        result = "This are food supplies with given price"
         return result
 
 
-    def insert(self, fuelsupply_price, fuelsupply_quantity, fuelsupply_date):
-        result = "fuel supply inserted"
+    def insert(self, foodsupply_price, foodsupply_quantity, foodsupply_date):
+        result = "Food supply inserted"
         return result
 
     def delete(self, cid):
-        result = "Fuel supply deleted"
+        result = "Food supply deleted"
         return result
 
 
