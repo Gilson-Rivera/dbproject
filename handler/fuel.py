@@ -92,19 +92,6 @@ class FuelHandler:
     def updateFuel(self, fuid, form):
         dao = FuelDAO()
         if not dao.getFuelByID(fuid):
-            return jsonify(Error = "Fuel not found."), 404
+            return jsonify(Error="Fuel not found."), 404
         else:
-            if len(form) != 4:
-                return jsonify(Error="Malformed update request"), 400
-            else:
-                fuid = form['fuid']
-                ftype = form['ftype']
-                fsupplier = form['fsupplier']
-                fquantity = form['fquantity']
-                flocation = form['flocation']
-                if ftype and fsupplier and fquantity and flocation:
-                    dao.update(fuid, ftype, fsupplier, fquantity, flocation)
-                    result = self.build_fuel_attr(fuid, ftype, fsupplier, fquantity, flocation)
-                    return jsonify(Fuel=result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+            return jsonify(dao.getFuelByID(fuid)), 201

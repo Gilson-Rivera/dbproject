@@ -26,20 +26,20 @@ class FoodHandler:
     def getAllFood(self):
         dao = FoodDAO()
         Food_list = dao.getAllFood()
-        result_list = []
-        for row in Food_list:
-            result = self.build_Food_dict(row)
-            result_list.append(result)
+        # result_list = []
+        # for row in Food_list:
+        #     result = self.build_Food_dict(row)
+        #     result_list.append(result)
         return jsonify(Food=Food_list)
 
     def getFoodByID(self, fid):
         dao = FoodDAO()
-        row = dao.getFoodByID(fid)
-        if not row:
-            return jsonify(Error = "Food Not Found"), 404
-        else:
-            Food = self.build_Food_dict(row)
-            return jsonify(Food = Food)
+        result = dao.getFoodByID(fid)
+        # if not row:
+        #     return jsonify(Error = "Food Not Found"), 404
+        # else:
+        #     Food = self.build_Food_dict(row)
+        return jsonify(Food = result)
 
 
     def searchFood(self, args):
@@ -50,11 +50,11 @@ class FoodHandler:
             if location:
                 dao = FoodDAO()
                 Food_list = dao.getFoodByLocation(location)
-                result_list = []
-                for row in Food_list:
-                    result = self.build_Food_dict(row)
-                    result_list.append(row)
-                return jsonify(Food=result_list)
+                # result_list = []
+                # for row in Food_list:
+                #     result = self.build_Food_dict(row)
+                #     result_list.append(row)
+                return jsonify(Food=Food_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
 
@@ -64,8 +64,6 @@ class FoodHandler:
         if len(form) != 5:
             return jsonify(Error = "Malformed post request"), 400
         else:
-            #remove fid later
-            fid = form['fid']
             fname = form['fname']
             fbrand = form['fbrand']
             fexpdate = form['fexpdate']
@@ -73,8 +71,8 @@ class FoodHandler:
             fquantity = form['fquantity']
             flocation = form['flocation']
             if fname and fsupplier and fquantity and flocation:
-                dao = FoodDAO
-                fid = dao.insert(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
+                dao = FoodDAO()
+                fid = dao.insert(fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
                 result = self.build_Food_attr(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
                 return jsonify(Food=result), 201
             else:
@@ -82,47 +80,30 @@ class FoodHandler:
 
 
     def insertFoodJson(self, json):
-        fid = json['fid']
         fname = json['fname']
         fexpdate = json['fexpdate']
         fsupplier = json['fsupplier']
         fbrand = json['fbrand']
         fquantity = json['fquantity']
         flocation = json['flocation']
-        if fid and fname and fexpdate and fsupplier and fquantity and flocation:
-            dao = FoodDAO
-            fid = dao.insert(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
-            result = self.build_Food_attr(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
+        if fname and fexpdate and fsupplier and fquantity and flocation:
+            dao = FoodDAO()
+            result = dao.insert(fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
             return jsonify(Food=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deleteFood(self, fid):
         dao = FoodDAO()
-        if not dao.getFoodByID(fid):
-            return jsonify(Error = "Food not found."), 404
-        else:
-            dao.delete(fid)
-            return jsonify(DeleteStatus = "OK"), 200
+        # if not dao.getFoodByID(fid):
+        #     return jsonify(Error = "Food not found."), 404
+        # else:
+        result =  dao.delete(fid)
+        return jsonify(DeleteStatus = result), 200
 
     def updateFood(self, fid, form):
         dao = FoodDAO()
         if not dao.getFoodByID(fid):
-            return jsonify(Error = "Food not found."), 404
+            return jsonify(Error="Consumer not found."), 404
         else:
-            if len(form) != 4:
-                return jsonify(Error="Malformed update request"), 400
-            else:
-                fid = form['fid']
-                fname = form['fname']
-                fexpdate = form['fexpdate']
-                fbrand = form['fbrand']
-                fsupplier = form['fsupplier']
-                fquantity = form['fquantity']
-                flocation = form['flocation']
-                if fname and fexpdate and fbrand and fsupplier and fquantity and flocation:
-                    dao.update(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
-                    result = self.build_Food_attr(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
-                    return jsonify(Food=result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+            return jsonify(dao.getFoodByID(fid)), 201

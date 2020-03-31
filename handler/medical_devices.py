@@ -24,20 +24,20 @@ class MedDevHandler:
     def getAllMedDev(self):
         dao = MedDevDAO()
         MedDev_list = dao.getAllMedDev()
-        result_list = []
-        for row in MedDev_list:
-            result = self.build_MedDev_dict(row)
-            result_list.append(result)
+        # result_list = []
+        # for row in MedDev_list:
+        #     result = self.build_MedDev_dict(row)
+        #     result_list.append(result)
         return jsonify(MedDev=MedDev_list)
 
     def getMedDevByID(self, mdid):
         dao = MedDevDAO()
-        row = dao.getMedDevByID(mdid)
-        if not row:
-            return jsonify(Error = "MedDev Not Found"), 404
-        else:
-            MedDev = self.build_MedDev_dict(row)
-            return jsonify(MedDev = MedDev)
+        result = dao.getMedDevByID(mdid)
+        # if not row:
+        #     return jsonify(Error = "MedDev Not Found"), 404
+        # else:
+        #     MedDev = self.build_MedDev_dict(row)
+        return jsonify(MedDev = result)
 
 
     def searchMedDev(self, args):
@@ -48,11 +48,11 @@ class MedDevHandler:
             if location:
                 dao = MedDevDAO()
                 MedDev_list = dao.getMedDevByLocation(location)
-                result_list = []
-                for row in MedDev_list:
-                    result = self.build_MedDev_dict(row)
-                    result_list.append(row)
-                return jsonify(MedDev=result_list)
+                # result_list = []
+                # for row in MedDev_list:
+                #     result = self.build_MedDev_dict(row)
+                #     result_list.append(row)
+                return jsonify(MedDev=MedDev_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
 
@@ -63,15 +63,15 @@ class MedDevHandler:
             return jsonify(Error = "Malformed post request"), 400
         else:
             #remove mdid later
-            mdid = form['mdid']
+            # mdid = form['mdid']
             mdtype = form['mdtype']
             mdbrand = form['mdbrand']
             mdsupplier = form['mdsupplier']
             mdquantity = form['mdquantity']
             mdlocation = form['mdlocation']
-            if mdtype and mdsupplier and mdquantity and mdlocation:
-                dao = MedDevDAO
-                mdid = dao.insert(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
+            if mdtype and mdsupplier and mdquantity and mdlocation and mdlocation:
+                dao = MedDevDAO()
+                mdid = dao.insert(mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
                 result = self.build_MedDev_attr(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
                 return jsonify(MedDev=result), 201
             else:
@@ -79,45 +79,29 @@ class MedDevHandler:
 
 
     def insertMedDevJson(self, json):
-        mdid = json['mdid']
         mdtype = json['mdtype']
         mdsupplier = json['mdsupplier']
         mdbrand = json['mdbrand']
         mdquantity = json['mdquantity']
         mdlocation = json['mdlocation']
-        if mdid and mdtype and mdsupplier and mdquantity and mdlocation:
-            dao = MedDevDAO
-            mdid = dao.insert(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
-            result = self.build_MedDev_attr(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
+        if mdtype and mdsupplier and mdbrand and mdquantity and mdlocation:
+            dao = MedDevDAO()
+            result = dao.insert(mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
             return jsonify(MedDev=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deleteMedDev(self, mdid):
         dao = MedDevDAO()
-        if not dao.getMedDevByID(mdid):
-            return jsonify(Error = "MedDev not found."), 404
-        else:
-            dao.delete(mdid)
-            return jsonify(DeleteStatus = "OK"), 200
+        # if not dao.getMedDevByID(mdid):
+        #     return jsonify(Error = "MedDev not found."), 404
+        # else:
+        result = dao.delete(mdid)
+        return jsonify(DeleteStatus = result), 200
 
     def updateMedDev(self, mdid, form):
         dao = MedDevDAO()
         if not dao.getMedDevByID(mdid):
-            return jsonify(Error = "MedDev not found."), 404
+            return jsonify(Error="Consumer not found."), 404
         else:
-            if len(form) != 4:
-                return jsonify(Error="Malformed update request"), 400
-            else:
-                mdid = form['mdid']
-                mdtype = form['mdtype']
-                mdbrand = form['mdbrand']
-                mdsupplier = form['mdsupplier']
-                mdquantity = form['mdquantity']
-                mdlocation = form['mdlocation']
-                if mdtype and mdbrand and mdsupplier and mdquantity and mdlocation:
-                    dao.update(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
-                    result = self.build_MedDev_attr(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
-                    return jsonify(MedDev=result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+            return jsonify(dao.getMedDevByID(mdid)), 201

@@ -10,13 +10,11 @@ MedDevDB[4] = [5, 'Humidifier', 'Gilson', 'Medtronic', 3, 'Mayaguez']
 class MedDevDAO:
 
     def getAllMedDev(self):
-        result = []
-        for row in MedDevDB:
-            result.append(row)
+        result = "This is a list of medical devices"
         return result
 
     def getMedDevByID(self, mdid):
-        result = MedDevDB[mdid]
+        result = "This is medical device with given ID."
         return result
 
     def getMedDevByType(self, mdtype):
@@ -52,23 +50,19 @@ class MedDevDAO:
         return result
 
     def getMedDevByLocation(self, mdlocation):
-        result = []
-        for row in MedDevDB:
-            for col in row:
-                if col[5] == mdlocation:
-                    result.append(row)
+        result = "This is a medical device in specified location"
         return result
 
     #fuid entry only for phase 1 for examples
     #Remove fuid for CRUD operations for later phases!
     #Must return the primary key as well
-    def insert(self, mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation):
-        MedDevDB.append(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
-        return mdid
+    def insert(self, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation):
+        result = "Medical device inserted"
+        return result
 
     def delete(self, mdid):
-        MedDevDB.pop(mdid)
-        return mdid
+        result = "Medical device deleted"
+        return result
 
     def update(self, mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation):
         MedDevDB.append(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)

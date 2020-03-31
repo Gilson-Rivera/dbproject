@@ -10,13 +10,11 @@ FoodDB[4] = [5, 'Rice', 'Dec 2021', 'Gilson', 'Mago', 3, 'Mayaguez']
 class FoodDAO:
 
     def getAllFood(self):
-        result = []
-        for row in FoodDB:
-            result.append(row)
+        result = "This is a list of food"
         return result
 
     def getFoodByID(self, fid):
-        result = FoodDB[fid]
+        result = "Food with specified ID"
         return result
 
     def getFoodByType(self, fname):
@@ -60,23 +58,19 @@ class FoodDAO:
         return result
 
     def getFoodByLocation(self, flocation):
-        result = []
-        for row in FoodDB:
-            for col in row:
-                if col[6] == flocation:
-                    result.append(row)
+        result = "This is food in a specified location"
         return result
 
     #fuid entry only for phase 1 for examples
     #Remove fuid for CRUD operations for later phases!
     #Must return the primary key as well
-    def insert(self, fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation):
-        FoodDB.append(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
-        return fid
+    def insert(self, fname, fexpdate, fsupplier, fbrand, fquantity, flocation):
+        result = "Food inserted"
+        return result
 
     def delete(self, fid):
-        FoodDB.pop(fid)
-        return fid
+        result = "Food deleted"
+        return result
 
     def update(self, fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation):
         FoodDB.append(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
