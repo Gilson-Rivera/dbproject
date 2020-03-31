@@ -1,12 +1,3 @@
-#hardcoded DB entries, just for Phase 1, remove later!
-rows, columns = (6, 5)
-EquipDB = [[0 for x in range(rows)] for y in range(columns)]
-EquipDB[0] = [1, 'Generator', 'Wal-Mart', 'Yamaha', 5, 'San Juan']
-EquipDB[1] = [2, 'Tools', 'Amazon', 30, 'Dewalt', 'San Juan']
-EquipDB[2] = [3, 'Tools', 'Jonathan', 'Bosch', 3, 'Mayaguez']
-EquipDB[3] = [4, 'Generator', 'Angel', 'Powerlite', 1, 'Mayaguez']
-EquipDB[4] = [5, 'Generator', 'Gilson', 'Powerlite', 1, 'Mayaguez']
-
 class EquipDAO:
 
     def getAllEquip(self):
@@ -15,38 +6,23 @@ class EquipDAO:
 
     def getEquipByID(self, eid):
         result = "Equipment with specified id"
+
         return result
 
-    def getEquipByType(self, etype):
-        result = []
-        for row in EquipDB:
-            for col in row:
-                if col[2] == etype:
-                    result.append(row)
+    def getEquipByType(self):
+        result = "This is a list of equipment by type."
         return result
 
-    def getEquipBySupplier(self, esupplier):
-        result = []
-        for row in EquipDB:
-            for col in row:
-                if col[2] == esupplier:
-                    result.append(row)
+    def getEquipBySupplier(self):
+        result = "This is a list of equipment by its supplier."
         return result
 
-    def getEquipByBrand(self, ebrand):
-        result = []
-        for row in EquipDB:
-            for col in row:
-                if col[2] == ebrand:
-                    result.append(row)
+    def getEquipByBrand(self):
+        result = "This is a list of equipment by its brand."
         return result
 
-    def getEquipByQuantity(self, equantity):
-        result = []
-        for row in EquipDB:
-            for col in row:
-                if col[2] == equantity:
-                    result.append(row)
+    def getEquipByQuantity(self):
+        result = "This is a list of equipment by its quantity."
         return result
 
     def getEquipByLocation(self, elocation):

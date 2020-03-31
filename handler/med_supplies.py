@@ -24,15 +24,10 @@ class MedSuppliesHandler:
         result_list = dao.getAllMedSupplies()
         return jsonify(MedSupplies=result_list)
 
-    # def getMedByID(self, mid):
-    #     dao = MedDAO()
-    #     row = dao.getMedByID(mid)
-    #     if not row:
-    #         return jsonify(Error = "Med Not Found"), 404
-    #     else:
-    #         Med = self.build_Med_dict(row)
-    #         return jsonify(Med = Med)
-    #
+    def getMedById(self, cid):
+        dao = MedSuppliesDAO()
+        result = dao.getMedById(cid)
+        return jsonify(MedSupplies=result)
 
     def searchMedSupplies(self, args):
         if len(args) > 1:
