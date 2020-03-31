@@ -103,7 +103,7 @@ def getAllFuelSupplies():
             return FuelSuppliesHandler().searchFuelSupplies(request.args)
 
 @app.route('/DBApp1/med', methods=['GET', 'POST'])
-def getAllFuel():
+def getAllMed():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
         return MedHandler().insertMedJson(request.json)
@@ -111,11 +111,11 @@ def getAllFuel():
         if not request.args:
             return MedHandler().getAllMed()
         else:
-            #change to searchFuel() once implemented in handlers
+            #change to searchMed() once implemented in handlers
             return MedHandler().searchMed(request.args)
 
 @app.route('/DBApp1/med/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
-def getFuelById(mid):
+def getMedById(mid):
     if request.method == 'GET':
         return MedHandler().getMedByID(mid)
     elif request.method == 'PUT':

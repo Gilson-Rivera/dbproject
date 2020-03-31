@@ -11,12 +11,6 @@ MedDevDB[3] = [4, 'Thermometer', 'Johnson & Johnson', 'Johnson & Johnson', 1000,
 MedDevDB[4] = [5, 'Humidifier', 'Gilson', 'Medtronic', 3, 'Mayaguez']
 
 class MedDevDAO:
-    def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
-                                                                           pg_config['user'],
-                                                                           pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
 
     def getAllMedDev(self):
         result = []

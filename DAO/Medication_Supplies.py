@@ -1,15 +1,9 @@
 from Config.dbconfig import pg_config
 import psycopg2
 class MedSuppliesDAO:
-    def __init__(self):
 
-        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
-                                                            pg_config['user'],
-                                                            pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
-
-    def getAllMedicationSupplies(self):
-        result = "This is a list of Medication supplies"
+    def getAllMedSupplies(self):
+        result = "This is a list of Med supplies"
         return result
 
     # def searchConsumerBeta(self):
@@ -20,22 +14,22 @@ class MedSuppliesDAO:
     #     result = "This is a specific consumer"
     #     return result
     #
-    def getMedicationSupplyByDate(self, date):
-        result = "This are Medication supplies with given date"
+    def getMedSupplyByDate(self, date):
+        result = "This are Med supplies with given date"
         return result
 
-    def getMedicationSupplyByPrice(self, price):
-        result = "This are Medication supplies with given price"
+    def getMedSupplyByPrice(self, price):
+        result = "This are Med supplies with given price"
         return result
 
-    def getMedicationSupplyByQuantity(self, price):
-        result = "This are Medication supplies with given quantity"
+    def getMedSupplyByQuantity(self, price):
+        result = "This are Med supplies with given quantity"
         return result
 
-    def insert(self, Medicationsupply_price, Medicationsupply_quantity, Medicationsupply_date):
-        result = "Medication supply inserted"
+    def insert(self, Medsupply_price, Medsupply_quantity, Medsupply_date):
+        result = "Med supply inserted"
         return result
     #
     def delete(self, cid):
-        result = "Medication supply deleted"
+        result = "Med supply deleted"
         return result

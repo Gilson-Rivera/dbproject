@@ -24,15 +24,16 @@ class MedSuppliesHandler:
         result_list = dao.getAllMedSupplies()
         return jsonify(MedSupplies=result_list)
 
-    # def getMedByID(self, fuid):
+    # def getMedByID(self, mid):
     #     dao = MedDAO()
-    #     row = dao.getMedByID(fuid)
+    #     row = dao.getMedByID(mid)
     #     if not row:
     #         return jsonify(Error = "Med Not Found"), 404
     #     else:
     #         Med = self.build_Med_dict(row)
     #         return jsonify(Med = Med)
     #
+
     def searchMedSupplies(self, args):
         if len(args) > 1:
             return jsonify(Error="Malformed search string."), 400

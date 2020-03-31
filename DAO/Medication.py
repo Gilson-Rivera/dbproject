@@ -3,8 +3,8 @@ import psycopg2
 
 
 #hardcoded DB entries, just for Phase 1, remove later!
-rows, columns = (5, 7)
-MedDB = [[0 for x in range(rows)] for y in range(columns)]
+columns, rows = (7, 5)
+MedDB = [[0 for x in range(columns)] for y in range(rows)]
 MedDB[0] = [1, 'Lipitor', 'Apr 2022', 'Walgreens', 'Walgreens', 150, 'San Juan']
 MedDB[1] = [2, 'Panadol', 'Apr 2022', 'Angel', 'Walgreens', 10, 'Mayaguez']
 MedDB[2] = [3, 'Acetaminophen', 'Apr 2023', 'Jonathan', 'Merck', 10, 'Mayaguez']
@@ -12,12 +12,6 @@ MedDB[3] = [4, 'Norvasc', 'Oct 2025', 'Johnson & Johnson', 'Johnson & Johnson', 
 MedDB[4] = [5, 'Prilosec', 'Dec 2023', 'Gilson', 'Bayer', 5, 'Mayaguez']
 
 class MedDAO:
-    def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
-                                                                           pg_config['user'],
-                                                                           pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
 
     def getAllMed(self):
         result = []

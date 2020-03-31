@@ -11,12 +11,6 @@ FoodDB[3] = [4, 'Rice', 'Oct 2021', 'Econo', 'Econo', 1000, 'Isabela']
 FoodDB[4] = [5, 'Rice', 'Dec 2021', 'Gilson', 'Mago', 3, 'Mayaguez']
 
 class FoodDAO:
-    def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
-                                                                           pg_config['user'],
-                                                                           pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
 
     def getAllFood(self):
         result = []
