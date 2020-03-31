@@ -24,7 +24,7 @@ class ConsumersDAO:
         result = "This is consumer with given name"
         return result
 
-    def insert(self, cfirstname, clastname, clocation, cage):
+    def insert(self, cfirstname, clastname, clocation, cage, cphone):
         result = "consumer inserted"
         return result
 

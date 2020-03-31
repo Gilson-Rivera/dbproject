@@ -68,9 +68,10 @@ class ConsumerHandler:
         clastname = json['clastname']
         clocation = json['clocation']
         cage = json['cage']
-        if cfirstname and clastname and clocation and cage:
+        cphone = json['cphone']
+        if cfirstname and clastname and clocation and cage and cphone:
             dao = ConsumersDAO()
-            result = dao.insert(cfirstname, clastname, clocation, cage)
+            result = dao.insert(cfirstname, clastname, clocation, cage, cphone)
             return jsonify(Consumer=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
