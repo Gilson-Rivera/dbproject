@@ -131,7 +131,6 @@ def getAllMed():
         if not request.args:
             return MedHandler().getAllMed()
         else:
-            #change to searchMed() once implemented in handlers
             return MedHandler().searchMed(request.args)
 
 @app.route('/DBApp1/med/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
