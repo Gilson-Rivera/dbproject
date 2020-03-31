@@ -24,10 +24,6 @@ class EquipHandler:
     def getAllEquipment(self):
         dao = EquipDAO()
         Equipment_list = dao.getAllEquipment()
-        result_list = []
-        for row in Equipment_list:
-            result = self.build_Equipment_dict(row)
-            result_list.append(result)
         return jsonify(Equipment=Equipment_list)
 
     def getEquipmentByID(self, eid):

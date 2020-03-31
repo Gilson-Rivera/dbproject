@@ -26,10 +26,6 @@ class FoodHandler:
     def getAllFood(self):
         dao = FoodDAO()
         Food_list = dao.getAllFood()
-        result_list = []
-        for row in Food_list:
-            result = self.build_Food_dict(row)
-            result_list.append(result)
         return jsonify(Food=Food_list)
 
     def getFoodByID(self, fid):

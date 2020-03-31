@@ -22,10 +22,6 @@ class FuelHandler:
     def getAllFuel(self):
         dao = FuelDAO()
         fuel_list = dao.getAllFuel()
-        result_list = []
-        for row in fuel_list:
-            result = self.build_fuel_dict(row)
-            result_list.append(result)
         return jsonify(Fuel=fuel_list)
 
     def getFuelByID(self, fuid):
