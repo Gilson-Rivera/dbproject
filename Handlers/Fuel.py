@@ -1,5 +1,5 @@
 from flask import jsonify
-from DAO.Fuel import FuelDAO
+from dao.fuel import FuelDAO
 
 class FuelHandler:
     def build_fuel_dict(self, row):
@@ -45,11 +45,11 @@ class FuelHandler:
             if location:
                 dao = FuelDAO()
                 fuel_list = dao.getFuelByLocation(location)
-                result_list = []
-                for row in fuel_list:
-                    result = self.build_fuel_dict(row)
-                    result_list.append(row)
-                return jsonify(Fuel=result_list)
+                # result_list = []
+                # for row in fuel_list:
+                #     result = self.build_fuel_dict(row)
+                #     result_list.append(row)
+                return jsonify(Fuel=fuel_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
 
@@ -114,4 +114,3 @@ class FuelHandler:
                     return jsonify(Fuel=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
-

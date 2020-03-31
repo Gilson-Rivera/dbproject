@@ -1,5 +1,5 @@
 from flask import jsonify
-from DAO.Food import FoodDAO
+from dao.food import FoodDAO
 
 class FoodHandler:
     def build_Food_dict(self, row):
@@ -126,4 +126,3 @@ class FoodHandler:
                     return jsonify(Food=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
-

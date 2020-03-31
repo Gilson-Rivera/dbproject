@@ -1,4 +1,3 @@
-
 #hardcoded DB entries, just for Phase 1, remove later!
 rows, columns = (5, 7)
 FoodDB = [[0 for x in range(rows)] for y in range(columns)]
@@ -82,8 +81,3 @@ class FoodDAO:
     def update(self, fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation):
         FoodDB.append(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
         return fid
-
-
-
-
-

@@ -1,4 +1,3 @@
-
 #hardcoded DB entries, just for Phase 1, remove later!
 rows, columns = (5, 6)
 EquipDB = [[0 for x in range(rows)] for y in range(columns)]
@@ -74,8 +73,3 @@ class EquipDAO:
     def update(self, eid, etype, esupplier, ebrand, equantity, elocation):
         EquipDB.append(eid, etype, esupplier, ebrand, equantity, elocation)
         return eid
-
-
-
-
-

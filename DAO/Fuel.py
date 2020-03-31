@@ -1,4 +1,3 @@
-
 #hardcoded DB entries, just for Phase 1, remove later!
 rows, columns = (5, 5)
 FuelDB = [[0 for x in range(rows)] for y in range(columns)]
@@ -45,11 +44,11 @@ class FuelDAO:
         return result
 
     def getFuelByLocation(self, flocation):
-        result = []
-        for row in FuelDB:
-            for col in row:
-                if col[5] == flocation:
-                    result.append(row)
+        result = "This is fuel with requested location"
+        # for row in FuelDB:
+        #     for col in row:
+        #         if col[4] == flocation:
+        #             result.append(row)
         return result
 
     #fuid entry only for phase 1 for examples
@@ -66,8 +65,3 @@ class FuelDAO:
     def update(self, fuid, ftype, fsupplier, fquantity, flocation):
         FuelDB[fuid] = [fuid, ftype, fsupplier, fquantity, flocation]
         return fuid
-
-
-
-
-
