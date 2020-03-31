@@ -37,5 +37,5 @@ class FuelDAO:
         return fuid
 
     def update(self, fuid, ftype, fsupplier, fquantity, flocation):
-        FuelDB[fuid] = [fuid, ftype, fsupplier, fquantity, flocation]
-        return fuid
+        result = "Fuel updated"
+        return result

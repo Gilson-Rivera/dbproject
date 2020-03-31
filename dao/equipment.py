@@ -1,11 +1,12 @@
 class EquipDAO:
 
     def getAllEquip(self):
-        result = "This is a list of equipment."
+        result = "This is a list of equipment"
         return result
 
-    def getEquipByID(self):
-        result = "This is a specific piece of equipment."
+    def getEquipByID(self, eid):
+        result = "Equipment with specified id"
+
         return result
 
     def getEquipByType(self):
@@ -24,20 +25,20 @@ class EquipDAO:
         result = "This is a list of equipment by its quantity."
         return result
 
-    def getEquipByLocation(self):
-        result = "This is a list of equipment by its location."
+    def getEquipByLocation(self, elocation):
+        result = "Equipment with given location"
         return result
 
     #fuid entry only for phase 1 for examples
     #Remove fuid for CRUD operations for later phases!
     #Must return the primary key as well
     def insert(self, eid, etype, esupplier, ebrand, equantity, elocation):
-        EquipDB.append(eid, etype, esupplier, ebrand, equantity, elocation)
-        return eid
+        result = "Equipment inserted"
+        return result
 
     def delete(self, eid):
-        EquipDB.pop(eid)
-        return eid
+        result = "Equipment deleted"
+        return result
 
     def update(self, eid, etype, esupplier, ebrand, equantity, elocation):
         EquipDB.append(eid, etype, esupplier, ebrand, equantity, elocation)

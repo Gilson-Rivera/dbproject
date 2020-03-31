@@ -78,11 +78,11 @@ class ConsumerHandler:
 
     def deleteConsumer(self, cid):
         dao = ConsumersDAO()
-        if not dao.getConsumerById(cid):
-            return jsonify(Error = "Part not found."), 404
-        else:
-            dao.delete(cid)
-            return jsonify(DeleteStatus = "OK"), 200
+        # if not dao.getConsumerById(cid):
+        #     return jsonify(Error = "Part not found."), 404
+        # else:
+        result = dao.delete(cid)
+        return jsonify(DeleteStatus = result), 200
 
     def updateConsumer(self, cid, form):
         dao = ConsumersDAO()

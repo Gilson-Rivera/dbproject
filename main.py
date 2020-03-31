@@ -3,6 +3,9 @@ from handler.consumers import ConsumerHandler
 from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
 from handler.fuel import FuelHandler
+from handler.food import FoodHandler
+from handler.equipment import EquipHandler
+from handler.medical_devices import MedDevHandler
 from handler.fuel_supplies import FuelSuppliesHandler
 from handler.food_supplies import FoodSuppliesHandler
 from handler.esupplies import ESuppliesHandler
@@ -161,6 +164,75 @@ def getAllMDSupplies():
             return MDSuppliesHandler().getAllMDSupplies()
         else:
             return MDSuppliesHandler().searchMDSupplies(request.args)
+        
+@app.route('/DBApp1/equipment', methods=['GET', 'POST'])
+def getAllEquipment():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return EquipHandler().insertEquipmentJson(request.json)
+    else:
+        if not request.args:
+            return EquipHandler().getAllEquipment()
+        else:
+            #change to searchEquipment() once implemented in handlers
+            return EquipHandler().searchEquipment(request.args)
+
+@app.route('/DBApp1/equipment/<int:eid>', methods=['GET', 'PUT', 'DELETE'])
+def getEquipmentById(eid):
+    if request.method == 'GET':
+        return EquipHandler().getEquipmentByID(eid)
+    elif request.method == 'PUT':
+        return EquipHandler().updateEquipment(eid, request.form)
+    elif request.method == 'DELETE':
+        return EquipHandler().deleteFoodment(eid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/medical_devices', methods=['GET', 'POST'])
+def getAllMedDev():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedDevHandler().insertMedDevJson(request.json)
+    else:
+        if not request.args:
+            return MedDevHandler().getAllMedDev()
+        else:
+            #change to searchMedDev() once implemented in handlers
+            return MedDevHandler().searchMedDev(request.args)
+
+@app.route('/DBApp1/medical_devices/<int:mdid>', methods=['GET', 'PUT', 'DELETE'])
+def getMedDevById(mdid):
+    if request.method == 'GET':
+        return MedDevHandler().getMedDevByID(mdid)
+    elif request.method == 'PUT':
+        return MedDevHandler().updateMedDev(mdid, request.form)
+    elif request.method == 'DELETE':
+        return MedDevHandler().deleteMedDev(mdid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/food', methods=['GET', 'POST'])
+def getAllFood():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return FoodHandler().insertFoodJson(request.json)
+    else:
+        if not request.args:
+            return FoodHandler().getAllFood()
+        else:
+            #change to searchFood() once implemented in handlers
+            return FoodHandler().searchFood(request.args)
+
+@app.route('/DBApp1/food/<int:fid>', methods=['GET', 'PUT', 'DELETE'])
+def getFoodById(fid):
+    if request.method == 'GET':
+        return FoodHandler().getFoodByID(fid)
+    elif request.method == 'PUT':
+        return FoodHandler().updateFood(fid, request.form)
+    elif request.method == 'DELETE':
+        return FoodHandler().deleteFood(fid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/DBApp1/med', methods=['GET', 'POST'])
 def getAllMed():
