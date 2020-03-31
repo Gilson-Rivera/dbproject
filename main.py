@@ -103,32 +103,59 @@ def getAllFuelSupplies():
 @app.route('/DBApp1/e_supplies', methods=['GET', 'POST'])
 def getAllESupplies():
     if request.method == 'POST':
-	print("REQUEST: ", request.json)
-	return ESuppliesHandler().insertESuppliesJson(request.json)
+        print("REQUEST: ", request.json)
+        return ESuppliesHandler().insertESuppliesJson(request.json)
     else:
-	if not request.args:
-	   return ESuppliesHandler().getAllESupplies()
-	else:
-	    return ESuppliesHandler().searchESupplies(request.args)
+        if not request.args:
+            return ESuppliesHandler().getAllESupplies()
+        else:
+            return ESuppliesHandler().searchESupplies(request.args)
 
 @app.route('/DBApp1/mdsupplies', methods=['GET',  'POST'])
 def getAllMDSupplies():
     if request.method =='POST':
-	print("REQUEST: ", request.json)
-	return MDSuppliesHandler().insertMDSuppliesJson(request.json)
+        print("REQUEST: ", request.json)
+        return MDSuppliesHandler().insertMDSuppliesJson(request.json)
     else:
-	if not request.args:
-	   return MDSuppliesHandler().getAllMDSupplies()
-	else:
-	   return MDSuppliesHandler().searchMDSupplies(request.args)
+        if not request.args:
+            return MDSuppliesHandler().getAllMDSupplies()
+        else:
+            return MDSuppliesHandler().searchMDSupplies(request.args)
 
-# @app.route('/PartApp/suppliers/<int:sid>/parts')
-# def getPartsBySuplierId(sid):
-#     return SupplierHandler().getPartsBySupplierId(sid)
+@app.route('/DBApp1/med', methods=['GET', 'POST'])
+def getAllMed():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedHandler().insertMedJson(request.json)
+    else:
+        if not request.args:
+            return MedHandler().getAllMed()
+        else:
+            #change to searchMed() once implemented in handlers
+            return MedHandler().searchMed(request.args)
 
-# @app.route('/PartApp/parts/countbypartid')
-# def getCountByPartId():
-#     return ConsumerHandler().getCountByPartId()
+@app.route('/DBApp1/med/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
+def getMedById(mid):
+    if request.method == 'GET':
+        return MedHandler().getMedByID(mid)
+    elif request.method == 'PUT':
+        return MedHandler().updateMed(mid, request.form)
+    elif request.method == 'DELETE':
+        return MedHandler().deleteMed(mid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/med_supplies', methods=['GET', 'POST'])
+def getAllMedSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedSuppliesHandler().insertMedSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return MedSuppliesHandler().getAllMedSupplies()
+        else:
+            return MedSuppliesHandler().searchMedSupplies(request.args)
+
 
 if __name__ == '__main__':
     app.run()
