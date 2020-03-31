@@ -5,6 +5,8 @@ from handler.supplier import SupplierHandler
 from handler.fuel import FuelHandler
 from handler.fuel_supplies import FuelSuppliesHandler
 from handler.food_supplies import FoodSuppliesHandler
+from handler.esupplies import ESuppliesHandler
+from handler.mdsupplies import MDSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
 # services on other ports on this machine or on other
@@ -135,6 +137,28 @@ def getAllFoodSupplies():
         else:
             return FoodSuppliesHandler().searchFoodSupplies(request.args)
 
+
+@app.route('/DBApp1/e_supplies', methods=['GET', 'POST'])
+def getAllESupplies():
+    if request.method == 'POST':
+	print("REQUEST: ", request.json)
+	return ESuppliesHandler().insertESuppliesJson(request.json)
+    else:
+	if not request.args:
+	   return ESuppliesHandler().getAllESupplies()
+	else:
+	    return ESuppliesHandler().searchESupplies(request.args)
+
+@app.route('/DBApp1/mdsupplies', methods=['GET',  'POST'])
+def getAllMDSupplies():
+    if request.method =='POST':
+	print("REQUEST: ", request.json)
+	return MDSuppliesHandler().insertMDSuppliesJson(request.json)
+    else:
+	if not request.args:
+	   return MDSuppliesHandler().getAllMDSupplies()
+	else:
+	   return MDSuppliesHandler().searchMDSupplies(request.args)
 
 # @app.route('/PartApp/suppliers/<int:sid>/parts')
 # def getPartsBySuplierId(sid):
