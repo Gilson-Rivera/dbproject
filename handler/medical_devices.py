@@ -24,10 +24,6 @@ class MedDevHandler:
     def getAllMedDev(self):
         dao = MedDevDAO()
         MedDev_list = dao.getAllMedDev()
-        # result_list = []
-        # for row in MedDev_list:
-        #     result = self.build_MedDev_dict(row)
-        #     result_list.append(result)
         return jsonify(MedDev=MedDev_list)
 
     def getMedDevByID(self, mdid):

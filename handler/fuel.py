@@ -22,15 +22,11 @@ class FuelHandler:
     def getAllFuel(self):
         dao = FuelDAO()
         fuel_list = dao.getAllFuel()
-        result_list = []
-        for row in fuel_list:
-            result = self.build_fuel_dict(row)
-            result_list.append(result)
         return jsonify(Fuel=fuel_list)
 
     def getFuelByID(self, fuid):
         dao = FuelDAO()
-        result = dao.getFuelByID(fuid)
+        result = dao.getFuelByID()
         return jsonify(Fuel=result)
 
     def searchFuel(self, args):
@@ -40,7 +36,7 @@ class FuelHandler:
             location = args.get("location")
             if location:
                 dao = FuelDAO()
-                fuel_list = dao.getFuelByLocation(location)
+                fuel_list = dao.getFuelByLocation()
                 # result_list = []
                 # for row in fuel_list:
                 #     result = self.build_fuel_dict(row)
