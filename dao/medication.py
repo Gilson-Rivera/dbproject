@@ -72,5 +72,5 @@ class MedDAO:
         return result
 
     def update(self, fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
-        MedDB.append(fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-        return fid
+        result = "Medication updated"
+        return result
