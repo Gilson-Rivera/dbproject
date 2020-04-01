@@ -23,9 +23,11 @@ app = Flask(__name__)
 # Apply CORS to this app
 CORS(app)
 
+
 @app.route('/')
 def greeting():
     return 'Hello, this is the DB project App!'
+
 
 @app.route('/DBApp1/administrators', methods=['GET', 'POST'])
 def getAllAdministrators():
@@ -38,6 +40,7 @@ def getAllAdministrators():
         else:
             return AdministratorHandler().searchAdministrators(request.args)
 
+
 @app.route('/DBApp1/administrators/<int:aid>', methods=['GET', 'PUT', 'DELETE'])
 def getAdministratorById(aid):
     if request.method == 'GET':
@@ -48,6 +51,7 @@ def getAdministratorById(aid):
         return AdministratorHandler().deleteAdministrator(aid)
     else:
         return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/DBApp1/consumers', methods=['GET', 'POST'])
 def getAllConsumers():
@@ -60,6 +64,7 @@ def getAllConsumers():
         else:
             return ConsumerHandler().searchConsumers(request.args)
 
+
 @app.route('/DBApp1/consumers/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
 def getConsumerById(cid):
     if request.method == 'GET':
@@ -71,6 +76,7 @@ def getConsumerById(cid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 # @app.route('/PartApp/parts/<int:pid>/suppliers')
 # def getSuppliersByPartId(pid):
 #     return ConsumerHandler().getSuppliersByPartId(pid)
@@ -79,11 +85,12 @@ def getConsumerById(cid):
 def getAllSuppliers():
     if request.method == 'POST':
         return SupplierHandler().insertSupplierJson(request.json)
-    else :
+    else:
         if not request.args:
             return SupplierHandler().getAllSuppliers()
         else:
             return SupplierHandler().searchSuppliers(request.args)
+
 
 @app.route('/DBApp1/suppliers/<int:sid>',
            methods=['GET', 'PUT', 'DELETE'])
@@ -95,7 +102,8 @@ def getSupplierById(sid):
     elif request.method == 'DELETE':
         pass
     else:
-        return jsonify(Error = "Method not allowed"), 405
+        return jsonify(Error="Method not allowed"), 405
+
 
 @app.route('/DBApp1/fuel', methods=['GET', 'POST'])
 def getAllFuel():
@@ -106,8 +114,9 @@ def getAllFuel():
         if not request.args:
             return FuelHandler().getAllFuel()
         else:
-            #change to searchFuel() once implemented in handlers
+            # change to searchFuel() once implemented in handlers
             return FuelHandler().searchFuel(request.args)
+
 
 @app.route('/DBApp1/fuel/<int:fuid>', methods=['GET', 'PUT', 'DELETE'])
 def getFuelById(fuid):
@@ -120,6 +129,7 @@ def getFuelById(fuid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/DBApp1/fuel_supplies', methods=['GET', 'POST'])
 def getAllFuelSupplies():
     if request.method == 'POST':
@@ -130,6 +140,7 @@ def getAllFuelSupplies():
             return FuelSuppliesHandler().getAllFuelSupplies()
         else:
             return FuelSuppliesHandler().searchFuelSupplies(request.args)
+
 
 @app.route('/DBApp1/food_supplies', methods=['GET', 'POST'])
 def getAllFoodSupplies():
@@ -154,9 +165,10 @@ def getAllESupplies():
         else:
             return ESuppliesHandler().searchESupplies(request.args)
 
-@app.route('/DBApp1/mdsupplies', methods=['GET',  'POST'])
+
+@app.route('/DBApp1/mdsupplies', methods=['GET', 'POST'])
 def getAllMDSupplies():
-    if request.method =='POST':
+    if request.method == 'POST':
         print("REQUEST: ", request.json)
         return MDSuppliesHandler().insertMDSuppliesJson(request.json)
     else:
@@ -164,7 +176,8 @@ def getAllMDSupplies():
             return MDSuppliesHandler().getAllMDSupplies()
         else:
             return MDSuppliesHandler().searchMDSupplies(request.args)
-        
+
+
 @app.route('/DBApp1/equipment', methods=['GET', 'POST'])
 def getAllEquipment():
     if request.method == 'POST':
@@ -174,8 +187,9 @@ def getAllEquipment():
         if not request.args:
             return EquipHandler().getAllEquipment()
         else:
-            #change to searchEquipment() once implemented in handlers
+            # change to searchEquipment() once implemented in handlers
             return EquipHandler().searchEquipment(request.args)
+
 
 @app.route('/DBApp1/equipment/<int:eid>', methods=['GET', 'PUT', 'DELETE'])
 def getEquipmentById(eid):
@@ -188,6 +202,7 @@ def getEquipmentById(eid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/DBApp1/medical_devices', methods=['GET', 'POST'])
 def getAllMedDev():
     if request.method == 'POST':
@@ -197,8 +212,9 @@ def getAllMedDev():
         if not request.args:
             return MedDevHandler().getAllMedDev()
         else:
-            #change to searchMedDev() once implemented in handlers
+            # change to searchMedDev() once implemented in handlers
             return MedDevHandler().searchMedDev(request.args)
+
 
 @app.route('/DBApp1/medical_devices/<int:mdid>', methods=['GET', 'PUT', 'DELETE'])
 def getMedDevById(mdid):
@@ -211,6 +227,7 @@ def getMedDevById(mdid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/DBApp1/food', methods=['GET', 'POST'])
 def getAllFood():
     if request.method == 'POST':
@@ -220,8 +237,9 @@ def getAllFood():
         if not request.args:
             return FoodHandler().getAllFood()
         else:
-            #change to searchFood() once implemented in handlers
+            # change to searchFood() once implemented in handlers
             return FoodHandler().searchFood(request.args)
+
 
 @app.route('/DBApp1/food/<int:fid>', methods=['GET', 'PUT', 'DELETE'])
 def getFoodById(fid):
@@ -234,6 +252,7 @@ def getFoodById(fid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/DBApp1/med', methods=['GET', 'POST'])
 def getAllMed():
     if request.method == 'POST':
@@ -244,6 +263,7 @@ def getAllMed():
             return MedHandler().getAllMed()
         else:
             return MedHandler().searchMed(request.args)
+
 
 @app.route('/DBApp1/med/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
 def getMedById(mid):
@@ -256,6 +276,7 @@ def getMedById(mid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/DBApp1/med_supplies', methods=['GET', 'POST'])
 def getAllMedSupplies():
     if request.method == 'POST':
@@ -266,6 +287,7 @@ def getAllMedSupplies():
             return MedSuppliesHandler().getAllMedSupplies()
         else:
             return MedSuppliesHandler().searchMedSupplies(request.args)
+
 
 if __name__ == '__main__':
     app.run()

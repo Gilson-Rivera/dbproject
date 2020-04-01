@@ -5,7 +5,7 @@ class MedDAO:
         result = "This is a list of medications."
         return result
 
-    def getMedByID(self):
+    def getMedByID(self, mid):
         result = "This is a specific medications."
         return result
 
@@ -29,21 +29,18 @@ class MedDAO:
         result = "This is a list of medications by quantity."
         return result
 
-    def getMedByLocation(self, flocation):
-        result = "This is a list of medications by location."
+    def getMedByLocation(self, mlocation):
+        result = "Medication from specified location"
         return result
-    
-    #fuid entry only for phase 1 for examples
-    #Remove fuid for CRUD operations for later phases!
-    #Must return the primary key as well
-    def insert(self, fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
-        MedDB.append(fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-        return fid
+
+    def insert(self, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
+        result = "Medication inserted"
+        return result
 
     def delete(self, fid):
-        MedDB.pop(fid)
-        return fid
+        result = "Medication deleted"
+        return result
 
     def update(self, fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
-        MedDB.append(fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-        return fid
+        result = "Medication updated"
+        return result
