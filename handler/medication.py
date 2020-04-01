@@ -34,12 +34,12 @@ class MedHandler:
 
     def getMedByID(self, mid):
         dao = MedDAO()
-        row = dao.getMedByID(mid)
-        if not row:
-            return jsonify(Error = "Med Not Found"), 404
-        else:
-            Med = self.build_Med_dict(row)
-            return jsonify(Med = Med)
+        result = dao.getMedByID(mid)
+        # if not row:
+        #     return jsonify(Error = "Med Not Found"), 404
+        # else:
+        #     Med = self.build_Med_dict(row)
+        return jsonify(Med = result)
 
 
     def searchMed(self, args):
@@ -50,11 +50,11 @@ class MedHandler:
             if location:
                 dao = MedDAO()
                 Med_list = dao.getMedByLocation(location)
-                result_list = []
-                for row in Med_list:
-                    result = self.build_Med_dict(row)
-                    result_list.append(row)
-                return jsonify(Med=result_list)
+                # result_list = []
+                # for row in Med_list:
+                #     result = self.build_Med_dict(row)
+                #     result_list.append(row)
+                return jsonify(Med=Med_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
 
@@ -65,64 +65,45 @@ class MedHandler:
             return jsonify(Error = "Malformed post request"), 400
         else:
             #remove mid later
-            mid = form['mid']
             mname = form['mname']
             mbrand = form['mbrand']
             mexpdate = form['mexpdate']
             msupplier = form['msupplier']
             mquantity = form['mquantity']
             mlocation = form['mlocation']
-            if mname and msupplier and mquantity and mlocation:
-                dao = MedDAO
-                mid = dao.insert(mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-                result = self.build_Med_attr(mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
+            if mname and mexpdate and msupplier and mbrand and mquantity and mlocation:
+                dao = MedDAO()
+                result = dao.insert(mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
                 return jsonify(Med=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
 
     def insertMedJson(self, json):
-        mid = json['mid']
         mname = json['mname']
         mexpdate = json['mexpdate']
         msupplier = json['msupplier']
         mbrand = json['mbrand']
         mquantity = json['mquantity']
         mlocation = json['mlocation']
-        if mid and mname and mexpdate and msupplier and mquantity and mlocation:
-            dao = MedDAO
-            mid = dao.insert(mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-            result = self.build_Med_attr(mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
+        if mname and mexpdate and msupplier and mbrand and mquantity and mlocation:
+            dao = MedDAO()
+            result = dao.insert(mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
             return jsonify(Med=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deleteMed(self, mid):
         dao = MedDAO()
-        if not dao.getMedByID(mid):
-            return jsonify(Error = "Med not found."), 404
-        else:
-            dao.delete(mid)
-            return jsonify(DeleteStatus = "OK"), 200
+        # if not dao.getMedByID(mid):
+        #     return jsonify(Error = "Med not found."), 404
+        # else:
+        result = dao.delete(mid)
+        return jsonify(DeleteStatus = result), 200
 
     def updateMed(self, mid, form):
         dao = MedDAO()
         if not dao.getMedByID(mid):
-            return jsonify(Error = "Med not found."), 404
+            return jsonify(Error="Consumer not found."), 404
         else:
-            if len(form) != 4:
-                return jsonify(Error="Malformed update request"), 400
-            else:
-                mid = form['mid']
-                mname = form['mname']
-                mexpdate = form['mexpdate']
-                mbrand = form['mbrand']
-                msupplier = form['msupplier']
-                mquantity = form['mquantity']
-                mlocation = form['mlocation']
-                if mname and mexpdate and mbrand and msupplier and mquantity and mlocation:
-                    dao.update(mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-                    result = self.build_Med_attr(mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-                    return jsonify(Med=result), 200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+            return jsonify(dao.getMedByID(mid)), 201

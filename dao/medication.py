@@ -15,8 +15,8 @@ class MedDAO:
             result.append(row)
         return result
 
-    def getMedByID(self, fid):
-        result = MedDB[fid]
+    def getMedByID(self, mid):
+        result = "Medication with specified ID"
         return result
 
     def getMedByType(self, mname):
@@ -60,23 +60,19 @@ class MedDAO:
         return result
 
     def getMedByLocation(self, mlocation):
-        result = []
-        for row in MedDB:
-            for col in row:
-                if col[6] == mlocation:
-                    result.append(row)
+        result = "Medication from specified location"
         return result
 
     #fuid entry only for phase 1 for examples
     #Remove fuid for CRUD operations for later phases!
     #Must return the primary key as well
-    def insert(self, fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
-        MedDB.append(fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-        return fid
+    def insert(self, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
+        result = "Medication inserted"
+        return result
 
     def delete(self, fid):
-        MedDB.pop(fid)
-        return fid
+        result = "Medication deleted"
+        return result
 
     def update(self, fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
         MedDB.append(fid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation)

@@ -7,14 +7,6 @@ class MedSuppliesDAO:
         result = "This is a list of Med supplies"
         return result
 
-    # def searchConsumerBeta(self):
-    #     result = "This is a searched consumer"
-    #     return result
-    #
-    # def getConsumerById(self, cid):
-    #     result = "This is a specific consumer"
-    #     return result
-    #
     def getMedSupplyByDate(self, date):
         result = "This are Med supplies with given date"
         return result
