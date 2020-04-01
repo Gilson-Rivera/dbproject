@@ -26,11 +26,19 @@ class MedHandler:
     def getAllMed(self):
         dao = MedDAO()
         Med_list = dao.getAllMed()
+        result_list = []
+        for row in Med_list:
+            result = self.build_Med_dict(row)
+            result_list.append(result)
         return jsonify(Med=Med_list)
 
     def getMedByID(self, mid):
         dao = MedDAO()
         result = dao.getMedByID(mid)
+        # if not row:
+        #     return jsonify(Error = "Med Not Found"), 404
+        # else:
+        #     Med = self.build_Med_dict(row)
         return jsonify(Med = result)
 
 

@@ -1,3 +1,5 @@
+from config.dbconfig import pg_config
+import psycopg2
 
 class MedSuppliesDAO:
 
@@ -5,20 +7,16 @@ class MedSuppliesDAO:
         result = "This is a list of Med supplies"
         return result
 
-    def getMedById(self, cid):
-        result = "This is a specific medication"
-        return result
-
     def getMedSupplyByDate(self, date):
-        result = "These are Med supplies with given date"
+        result = "This are Med supplies with given date"
         return result
 
     def getMedSupplyByPrice(self, price):
-        result = "These are Med supplies with given price"
+        result = "This are Med supplies with given price"
         return result
 
     def getMedSupplyByQuantity(self, price):
-        result = "These are Med supplies with given quantity"
+        result = "This are Med supplies with given quantity"
         return result
 
     def insert(self, Medsupply_price, Medsupply_quantity, Medsupply_date):
