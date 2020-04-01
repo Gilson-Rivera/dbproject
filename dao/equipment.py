@@ -41,5 +41,5 @@ class EquipDAO:
         return result
 
     def update(self, eid, etype, esupplier, ebrand, equantity, elocation):
-        EquipDB.append(eid, etype, esupplier, ebrand, equantity, elocation)
-        return eid
+        result = "Equipment updated"
+        return result

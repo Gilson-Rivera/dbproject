@@ -198,7 +198,7 @@ def getEquipmentById(eid):
     elif request.method == 'PUT':
         return EquipHandler().updateEquipment(eid, request.form)
     elif request.method == 'DELETE':
-        return EquipHandler().deleteFoodment(eid)
+        return EquipHandler().deleteEquipment(eid)
     else:
         return jsonify(Error="Method not allowed."), 405
 

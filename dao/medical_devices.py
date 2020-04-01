@@ -42,5 +42,5 @@ class MedDevDAO:
         return result
 
     def update(self, mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation):
-        MedDevDB.append(mdid, mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
-        return mdid
+        result = "Medical device updated"
+        return result

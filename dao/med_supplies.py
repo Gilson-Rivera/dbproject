@@ -7,6 +7,10 @@ class MedSuppliesDAO:
         result = "This is a list of Med supplies"
         return result
 
+    def getMedDevById(self, mid):
+        result = "This is a medical device with specified ID"
+        return result
+
     def getMedSupplyByDate(self, date):
         result = "This are Med supplies with given date"
         return result
@@ -15,7 +19,7 @@ class MedSuppliesDAO:
         result = "This are Med supplies with given price"
         return result
 
-    def getMedSupplyByQuantity(self, price):
+    def getMedSupplyByQuantity(self, quantity):
         result = "This are Med supplies with given quantity"
         return result
 
@@ -23,6 +27,6 @@ class MedSuppliesDAO:
         result = "Med supply inserted"
         return result
     #
-    def delete(self, cid):
+    def delete(self, mid):
         result = "Med supply deleted"
         return result

@@ -45,5 +45,5 @@ class FoodDAO:
         return result
 
     def update(self, fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation):
-        FoodDB.append(fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
-        return fid
+        result = "Food deleted"
+        return result

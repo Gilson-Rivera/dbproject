@@ -22,7 +22,7 @@ class ESuppliesHandler:
     def getAllESupplies(self):
         dao = EquipmentSuppliesDAO()
         result_list = dao.getAllESupplies()
-        return jsonify(FuelSupplies=result_list)
+        return jsonify(EquipmentSupplies=result_list)
 
     def searchESupplies(self, args):
         if len(args) > 1:
@@ -33,12 +33,12 @@ class ESuppliesHandler:
             if date:
                 dao = EquipmentSuppliesDAO()
                 result_list = dao.getESupplyByDate(date)
-                return jsonify(FuelSupplies=result_list)
+                return jsonify(EquipmentSupplies=result_list)
 
             elif price:
                 dao = EquipmentSuppliesDAO()
                 result_list = dao.getESupplyByPrice(price)
-                return jsonify(FuelSupplies=result_list)
+                return jsonify(EquipmentSupplies=result_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
 
