@@ -95,9 +95,6 @@ class MedHandler:
 
     def deleteMed(self, mid):
         dao = MedDAO()
-        # if not dao.getMedByID(mid):
-        #     return jsonify(Error = "Med not found."), 404
-        # else:
         result = dao.delete(mid)
         return jsonify(DeleteStatus = result), 200
 

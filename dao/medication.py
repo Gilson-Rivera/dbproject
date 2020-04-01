@@ -63,9 +63,6 @@ class MedDAO:
         result = "Medication from specified location"
         return result
 
-    #fuid entry only for phase 1 for examples
-    #Remove fuid for CRUD operations for later phases!
-    #Must return the primary key as well
     def insert(self, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
         result = "Medication inserted"
         return result
