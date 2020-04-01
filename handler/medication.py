@@ -101,6 +101,6 @@ class MedHandler:
     def updateMed(self, mid, form):
         dao = MedDAO()
         if not dao.getMedByID(mid):
-            return jsonify(Error="Consumer not found."), 404
+            return jsonify(Error="Medication not found."), 404
         else:
             return jsonify(dao.getMedByID(mid)), 201
