@@ -143,7 +143,7 @@ def getAllFoodSupplies():
             return FoodSuppliesHandler().searchFoodSupplies(request.args)
 
 
-@app.route('/DBApp1/e_supplies', methods=['GET', 'POST'])
+@app.route('/DBApp1/equipment_supplies', methods=['GET', 'POST'])
 def getAllESupplies():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
