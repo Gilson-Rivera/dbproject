@@ -6,34 +6,45 @@ class SupplierHandler:
     def build_supplier_dict(self, row):
         result = {}
         result['sid'] = row[0]
-        result['sname'] = row[1]
-        result['scity'] = row[2]
-        result['sphone'] = row[3]
+        result['sfirstname'] = row[1]
+        result['slastname'] = row[2]
+        result['sorganization'] = row[3]
+        result['slocation'] = row[4]
+        result['sphone'] = row[5]
         return result
 
     def getAllSuppliers(self):
         dao = SupplierDAO()
         suppliers_list = dao.getAllSuppliers()
-        return jsonify(Suppliers=suppliers_list)
+        result_list = []
+        for row in suppliers_list:
+            result = self.build_supplier_dict(row)
+            result_list.append(result)
+        return jsonify(Suppliers=result_list)
 
     def getSupplierById(self, sid):
         dao = SupplierDAO()
-        result = dao.getSupplierById(sid)
-        return jsonify(Supplier=result)
+        row = dao.getSupplierById(sid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            supplier = self.build_supplier_dict(row)
+            return jsonify(Supplier=supplier)
 
 
     def searchSuppliers(self, args):
-        if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+        location = args.get("location")
+        dao = SupplierDAO()
+        suppliers_list = []
+        if (len(args) == 1) and location:
+            suppliers_list = dao.getSuppliersByLocation(location)
         else:
-            organization = args.get("organization")
-            if organization:
-                dao = SupplierDAO()
-                supplier_list = dao.getSuppliersByOrganization(organization)
-                result_list = []
-                return jsonify(Suppliers=supplier_list)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return jsonify(Error="Malformed query string"), 400
+        result_list = []
+        for row in suppliers_list:
+            result = self.build_supplier_dict(row)
+            result_list.append(result)
+        return jsonify(Suppliers=result_list)
 
     def insertSupplierJson(self, json):
         sfirstname = json['sfirstname']

@@ -12,6 +12,7 @@ from handler.esupplies import ESuppliesHandler
 from handler.mdsupplies import MDSuppliesHandler
 from handler.medication import MedHandler
 from handler.med_supplies import MedSuppliesHandler
+from handler.request_supplies import RequestedSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
 # services on other ports on this machine or on other
@@ -64,6 +65,28 @@ def getAllConsumers():
         else:
             return ConsumerHandler().searchConsumers(request.args)
 
+@app.route('/DBApp1/requested_supplies', methods=['GET', 'POST'])
+def getAllRequestedSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return RequestedSuppliesHandler().insertRequestedSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return RequestedSuppliesHandler().getAllRequestedSupplies()
+        # else:
+        #     return RequestedSuppliesHandler().searchRequestedSupplies(request.args)
+
+@app.route('/DBApp1/medications', methods=['GET', 'POST'])
+def getAllMedications():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedHandler().insertMedicationJson(request.json)
+    else:
+        if not request.args:
+            return MedHandler().getAllMedications()
+        else:
+            return MedHandler().searchMedications(request.args)
+
 
 @app.route('/DBApp1/consumers/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
 def getConsumerById(cid):
@@ -73,6 +96,17 @@ def getConsumerById(cid):
         return ConsumerHandler().updateConsumer(cid, request.form)
     elif request.method == 'DELETE':
         return ConsumerHandler().deleteConsumer(cid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/medications/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
+def getMedicationById(mid):
+    if request.method == 'GET':
+        return MedHandler().getMedicationByID(mid)
+    elif request.method == 'PUT':
+        return MedHandler().updateMed(mid, request.form)
+    elif request.method == 'DELETE':
+        return MedHandler().deleteMed(mid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -263,18 +297,6 @@ def getAllMed():
             return MedHandler().getAllMed()
         else:
             return MedHandler().searchMed(request.args)
-
-
-@app.route('/DBApp1/med/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
-def getMedById(mid):
-    if request.method == 'GET':
-        return MedHandler().getMedByID(mid)
-    elif request.method == 'PUT':
-        return MedHandler().updateMed(mid, request.form)
-    elif request.method == 'DELETE':
-        return MedHandler().deleteMed(mid)
-    else:
-        return jsonify(Error="Method not allowed."), 405
 
 
 @app.route('/DBApp1/med_supplies', methods=['GET', 'POST'])

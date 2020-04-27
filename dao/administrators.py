@@ -2,8 +2,19 @@ from config.dbconfig import pg_config
 import psycopg2
 class AdministratorsDAO:
 
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
+                                                                           pg_config['user'],
+                                                                           pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
+
     def getAllAdministrators(self):
-        result = "This is a list of administrators"
+        cursor = self.conn.cursor()
+        query = "select * from administrators"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def searchAdministratorBeta(self):
@@ -11,11 +22,19 @@ class AdministratorsDAO:
         return result
 
     def getAdministratorById(self, aid):
-        result = "This is a specific administrator"
+        cursor = self.conn.cursor()
+        query = "select * from administrators where aid=%s;"
+        cursor.execute(query, (aid,))
+        result = cursor.fetchone()
         return result
 
     def getAdministratorByName(self, name):
-        result = "This is administrator with given name"
+        cursor = self.conn.cursor()
+        query = "select * from administrators where afirstname=%s;"
+        cursor.execute(query, (name,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def insert(self, afirstname, alastname, alocation, a_age):

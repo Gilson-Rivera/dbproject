@@ -25,23 +25,35 @@ class ConsumerHandler:
 
     def getAllConsumers(self):
         dao = ConsumersDAO()
-        result_list = dao.getAllConsumers()
+        consumers_list = dao.getAllConsumers()
+        result_list = []
+        for row in consumers_list:
+            result = self.build_consumer_dict(row)
+            result_list.append(result)
         return jsonify(Consumers=result_list)
 
     def getConsumerById(self, cid):
         dao = ConsumersDAO()
-        result = dao.getConsumerById(cid)
-        return jsonify(Consumers=result)
+        row = dao.getConsumerById(cid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            consumer = self.build_consumer_dict(row)
+            return jsonify(Consumer=consumer)
 
     def searchConsumers(self, args):
         name = args.get("name")
         dao = ConsumersDAO()
-        results_list = []
+        consumers_list = []
         if (len(args) == 1) and name:
-            results_list = dao.getConsumerByName(name)
+            consumers_list = dao.getConsumerByName(name)
         else:
-            results_list = dao.searchConsumerBeta()
-        return jsonify(Consumers=results_list)
+            return jsonify(Error = "Malformed query string"), 400
+        result_list = []
+        for row in consumers_list:
+            result = self.build_consumer_dict(row)
+            result_list.append(result)
+        return jsonify(Consumers=result_list)
 
 
     def insertConsumer(self, form):

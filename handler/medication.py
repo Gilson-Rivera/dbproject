@@ -2,61 +2,91 @@ from flask import jsonify
 from dao.medication import MedDAO
 
 class MedHandler:
-    def build_Med_dict(self, row):
+    def build_medication_dict(self, row):
         result = {}
         result['mid'] = row[0]
         result['mname'] = row[1]
         result['mexpdate'] = row[2]
-        result['msupplier'] = row[3]
+        result['mnumavailable'] = row[3]
         result['mbrand'] = row[4]
-        result['mquantity'] = row[5]
+        result['msupplier'] = row[5]
         result['mlocation'] = row[6]
-
-    def build_Med_attr(self, mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
-        result = {}
-        result['mid'] = mid
-        result['mname'] = mname
-        result['mexpdate'] = mexpdate
-        result['msupplier'] = msupplier
-        result['mbrand'] = mbrand
-        result['mquantity'] = mquantity
-        result['mlocation'] = mlocation
+        result['mispill'] = row[7]
+        result['misliquid'] = row[8]
         return result
 
-    def getAllMed(self):
+    def build_medication_consumed_dict(self, row):
+        result = {}
+        result['cid'] = row[0]
+        result['mid'] = row[1]
+        result['cfirstname'] = row[2]
+        result['clastname'] = row[3]
+        result['mname'] = row[4]
+        result['mbrand'] = row[5]
+        result['mconsume_price'] = row[6]
+        result['mconsume_quantity'] = row[7]
+        result['mconsume_date'] = row[8]
+
+
+        return result
+
+    def build_Med_attr(self, mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
+         result = {}
+        # result['mid'] = mid
+        # result['mname'] = mname
+        # result['mexpdate'] = mexpdate
+        # result['mnumavailable'] = mexpdate
+        # result['msupplier'] = msupplier
+        # result['mbrand'] = mbrand
+        # result['mquantity'] = mquantity
+        # result['mlocation'] = mlocation
+         return result
+
+    def getAllMedications(self):
         dao = MedDAO()
-        Med_list = dao.getAllMed()
+        medications_list = dao.getAllMedications()
         result_list = []
-        for row in Med_list:
-            result = self.build_Med_dict(row)
+        for row in medications_list:
+            result = self.build_medication_dict(row)
             result_list.append(result)
-        return jsonify(Med=Med_list)
+        return jsonify(Medications=result_list)
 
-    def getMedByID(self, mid):
+    def getMedicationByID(self, mid):
         dao = MedDAO()
-        result = dao.getMedByID(mid)
-        # if not row:
-        #     return jsonify(Error = "Med Not Found"), 404
-        # else:
-        #     Med = self.build_Med_dict(row)
-        return jsonify(Med = result)
-
-
-    def searchMed(self, args):
-        if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+        row = dao.getMedicationByID(mid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
         else:
-            location = args.get("location")
-            if location:
-                dao = MedDAO()
-                Med_list = dao.getMedByLocation(location)
-                # result_list = []
-                # for row in Med_list:
-                #     result = self.build_Med_dict(row)
-                #     result_list.append(row)
-                return jsonify(Med=Med_list)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            medication = self.build_medication_dict(row)
+            return jsonify(Medication=medication)
+
+
+    def searchMedications(self, args):
+        type = args.get("type")
+        status = args.get("status")  #reserved or purchased
+        location = args.get("location")
+        dao = MedDAO()
+        medications_list = []
+        result_list = []
+        if (len(args) == 1) and type:
+            medications_list = dao.getMedicationByType(type)
+            for row in medications_list:
+                result = self.build_medication_dict(row)
+                result_list.append(result)
+        elif (len(args) == 1) and status:
+            medications_list = dao.getMedicationByStatus(status)
+            for row in medications_list:
+                result = self.build_medication_consumed_dict(row) #also need to add consumer's information
+                result_list.append(result)
+        elif (len(args) == 1) and location:
+            medications_list = dao.getMedicationByLocation(location)
+            for row in medications_list:
+                result = self.build_medication_dict(row)
+                result_list.append(result)
+        else:
+            return jsonify(Error="Malformed query string"), 400
+
+        return jsonify(Medications=result_list)
 
 
     def insertMed(self, form):
@@ -79,7 +109,7 @@ class MedHandler:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
 
-    def insertMedJson(self, json):
+    def insertMedicationJson(self, json):
         mname = json['mname']
         mexpdate = json['mexpdate']
         msupplier = json['msupplier']

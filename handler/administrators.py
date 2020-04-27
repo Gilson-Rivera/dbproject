@@ -25,23 +25,35 @@ class AdministratorHandler:
 
     def getAllAdministrators(self):
         dao = AdministratorsDAO()
-        result_list = dao.getAllAdministrators()
+        administrators_list = dao.getAllAdministrators()
+        result_list = []
+        for row in administrators_list:
+            result = self.build_administrator_dict(row)
+            result_list.append(result)
         return jsonify(Administrators=result_list)
 
     def getAdministratorById(self, cid):
         dao = AdministratorsDAO()
-        result = dao.getAdministratorById(cid)
-        return jsonify(Administrators=result)
+        row = dao.getAdministratorById(cid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            administrator = self.build_administrator_dict(row)
+            return jsonify(Administrator=administrator)
 
     def searchAdministrators(self, args):
         name = args.get("name")
         dao = AdministratorsDAO()
-        results_list = []
+        administrators_list = []
         if (len(args) == 1) and name:
-            results_list = dao.getAdministratorByName(name)
+            administrators_list = dao.getAdministratorByName(name)
         else:
-            results_list = dao.searchAdministratorBeta()
-        return jsonify(Administrators=results_list)
+            return jsonify(Error="Malformed query string"), 400
+        result_list = []
+        for row in administrators_list:
+            result = self.build_administrator_dict(row)
+            result_list.append(result)
+        return jsonify(Administrators=result_list)
 
 
     def insertAdministrator(self, form):
