@@ -87,6 +87,18 @@ def getAllMedications():
         else:
             return MedHandler().searchMedications(request.args)
 
+@app.route('/DBApp1/food', methods=['GET', 'POST'])
+def getAllFood():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return FoodHandler().insertFoodJson(request.json)
+    else:
+        if not request.args:
+            return FoodHandler().getAllFood()
+        else:
+            # change to searchFood() once implemented in handlers
+            return FoodHandler().searchFood(request.args)
+
 
 @app.route('/DBApp1/consumers/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
 def getConsumerById(cid):
@@ -107,6 +119,17 @@ def getMedicationById(mid):
         return MedHandler().updateMed(mid, request.form)
     elif request.method == 'DELETE':
         return MedHandler().deleteMed(mid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/food/<int:fid>', methods=['GET', 'PUT', 'DELETE'])
+def getFoodById(fid):
+    if request.method == 'GET':
+        return FoodHandler().getFoodByID(fid)
+    elif request.method == 'PUT':
+        return FoodHandler().updateFood(fid, request.form)
+    elif request.method == 'DELETE':
+        return FoodHandler().deleteFood(fid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -258,31 +281,6 @@ def getMedDevById(mdid):
         return MedDevHandler().updateMedDev(mdid, request.form)
     elif request.method == 'DELETE':
         return MedDevHandler().deleteMedDev(mdid)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-
-@app.route('/DBApp1/food', methods=['GET', 'POST'])
-def getAllFood():
-    if request.method == 'POST':
-        print("REQUEST: ", request.json)
-        return FoodHandler().insertFoodJson(request.json)
-    else:
-        if not request.args:
-            return FoodHandler().getAllFood()
-        else:
-            # change to searchFood() once implemented in handlers
-            return FoodHandler().searchFood(request.args)
-
-
-@app.route('/DBApp1/food/<int:fid>', methods=['GET', 'PUT', 'DELETE'])
-def getFoodById(fid):
-    if request.method == 'GET':
-        return FoodHandler().getFoodByID(fid)
-    elif request.method == 'PUT':
-        return FoodHandler().updateFood(fid, request.form)
-    elif request.method == 'DELETE':
-        return FoodHandler().deleteFood(fid)
     else:
         return jsonify(Error="Method not allowed."), 405
 

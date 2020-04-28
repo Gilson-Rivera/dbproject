@@ -2,15 +2,29 @@ from flask import jsonify
 from dao.food import FoodDAO
 
 class FoodHandler:
-    def build_Food_dict(self, row):
+    def build_food_dict(self, row):
         result = {}
         result['fid'] = row[0]
         result['fname'] = row[1]
         result['fexpdate'] = row[2]
-        result['fsupplier'] = row[3]
-        result['fbrand'] = row[4]
-        result['fquantity'] = row[5]
+        result['fnumavailable'] = row[3]
+        result['fsupplier'] = row[4]
+        result['fbrand'] = row[5]
         result['flocation'] = row[6]
+        return result;
+
+    def build_food_consumed_dict(self, row):
+        result = {}
+        result['cid'] = row[0]
+        result['fid'] = row[1]
+        result['cfirstname'] = row[2]
+        result['clastname'] = row[3]
+        result['fname'] = row[4]
+        result['fbrand'] = row[5]
+        result['foodconsume_price'] = row[6]
+        result['foodconsume_quantity'] = row[7]
+        result['foodconsume_date'] = row[8]
+        return result
 
     def build_Food_attr(self, fid, fname, fexpdate, fsupplier, fbrand, fquantity, flocation):
         result = {}
@@ -25,34 +39,49 @@ class FoodHandler:
 
     def getAllFood(self):
         dao = FoodDAO()
-        Food_list = dao.getAllFood()
-        return jsonify(Food=Food_list)
+        food_list = dao.getAllFood()
+        result_list = []
+        for row in food_list:
+            result = self.build_food_dict(row)
+            result_list.append(result)
+        return jsonify(Food=result_list)
 
     def getFoodByID(self, fid):
         dao = FoodDAO()
-        result = dao.getFoodByID(fid)
-        # if not row:
-        #     return jsonify(Error = "Food Not Found"), 404
-        # else:
-        #     Food = self.build_Food_dict(row)
-        return jsonify(Food = result)
+        row = dao.getFoodByID(fid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            food = self.build_food_dict(row)
+            return jsonify(Food=food)
 
 
     def searchFood(self, args):
-        if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+        type = args.get("type")
+        status = args.get("status")  # reserved or purchased
+        location = args.get("location")
+        dao = FoodDAO()
+        food_list = []
+        result_list = []
+        if (len(args) == 1) and type:
+            food_list = dao.getFoodByType(type)
+            for row in food_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
+        elif (len(args) == 1) and status:
+            food_list = dao.getFoodByStatus(status)
+            for row in food_list:
+                result = self.build_food_consumed_dict(row)  # also need to add consumer's information
+                result_list.append(result)
+        elif (len(args) == 1) and location:
+            food_list = dao.getFoodByLocation(location)
+            for row in food_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
         else:
-            location = args.get("location")
-            if location:
-                dao = FoodDAO()
-                Food_list = dao.getFoodByLocation(location)
-                # result_list = []
-                # for row in Food_list:
-                #     result = self.build_Food_dict(row)
-                #     result_list.append(row)
-                return jsonify(Food=Food_list)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return jsonify(Error="Malformed query string"), 400
+
+        return jsonify(Food=result_list)
 
 
     def insertFood(self, form):

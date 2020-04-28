@@ -26,8 +26,6 @@ class MedHandler:
         result['mconsume_price'] = row[6]
         result['mconsume_quantity'] = row[7]
         result['mconsume_date'] = row[8]
-
-
         return result
 
     def build_Med_attr(self, mid, mname, mexpdate, msupplier, mbrand, mquantity, mlocation):
