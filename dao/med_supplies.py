@@ -3,8 +3,20 @@ import psycopg2
 
 class MedSuppliesDAO:
 
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s host=127.0.0.1" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
+
+
     def getAllMedSupplies(self):
-        result = "This is a list of Med supplies"
+        cursor = self.conn.cursor()
+        query = "select sid, sorganization, mid, mname, msupply_price, msupply_quantity, msupply_date from suppliers natural inner join medications natural inner join msupplies;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getMedDevById(self, mid):

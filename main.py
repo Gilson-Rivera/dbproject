@@ -65,6 +65,17 @@ def getAllConsumers():
         else:
             return ConsumerHandler().searchConsumers(request.args)
 
+@app.route('/DBApp1/medication_supplies', methods=['GET', 'POST'])
+def getAllMedSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return MedSuppliesHandler().insertMedSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return MedSuppliesHandler().getAllMedSupplies()
+        else:
+            return MedSuppliesHandler().searchMedSupplies(request.args)
+
 @app.route('/DBApp1/requested_supplies', methods=['GET', 'POST'])
 def getAllRequestedSupplies():
     if request.method == 'POST':
@@ -296,17 +307,6 @@ def getAllMed():
         else:
             return MedHandler().searchMed(request.args)
 
-
-@app.route('/DBApp1/med_supplies', methods=['GET', 'POST'])
-def getAllMedSupplies():
-    if request.method == 'POST':
-        print("REQUEST: ", request.json)
-        return MedSuppliesHandler().insertMedSuppliesJson(request.json)
-    else:
-        if not request.args:
-            return MedSuppliesHandler().getAllMedSupplies()
-        else:
-            return MedSuppliesHandler().searchMedSupplies(request.args)
 
 
 if __name__ == '__main__':

@@ -2,13 +2,16 @@ from flask import jsonify
 from dao.med_supplies import MedSuppliesDAO
 
 class MedSuppliesHandler:
-    def build_Med_supplies_dict(self, row):
+    def build_med_supplies_dict(self, row):
         result = {}
-        result['Medid'] = row[0]
-        result['sid'] = row[1]
-        result['Medsupply_price'] = row[2]
-        result['Medsupply_date'] = row[3]
-        result['Medsupply_quantity'] = row[4]
+        result['sid'] = row[0]
+        result['sorganization'] = row[1]
+        result['mid'] = row[2]
+        result['mname'] = row[3]
+        result['msupply_price'] = row[4]
+        result['msupply_quantity'] = row[5]
+        result['msupply_date'] = row[6]
+        return result
 
     def build_Med_attr(self, fuid, stype, Medsupply_price, Medsupply_date, Medsupply_quantity):
         result = {}
@@ -21,8 +24,12 @@ class MedSuppliesHandler:
 
     def getAllMedSupplies(self):
         dao = MedSuppliesDAO()
-        result_list = dao.getAllMedSupplies()
-        return jsonify(MedSupplies=result_list)
+        food_list = dao.getAllMedSupplies()
+        result_list = []
+        for row in food_list:
+            result = self.build_med_supplies_dict(row)
+            result_list.append(result)
+        return jsonify(Medication_Supplies=result_list)
 
     def getMedById(self, mid):
         dao = MedSuppliesDAO()
