@@ -11,7 +11,7 @@ class FoodDAO:
 
     def getAllFood(self):
         cursor = self.conn.cursor()
-        query = "select fid, fname, fexpdate, fnumavailable, fbrand, sorganization, flocation from food natural inner join fsupplier natural inner join suppliers natural inner join flocation;"
+        query = "select fid, fname, fexpdate, fnumavailable, fbrand, sorganization, flocation from food natural inner join fsupplier natural inner join suppliers natural inner join flocation order by fname;"
         cursor.execute(query)
         result = []
         for row in cursor:

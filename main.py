@@ -76,6 +76,17 @@ def getAllMedSupplies():
         else:
             return MedSuppliesHandler().searchMedSupplies(request.args)
 
+@app.route('/DBApp1/food_supplies', methods=['GET', 'POST'])
+def getAllFoodSupplies():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return FoodSuppliesHandler().insertFoodSuppliesJson(request.json)
+    else:
+        if not request.args:
+            return FoodSuppliesHandler().getAllFoodSupplies()
+        else:
+            return FoodSuppliesHandler().searchFoodSupplies(request.args)
+
 @app.route('/DBApp1/requested_supplies', methods=['GET', 'POST'])
 def getAllRequestedSupplies():
     if request.method == 'POST':
@@ -208,18 +219,6 @@ def getAllFuelSupplies():
             return FuelSuppliesHandler().getAllFuelSupplies()
         else:
             return FuelSuppliesHandler().searchFuelSupplies(request.args)
-
-
-@app.route('/DBApp1/food_supplies', methods=['GET', 'POST'])
-def getAllFoodSupplies():
-    if request.method == 'POST':
-        print("REQUEST: ", request.json)
-        return FoodSuppliesHandler().insertFoodSuppliesJson(request.json)
-    else:
-        if not request.args:
-            return FoodSuppliesHandler().getAllFoodSupplies()
-        else:
-            return FoodSuppliesHandler().searchFoodSupplies(request.args)
 
 
 @app.route('/DBApp1/equipment_supplies', methods=['GET', 'POST'])

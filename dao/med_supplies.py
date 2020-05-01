@@ -12,7 +12,7 @@ class MedSuppliesDAO:
 
     def getAllMedSupplies(self):
         cursor = self.conn.cursor()
-        query = "select sid, sorganization, mid, mname, msupply_price, msupply_quantity, msupply_date from suppliers natural inner join medications natural inner join msupplies;"
+        query = "select sid, sorganization, mid, mname, msupply_price, msupply_quantity, msupply_date from suppliers natural inner join medications natural inner join msupplies order by mname;"
         cursor.execute(query)
         result = []
         for row in cursor:

@@ -11,7 +11,7 @@ class MedDAO:
 
     def getAllMedications(self):
         cursor = self.conn.cursor()
-        query = "select mid, mname, mexpdate, mnumavailable, mbrand, sorganization, mlocation, mispill, misliquid from medications natural inner join msupplier natural inner join suppliers natural inner join mlocation;"
+        query = "select mid, mname, mexpdate, mnumavailable, mbrand, sorganization, mlocation, mispill, misliquid from medications natural inner join msupplier natural inner join suppliers natural inner join mlocation order by mname;"
         cursor.execute(query)
         result = []
         for row in cursor:

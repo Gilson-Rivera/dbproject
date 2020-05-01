@@ -4,11 +4,14 @@ from dao.food_supplies import FoodSuppliesDAO
 class FoodSuppliesHandler:
     def build_food_supplies_dict(self, row):
         result = {}
-        result['fid'] = row[0]
-        result['sid'] = row[1]
-        result['foodsupply_price'] = row[2]
-        result['foodsupply_date'] = row[3]
-        result['foodsupply_quantity'] = row[4]
+        result['sid'] = row[0]
+        result['sorganization'] = row[1]
+        result['fid'] = row[2]
+        result['fname'] = row[3]
+        result['foodsupply_price'] = row[4]
+        result['foodsupply_quantity'] = row[5]
+        result['foodsupply_date'] = row[6]
+        return result
 
     def build_food_attr(self, fid, stype, foodsupply_price, foodsupply_date, foodsupply_quantity):
         result = {}
@@ -21,8 +24,12 @@ class FoodSuppliesHandler:
 
     def getAllFoodSupplies(self):
         dao = FoodSuppliesDAO()
-        result_list = dao.getAllFoodSupplies()
-        return jsonify(FoodSupplies=result_list)
+        food_list = dao.getAllFoodSupplies()
+        result_list = []
+        for row in food_list:
+            result = self.build_food_supplies_dict(row)
+            result_list.append(result)
+        return jsonify(Food_Supplies=result_list)
 
 
     def searchFoodSupplies(self, args):

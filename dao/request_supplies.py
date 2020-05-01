@@ -10,7 +10,7 @@ class RequestedSuppliesDAO:
 
     def getAllRequestedSupplies(self):
         cursor = self.conn.cursor()
-        query = "select * from request_supplies;"
+        query = "select * from request_supplies order by supply_type;"
         cursor.execute(query)
         result = []
         for row in cursor:
