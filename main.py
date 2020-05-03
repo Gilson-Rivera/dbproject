@@ -65,16 +65,27 @@ def getAllResources():
         else:
             return ResourcesHandler().searchResources(request.args)
 
-# @app.route('/DBApp1/administrators/<int:aid>', methods=['GET', 'PUT', 'DELETE'])
-# def getAdministratorById(aid):
-#     if request.method == 'GET':
-#         return AdministratorHandler().getAdministratorById(aid)
-#     elif request.method == 'PUT':
-#         return AdministratorHandler().updateAdministrator(aid, request.form)
-#     elif request.method == 'DELETE':
-#         return AdministratorHandler().deleteAdministrator(aid)
-#     else:
-#         return jsonify(Error="Method not allowed."), 405
+@app.route('/DBApp1/resources/<int:rid>', methods=['GET', 'PUT', 'DELETE'])
+def getResourcesById(rid):
+    if request.method == 'GET':
+        return ResourcesHandler().getResourcesById(rid)
+    elif request.method == 'PUT':
+        return ResourcesHandler().updateResources(rid, request.form)
+    elif request.method == 'DELETE':
+        return ResourcesHandler().deleteResources(rid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/resources_consumed/<int:rid>', methods=['GET', 'PUT', 'DELETE'])
+def getResourcesConsumedById(rid):
+    if request.method == 'GET':
+        return ResourcesHandler().getResourcesConsumedById(rid)
+    elif request.method == 'PUT':
+            return ResourcesHandler().updateResources(rid, request.form)
+    elif request.method == 'DELETE':
+        return ResourcesHandler().deleteResources(rid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 
 @app.route('/DBApp1/consumers', methods=['GET', 'POST'])

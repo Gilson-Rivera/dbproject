@@ -22,6 +22,20 @@ class ResourcesHandler:
         result['rlocation'] = row[6]
         return result
 
+    def build_resources_consumed_dict(self, row):
+        result = {}
+        result['cid'] = row[0]
+        result['rid'] = row[1]
+        result['cfirstname'] = row[2]
+        result['clastname'] = row[3]
+        result['rtype'] = row[4]
+        result['rbrand'] = row[5]
+        result['rconsume_price'] = row[6]
+        result['rconsume_quantity'] = row[7]
+        result['rconsume_date'] = row[8]
+        result['rconsume_payment_method'] = row[9]
+        return result
+
 
     def getAllResources(self):
         dao = ResourcesDAO()
@@ -33,12 +47,49 @@ class ResourcesHandler:
         return jsonify(Resources=result_list)
 
     def searchResources(self, args):
-        pass
+        type = args.get("type")
+        status = args.get("status")  # reserved or purchased
+        location = args.get("location")
+        dao = ResourcesDAO()
+        resources_list = []
+        result_list = []
+        if (len(args) == 1) and type:
+            resources_list = dao.getResourcesByType(type)
+            for row in resources_list:
+                result = self.build_resources_dict(row)
+                result_list.append(result)
+        elif (len(args) == 1) and status:
+            resources_list = dao.getResourcesByStatus(status)
+            for row in resources_list:
+                result = self.build_resources_consumed_dict(row)  # also need to add consumer's information
+                result_list.append(result)
+        elif (len(args) == 1) and location:
+            resources_list = dao.getResourcesByLocation(location)
+            for row in resources_list:
+                result = self.build_resources_dict(row)
+                result_list.append(result)
+        else:
+            return jsonify(Error="Malformed query string"), 400
+
+        return jsonify(Resources=result_list)
 
     def getResourcesById(self, rid):
         dao = ResourcesDAO()
-        result = dao.getResourcesById(rid)
-        return jsonify(Resources=result)
+        row = dao.getResourcesById(rid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            resource = self.build_resources_dict(row)
+            return jsonify(Resource=resource)
+
+    def getResourcesConsumedById(self, cid):
+        dao = ResourcesDAO()
+        resources_list = dao.getResourcesConsumedById(cid)
+        result_list = []
+        for row in resources_list:
+            result = self.build_resources_consumed_dict(row)
+            result_list.append(result)
+        return jsonify(Resources=result_list)
 
     def getResourcesByType(self, rtype):
         dao = ResourcesDAO()
@@ -83,6 +134,7 @@ class ResourcesHandler:
             return jsonify(Resources=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
+
 
 
 class FoodHandler(ResourcesHandler):

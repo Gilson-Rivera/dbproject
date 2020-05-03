@@ -7,9 +7,9 @@ class RequestedSuppliesHandler:
         result = {}
         result['aid'] = row[0]
         result['sid'] = row[1]
-        result['supply_type'] = row[2]
-        result['supply_brand'] = row[3]
-        result['supply_quantity'] = row[4]
+        result['request_type'] = row[2]
+        result['request_brand'] = row[3]
+        result['request_quantity'] = row[4]
         return result
 
     # def build_consumer_attributes(self, cid, cfirstname, clastname, clocation, cage, cphone):

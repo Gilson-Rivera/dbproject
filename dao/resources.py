@@ -22,11 +22,49 @@ class ResourcesDAO:
         return result
 
     def getResourcesById(self, rid):
-            result = "This is the resource with given id"
-            return result
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rid = %s;"
+        cursor.execute(query, (rid,))
+        result = cursor.fetchone()
+        return result
 
-    def getResourcesByType(self, rtype):
-        result = "List of resources of a specific type"
+    def getResourcesByType(self, type):
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rtype = %s;"
+        cursor.execute(query, (type,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourcesByStatus(self, status):
+        cursor = self.conn.cursor()
+        if(status == 'reserved'):
+            query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where rconsume_price = 0;"
+        elif (status == 'purchased'):
+            query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where rconsume_price > 0;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourcesConsumedById(self, cid):
+        cursor = self.conn.cursor()
+        query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where cid = 5;"
+        cursor.execute(query, (cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourcesByLocation(self, location):
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rlocation = %s;"
+        cursor.execute(query, (location,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getResourcesByBrand(self, rbrand):
@@ -45,13 +83,11 @@ class ResourcesDAO:
         result = "List of resources of a specific supplier"
         return result
 
-    def getResourcesByLocation(self, rlocation):
-        result = "List of locations for a specific resource"
-        return result
 
     def insert(self, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation):
         result = "Supplier inserted"
         return result
+
 
 
 class FoodDAO(ResourcesDAO):
