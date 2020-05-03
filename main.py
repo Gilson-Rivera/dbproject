@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
+from handler.food import FoodHandler
+from handler.request_supplies import RequestedSuppliesHandler
 from handler.consumers import ConsumerHandler
 from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
 from handler.fuel import FuelHandler
-from handler.food import FoodHandler
+from handler.resources import ResourcesHandler
 from handler.equipment import EquipHandler
 from handler.medical_devices import MedDevHandler
 from handler.fuel_supplies import FuelSuppliesHandler
@@ -12,7 +14,6 @@ from handler.esupplies import ESuppliesHandler
 from handler.mdsupplies import MDSuppliesHandler
 from handler.medication import MedHandler
 from handler.med_supplies import MedSuppliesHandler
-from handler.request_supplies import RequestedSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
 # services on other ports on this machine or on other
@@ -52,6 +53,17 @@ def getAdministratorById(aid):
         return AdministratorHandler().deleteAdministrator(aid)
     else:
         return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/resources', methods=['GET', 'POST'])
+def getAllResources():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ResourcesHandler().insertResourceJson(request.json)
+    else:
+        if not request.args:
+            return ResourcesHandler().getAllResources()
+        else:
+            return ResourcesHandler().searchResources(request.args)
 
 
 @app.route('/DBApp1/consumers', methods=['GET', 'POST'])

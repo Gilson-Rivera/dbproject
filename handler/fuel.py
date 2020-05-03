@@ -7,7 +7,7 @@ class FuelHandler:
         result['fuid'] = row[0]
         result['ftype'] = row[1]
         result['fsupplier'] = row[2]
-        result['fquantity'] = row[3]
+        result['fnumavailable'] = row[3]
         result['flocation'] = row[4]
 
     def build_fuel_attr(self, fuid, ftype, fsupplier, fquantity, flocation):
@@ -36,7 +36,7 @@ class FuelHandler:
             location = args.get("location")
             if location:
                 dao = FuelDAO()
-                fuel_list = dao.getFuelByLocation()
+                fuel_list = dao.getFuelByLocation(location)
                 # result_list = []
                 # for row in fuel_list:
                 #     result = self.build_fuel_dict(row)
