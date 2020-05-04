@@ -112,46 +112,96 @@ class ResourcesDAO:
 
 class FoodDAO(ResourcesDAO):
     def getAllFood(self):
-        result = "This means the refactor is working!"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, fid, fname, fexpdate from resources natural inner join rsupplier natural inner join food natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query,)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getFoodId(self, fid):
-        result = "This is the resource with given id"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, fid, fname, fexpdate from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where fid = %s;"
+        cursor.execute(query, (fid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getFoodByName(self, fname):
-        result = "List of resources of a specific type"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, fid, fname, fexpdate from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where fname = %s;"
+        cursor.execute(query, (fname,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getFoodByExpDate(self, fexpdate):
-        result = "List of resources of a specific brand"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, fid, fname, fexpdate from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where fexpdate = %s;"
+        cursor.execute(query, (fexpdate,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 class EquipmentDAO(ResourcesDAO):
     def getAllEquipment(self):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, eid from resources natural inner join rsupplier natural inner join equipment natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query,)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getEquipmentByID(self, eid):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, eid from resources natural inner join rsupplier natural inner join equipment natural inner join suppliers natural inner join rlocation where eid = %s;"
+        cursor.execute(query, (eid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 class FuelDAO(ResourcesDAO):
     def getAllFuel(self):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, fid from resources natural inner join rsupplier natural inner join fuel natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query,)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getFuelByID(self, fuid):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, fid from resources natural inner join rsupplier natural inner join fuel natural inner join suppliers natural inner join rlocation where fuid = %s;"
+        cursor.execute(query,(fuid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 class MedDevDAO(ResourcesDAO):
     def getAllMedicalDevices(self):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mdid from resources natural inner join rsupplier natural inner join medical_devices natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getMedicalDevicesByID(self, mdid):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mdid from resources natural inner join rsupplier natural inner join medical_devices natural inner join suppliers natural inner join rlocation where mdid = %s;"
+        cursor.execute(query, (mdid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 class MedicationDAO(ResourcesDAO):
