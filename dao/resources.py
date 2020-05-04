@@ -243,38 +243,83 @@ class MedicationDAO(ResourcesDAO):
 
 class WaterDAO(ResourcesDAO):
     def getAllWater(self):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, wid, wvolume, wexpdate from resources natural inner join rsupplier natural inner join water natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getWaterByID(self, wid):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, wid, wvolume, wexpdate from resources natural inner join rsupplier natural inner join water natural inner join suppliers natural inner join rlocation where wid = %s;"
+        cursor.execute(query, (wid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getWaterByVolume(self, wvolume):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, wid, wvolume, wexpdate from resources natural inner join rsupplier natural inner join water natural inner join suppliers natural inner join rlocation where wvolume = %s;"
+        cursor.execute(query, (wvolume,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getWaterByExpDate(self, wexpdate):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, wid, wvolume, wexpdate from resources natural inner join rsupplier natural inner join water natural inner join suppliers natural inner join rlocation where wexpdate = %s;"
+        cursor.execute(query, (wexpdate,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 class ClothingDAO(ResourcesDAO):
     def getAllClothing(self):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, cid, cpiece, csex, csize from resources natural inner join rsupplier natural inner join clothing natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getClothingByID(self, cid):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, cid, cpiece, csex, csize from resources natural inner join rsupplier natural inner join clothing natural inner join suppliers natural inner join rlocation where cid = %s;"
+        cursor.execute(query, (cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getClothingByPiece(self, cpiece):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, cid, cpiece, csex, csize from resources natural inner join rsupplier natural inner join clothing natural inner join suppliers natural inner join rlocation where cpiece = %s;"
+        cursor.execute(query, (cpiece,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getClothingBySex(self, csex):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, cid, cpiece, csex, csize from resources natural inner join rsupplier natural inner join clothing natural inner join suppliers natural inner join rlocation where csex = %s;"
+        cursor.execute(query, (csex,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getClothingBySize(self, csize):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, cid, cpiece, csex, csize from resources natural inner join rsupplier natural inner join clothing natural inner join suppliers natural inner join rlocation where csize = %s;"
+        cursor.execute(query, (csize,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
