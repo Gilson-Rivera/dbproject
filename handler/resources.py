@@ -1,11 +1,11 @@
 # resources handler
 
 from flask import jsonify
-from dao.resources import ResourcesDAO
+from dao.resources import ResourcesDAO, MedicationDAO
 from dao.resources import FoodDAO
 from dao.resources import EquipmentDAO
 from dao.resources import MedDevDAO
-from dao.resources import MedDAO
+from dao.resources import MedicationDAO
 from dao.resources import FuelDAO
 from dao.resources import ClothingDAO
 from dao.resources import WaterDAO
@@ -574,7 +574,7 @@ class MedDevHandler(ResourcesHandler):
         else:
             return jsonify(dao.getMedDevByID(mdid)), 201
 
-class MedHandler(ResourcesHandler):
+class MedicationHandler(ResourcesHandler):
     def build_Med_dict(self, row):
         result = {}
         result['rid'] = row[0]
@@ -587,8 +587,9 @@ class MedHandler(ResourcesHandler):
         result['mid'] = row[7]
         result['mexpdate'] = row[8]
         result['mclass'] = row[9]
+        return result
 
-    def build_Med_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, mid, mexpdat, mclass):
+    def build_Med_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, mid, mexpdate, mclass):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -598,22 +599,22 @@ class MedHandler(ResourcesHandler):
         result['rsupplier'] = rsupplier
         result['rlocation'] = rlocation
         result['mid'] = mid
-        result['mexpdate']
-        result['mclass']
+        result['mexpdate'] = mexpdate
+        result['mclass'] = mclass
         return result
 
-    def getAllMed(self):
-        dao = MedDAO()
-        Med_list = dao.getAllMed()
+    def getAllMedication(self):
+        dao = MedicationDAO()
+        medication_list = dao.getAllMedication()
         result_list = []
-        for row in Med_list:
+        for row in medication_list:
             result = self.build_Med_dict(row)
             result_list.append(result)
-        return jsonify(Med=Med_list)
+        return jsonify(Medication=medication_list)
 
     def getMedByID(self, mid):
-        dao = MedDAO()
-        result = dao.getMedByID(mid)
+        dao = MedicationDAO()
+        result = dao.getMedicationByID(mid)
         # if not row:
         #     return jsonify(Error = "Med Not Found"), 404
         # else:
@@ -627,7 +628,7 @@ class MedHandler(ResourcesHandler):
         else:
             location = args.get("location")
             if location:
-                dao = MedDAO()
+                dao = MedicationDAO()
                 Med_list = dao.getMedByLocation(location)
                 # result_list = []
                 # for row in Med_list:
@@ -651,7 +652,7 @@ class MedHandler(ResourcesHandler):
             mquantity = form['mquantity']
             mlocation = form['mlocation']
             if mname and mexpdate and msupplier and mbrand and mquantity and mlocation:
-                dao = MedDAO()
+                dao = MedicationDAO()
                 result = dao.insert(mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
                 return jsonify(Med=result), 201
             else:
@@ -666,19 +667,19 @@ class MedHandler(ResourcesHandler):
         mquantity = json['mquantity']
         mlocation = json['mlocation']
         if mname and mexpdate and msupplier and mbrand and mquantity and mlocation:
-            dao = MedDAO()
+            dao = MedicationDAO()
             result = dao.insert(mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
             return jsonify(Med=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deleteMed(self, mid):
-        dao = MedDAO()
+        dao = MedicationDAO()
         result = dao.delete(mid)
         return jsonify(DeleteStatus = result), 200
 
     def updateMed(self, mid, form):
-        dao = MedDAO()
+        dao = MedicationDAO()
         if not dao.getMedByID(mid):
             return jsonify(Error="Medication not found."), 404
         else:

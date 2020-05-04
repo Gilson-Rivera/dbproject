@@ -4,15 +4,16 @@ from dao.medication import MedDAO
 class MedHandler:
     def build_medication_dict(self, row):
         result = {}
-        result['mid'] = row[0]
-        result['mname'] = row[1]
-        result['mexpdate'] = row[2]
-        result['mnumavailable'] = row[3]
-        result['mbrand'] = row[4]
-        result['msupplier'] = row[5]
-        result['mlocation'] = row[6]
-        result['mispill'] = row[7]
-        result['misliquid'] = row[8]
+        result['rid'] = row[0]
+        result['rtype'] = row[1]
+        result['rbrand'] = row[2]
+        result['rnumavailable'] = row[3]
+        result['rprice'] = row[4]
+        result['rsupplier'] = row[5]
+        result['rlocation'] = row[6]
+        result['mid'] = row[7]
+        result['mexpdate'] = row[8]
+        result['mclass'] = row[9]
         return result
 
     def build_medication_consumed_dict(self, row):
@@ -71,11 +72,11 @@ class MedHandler:
             for row in medications_list:
                 result = self.build_medication_dict(row)
                 result_list.append(result)
-        elif (len(args) == 1) and status:
-            medications_list = dao.getMedicationByStatus(status)
-            for row in medications_list:
-                result = self.build_medication_consumed_dict(row) #also need to add consumer's information
-                result_list.append(result)
+        # elif (len(args) == 1) and status:
+        #     medications_list = dao.getMedicationByStatus(status)
+        #     for row in medications_list:
+        #         result = self.build_medication_consumed_dict(row) #also need to add consumer's information
+        #         result_list.append(result)
         elif (len(args) == 1) and location:
             medications_list = dao.getMedicationByLocation(location)
             for row in medications_list:

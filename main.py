@@ -5,7 +5,7 @@ from handler.consumers import ConsumerHandler
 from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
 from handler.fuel import FuelHandler
-from handler.resources import ResourcesHandler
+from handler.resources import ResourcesHandler, MedicationHandler
 from handler.equipment import EquipHandler
 from handler.medical_devices import MedDevHandler
 from handler.fuel_supplies import FuelSuppliesHandler

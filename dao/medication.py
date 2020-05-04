@@ -11,7 +11,7 @@ class MedDAO:
 
     def getAllMedications(self):
         cursor = self.conn.cursor()
-        query = "select mid, mname, mexpdate, mnumavailable, mbrand, sorganization, mlocation, mispill, misliquid from medications natural inner join msupplier natural inner join suppliers natural inner join mlocation order by mname;"
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation order by rtype;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,28 +20,28 @@ class MedDAO:
 
     def getMedicationByType(self, type):
         cursor = self.conn.cursor()
-        query = "select mid, mname, mexpdate, mnumavailable, mbrand, sorganization, mlocation, mispill, misliquid from medications natural inner join msupplier natural inner join suppliers natural inner join mlocation where mname = %s;"
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where rtype = %s;"
         cursor.execute(query, (type,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getMedicationByStatus(self, status):
-        cursor = self.conn.cursor()
-        if(status == 'reserved'):
-            query = "select cid, mid, cfirstname, clastname, mname, mbrand, mconsume_price, mconsume_quantity, mconsume_date from consumers natural inner join medications natural inner join mconsumes where mconsume_price = 0;"
-        elif (status == 'purchased'):
-            query = "select cid, mid, cfirstname, clastname, mname, mbrand, mconsume_price, mconsume_quantity, mconsume_date from consumers natural inner join medications natural inner join mconsumes where mconsume_price > 0;"
-        cursor.execute(query)
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
+    # def getMedicationByStatus(self, status):
+    #     cursor = self.conn.cursor()
+    #     if(status == 'reserved'):
+    #         query = "select cid, mid, cfirstname, clastname, mname, mbrand, mconsume_price, mconsume_quantity, mconsume_date from consumers natural inner join medications natural inner join mconsumes where mconsume_price = 0;"
+    #     elif (status == 'purchased'):
+    #         query = "select cid, mid, cfirstname, clastname, mname, mbrand, mconsume_price, mconsume_quantity, mconsume_date from consumers natural inner join medications natural inner join mconsumes where mconsume_price > 0;"
+    #     cursor.execute(query)
+    #     result = []
+    #     for row in cursor:
+    #         result.append(row)
+    #     return result
 
     def getMedicationByLocation(self, location):
         cursor = self.conn.cursor()
-        query = "select mid, mname, mexpdate, mnumavailable, mbrand, sorganization, mlocation, mispill, misliquid from medications natural inner join msupplier natural inner join suppliers natural inner join mlocation where mlocation = %s;"
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where rlocation = %s;"
         cursor.execute(query, (location,))
         result = []
         for row in cursor:

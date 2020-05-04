@@ -134,9 +134,14 @@ class MedDevDAO(ResourcesDAO):
         result = "This is a list of resources"
         return result
 
-class MedDAO(ResourcesDAO):
+class MedicationDAO(ResourcesDAO):
     def getAllMedication(self):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation order by rtype;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getMedicationByID(self, mid):
