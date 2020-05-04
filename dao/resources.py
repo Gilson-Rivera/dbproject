@@ -30,7 +30,7 @@ class ResourcesDAO:
 
     def getResourcesByType(self, type):
         cursor = self.conn.cursor()
-        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rtype = %s;"
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rtype = %s order by rtype;"
         cursor.execute(query, (type,))
         result = []
         for row in cursor:
@@ -51,7 +51,7 @@ class ResourcesDAO:
 
     def getResourcesConsumedById(self, cid):
         cursor = self.conn.cursor()
-        query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where cid = 5;"
+        query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where cid = %s;"
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:

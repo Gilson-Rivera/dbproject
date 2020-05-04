@@ -76,14 +76,14 @@ def getResourcesById(rid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/DBApp1/resources_consumed/<int:rid>', methods=['GET', 'PUT', 'DELETE'])
-def getResourcesConsumedById(rid):
+@app.route('/DBApp1/resources_consumed/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
+def getResourcesConsumedById(cid):
     if request.method == 'GET':
-        return ResourcesHandler().getResourcesConsumedById(rid)
+        return ResourcesHandler().getResourcesConsumedById(cid)
     elif request.method == 'PUT':
-            return ResourcesHandler().updateResources(rid, request.form)
+            return ResourcesHandler().updateResources(cid, request.form)
     elif request.method == 'DELETE':
-        return ResourcesHandler().deleteResources(rid)
+        return ResourcesHandler().deleteResources(cid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -129,8 +129,8 @@ def getAllRequestedSupplies():
     else:
         if not request.args:
             return RequestedSuppliesHandler().getAllRequestedSupplies()
-        # else:
-        #     return RequestedSuppliesHandler().searchRequestedSupplies(request.args)
+        else:
+            return RequestedSuppliesHandler().searchRequestedSupplies(request.args)
 
 @app.route('/DBApp1/medications', methods=['GET', 'POST'])
 def getAllMedications():

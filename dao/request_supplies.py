@@ -17,6 +17,15 @@ class RequestedSuppliesDAO:
             result.append(row)
         return result
 
+    def getRequestedSuppliesByType(self, type):
+        cursor = self.conn.cursor()
+        query = "select aid, sid, request_type, request_quantity, request_brand from request_supplies where request_type = %s;"
+        cursor.execute(query, (type,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     # def searchConsumerBeta(self):
     #     result = "This is a searched consumer"
     #     return result
@@ -52,6 +61,7 @@ class RequestedSuppliesDAO:
     #     cursor.execute(query, (cid, cfirstname, clastname, clocation, cage, cphone,))
     #     self.conn.commit()
     #     return cid
+
 
 
 

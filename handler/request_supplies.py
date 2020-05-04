@@ -8,8 +8,8 @@ class RequestedSuppliesHandler:
         result['aid'] = row[0]
         result['sid'] = row[1]
         result['request_type'] = row[2]
-        result['request_brand'] = row[3]
-        result['request_quantity'] = row[4]
+        result['request_quantity'] = row[3]
+        result['request_brand'] = row[4]
         return result
 
     # def build_consumer_attributes(self, cid, cfirstname, clastname, clocation, cage, cphone):
@@ -27,6 +27,20 @@ class RequestedSuppliesHandler:
         request_supplies_list = dao.getAllRequestedSupplies()
         result_list = []
         for row in request_supplies_list:
+            result = self.build_request_supplies_dict(row)
+            result_list.append(result)
+        return jsonify(RequestedSupplies=result_list)
+
+    def searchRequestedSupplies(self, args):
+        type = args.get("type")
+        dao = RequestedSuppliesDAO()
+        requested_supplies_list = []
+        if (len(args) == 1) and type:
+            requested_supplies_list = dao.getRequestedSuppliesByType(type)
+        else:
+            return jsonify(Error="Malformed query string"), 400
+        result_list = []
+        for row in requested_supplies_list:
             result = self.build_request_supplies_dict(row)
             result_list.append(result)
         return jsonify(RequestedSupplies=result_list)
@@ -101,6 +115,7 @@ class RequestedSuppliesHandler:
     #         return jsonify(Error = "Consumer not found."), 404
     #     else:
     #         return jsonify(dao.getConsumerById(cid)), 201
+
 
 
 

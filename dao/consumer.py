@@ -23,7 +23,7 @@ class ConsumersDAO:
 
     def getConsumerById(self, cid):
         cursor = self.conn.cursor()
-        query = "select * from consumers natural inner join cphone where cid=%s;"
+        query = "select cid, cfirstname, clastname, clocation, cage, cphone.phone from consumers natural inner join cphone where cid = %s;"
         cursor.execute(query, (cid,))
         result = cursor.fetchone()
         return result
