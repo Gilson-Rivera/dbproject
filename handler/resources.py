@@ -362,7 +362,7 @@ class FuelHandler(ResourcesHandler):
             return jsonify(dao.getFuelByID(fuid)), 201
 
 
-class EquipmentHanlder(ResourcesHandler):
+class EquipmentHandler(ResourcesHandler):
     def build_Equipment_dict(self, row):
         result = {}
         result['rid'] = row[0]
@@ -794,7 +794,7 @@ class WaterHandler(ResourcesHandler):
         else:
             return jsonify(dao.getWaterByID(fid)), 201
 
-class ClothingHandlers(ResourcesHandler):
+class ClothingHandler(ResourcesHandler):
     def build_Clothing_dict(self, row):
         result = {}
         result['rid'] = row[0]

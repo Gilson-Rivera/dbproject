@@ -4,15 +4,15 @@ from handler.request_supplies import RequestedSuppliesHandler
 from handler.consumers import ConsumerHandler
 from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
-from handler.fuel import FuelHandler
-from handler.resources import ResourcesHandler, MedicationHandler
-from handler.equipment import EquipHandler
-from handler.medical_devices import MedDevHandler
+# from handler.fuel import FuelHandler
+from handler.resources import ResourcesHandler, MedicationHandler, FuelHandler, EquipmentHandler, MedDevHandler, WaterHandler, ClothingHandler
+# from handler.equipment import EquipmentHandler
+# from handler.medical_devices import MedDevHandler
 from handler.fuel_supplies import FuelSuppliesHandler
 from handler.food_supplies import FoodSuppliesHandler
 from handler.esupplies import ESuppliesHandler
 from handler.mdsupplies import MDSuppliesHandler
-from handler.medication import MedHandler
+# from handler.medication import MedHandler
 from handler.med_supplies import MedSuppliesHandler
 
 # Import Cross-Origin Resource Sharing to enable
@@ -136,12 +136,12 @@ def getAllRequestedSupplies():
 def getAllMedications():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        return MedHandler().insertMedicationJson(request.json)
+        return MedicationHandler().insertMedicationJson(request.json)
     else:
         if not request.args:
-            return MedHandler().getAllMedications()
+            return MedicationHandler().getAllMedications()
         else:
-            return MedHandler().searchMedications(request.args)
+            return MedicationHandler().searchMedications(request.args)
 
 @app.route('/DBApp1/food', methods=['GET', 'POST'])
 def getAllFood():
@@ -170,11 +170,11 @@ def getConsumerById(cid):
 @app.route('/DBApp1/medications/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
 def getMedicationById(mid):
     if request.method == 'GET':
-        return MedHandler().getMedicationByID(mid)
+        return MedicationHandler().getMedicationByID(mid)
     elif request.method == 'PUT':
-        return MedHandler().updateMed(mid, request.form)
+        return MedicationHandler().updateMed(mid, request.form)
     elif request.method == 'DELETE':
-        return MedHandler().deleteMed(mid)
+        return MedicationHandler().deleteMed(mid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -283,23 +283,23 @@ def getAllMDSupplies():
 def getAllEquipment():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        return EquipHandler().insertEquipmentJson(request.json)
+        return EquipmentHandler().insertEquipmentJson(request.json)
     else:
         if not request.args:
-            return EquipHandler().getAllEquipment()
+            return EquipmentHandler().getAllEquipment()
         else:
             # change to searchEquipment() once implemented in handlers
-            return EquipHandler().searchEquipment(request.args)
+            return EquipmentHandler().searchEquipment(request.args)
 
 
 @app.route('/DBApp1/equipment/<int:eid>', methods=['GET', 'PUT', 'DELETE'])
 def getEquipmentById(eid):
     if request.method == 'GET':
-        return EquipHandler().getEquipmentByID(eid)
+        return EquipmentHandler().getEquipmentByID(eid)
     elif request.method == 'PUT':
-        return EquipHandler().updateEquipment(eid, request.form)
+        return EquipmentHandler().updateEquipment(eid, request.form)
     elif request.method == 'DELETE':
-        return EquipHandler().deleteEquipment(eid)
+        return EquipmentHandler().deleteEquipment(eid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -333,13 +333,59 @@ def getMedDevById(mdid):
 def getAllMed():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        return MedHandler().insertMedJson(request.json)
+        return MedicationHandler().insertMedJson(request.json)
     else:
         if not request.args:
-            return MedHandler().getAllMed()
+            return MedicationHandler().getAllMed()
         else:
-            return MedHandler().searchMed(request.args)
+            return MedicationHandler().searchMed(request.args)
 
+
+@app.route('/DBApp1/water', methods=['GET', 'POST'])
+def getAllMedDev():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return WaterHandler().insertWaterJson(request.json)
+    else:
+        if not request.args:
+            return WaterHandler().getAllWater()
+        else:
+            return WaterHandler().searchWater(request.args)
+
+
+@app.route('/DBApp1/water/<int:wid>', methods=['GET', 'PUT', 'DELETE'])
+def getMedDevById(wid):
+    if request.method == 'GET':
+        return WaterHandler().getWaterByID(wid)
+    elif request.method == 'PUT':
+        return WaterHandler().updateWater(wid, request.form)
+    elif request.method == 'DELETE':
+        return WaterHandler().deleteWater(wid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/clothing', methods=['GET', 'POST'])
+def getAllMedDev():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ClothingHandler().insertClothingJson(request.json)
+    else:
+        if not request.args:
+            return ClothingHandler().getAllClothing()
+        else:
+            return ClothingHandler().searchClothing(request.args)
+
+
+@app.route('/DBApp1/clothing/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
+def getMedDevById(cid):
+    if request.method == 'GET':
+        return ClothingHandler().getClothingByID(cid)
+    elif request.method == 'PUT':
+        return ClothingHandler().updateClothing(cid, request.form)
+    elif request.method == 'DELETE':
+        return ClothingHandler().deleteClothing(cid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 
 if __name__ == '__main__':
