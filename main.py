@@ -342,7 +342,7 @@ def getAllMed():
 
 
 @app.route('/DBApp1/water', methods=['GET', 'POST'])
-def getAllMedDev():
+def getAllWater():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
         return WaterHandler().insertWaterJson(request.json)
@@ -354,7 +354,7 @@ def getAllMedDev():
 
 
 @app.route('/DBApp1/water/<int:wid>', methods=['GET', 'PUT', 'DELETE'])
-def getMedDevById(wid):
+def getWaterById(wid):
     if request.method == 'GET':
         return WaterHandler().getWaterByID(wid)
     elif request.method == 'PUT':
@@ -365,7 +365,7 @@ def getMedDevById(wid):
         return jsonify(Error="Method not allowed."), 405
 
 @app.route('/DBApp1/clothing', methods=['GET', 'POST'])
-def getAllMedDev():
+def getAllClothing():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
         return ClothingHandler().insertClothingJson(request.json)
@@ -377,7 +377,7 @@ def getAllMedDev():
 
 
 @app.route('/DBApp1/clothing/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
-def getMedDevById(cid):
+def getClothingById(cid):
     if request.method == 'GET':
         return ClothingHandler().getClothingByID(cid)
     elif request.method == 'PUT':
