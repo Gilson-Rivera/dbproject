@@ -68,19 +68,39 @@ class ResourcesDAO:
         return result
 
     def getResourcesByBrand(self, rbrand):
-        result = "List of resources of a specific brand"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rbrand = %s;"
+        cursor.execute(query, (rbrand,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getResourcesByNumAvailable(self, rnumavailable):
-        result = "Number of available resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rnumavailable = %s;"
+        cursor.execute(query, (rnumavailable,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getResourcesByPrice(self, rprice):
-        result = "List of resources of specified price"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rprice = %s;"
+        cursor.execute(query, (rprice,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getResourcesBySupplier(self, rsupplier):
-        result = "List of resources of a specific supplier"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation from resources natural inner join rsupplier natural inner join suppliers natural inner join rlocation where rsupplier = %s;"
+        cursor.execute(query, (rsupplier,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 
@@ -145,15 +165,30 @@ class MedicationDAO(ResourcesDAO):
         return result
 
     def getMedicationByID(self, mid):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where mid = %s;"
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getMedicationByExpDate(self, mexpdate):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where mid = %s;"
+        cursor.execute(query, (mexpdate,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getMedicationByClass(self, mclass):
-        result = "This is a list of resources"
+        cursor = self.conn.cursor()
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where mclass = %s;"
+        cursor.execute(query, (mclass,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
 class WaterDAO(ResourcesDAO):
