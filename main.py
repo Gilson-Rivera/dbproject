@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
-from handler.food import FoodHandler
+# from handler.food import FoodHandler
 from handler.request_supplies import RequestedSuppliesHandler
 from handler.consumers import ConsumerHandler
 from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
 # from handler.fuel import FuelHandler
-from handler.resources import ResourcesHandler, MedicationHandler, FuelHandler, EquipmentHandler, MedDevHandler, WaterHandler, ClothingHandler
+from handler.resources import ResourcesHandler, MedicationHandler, FuelHandler, EquipmentHandler, MedDevHandler, WaterHandler, ClothingHandler, FoodHandler
 # from handler.equipment import EquipmentHandler
 # from handler.medical_devices import MedDevHandler
 from handler.fuel_supplies import FuelSuppliesHandler
