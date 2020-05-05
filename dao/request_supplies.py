@@ -17,6 +17,15 @@ class RequestedSuppliesDAO:
             result.append(row)
         return result
 
+    def getRequestedSuppliesByID(self, aid, sid):
+        cursor = self.conn.cursor()
+        query = "select aid, sid, request_type, request_quantity, request_brand from request_supplies where sid = %s and aid = %s;"
+        cursor.execute(query, (aid, sid))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getRequestedSuppliesByType(self, type):
         cursor = self.conn.cursor()
         query = "select aid, sid, request_type, request_quantity, request_brand from request_supplies where request_type = %s;"

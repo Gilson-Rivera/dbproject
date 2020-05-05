@@ -387,6 +387,16 @@ def getClothingById(cid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/DBApp1/requested_supplies/<int:aid>/<int:sid>', methods=['GET', 'PUT', 'DELETE'])
+def getRequestedSuppliesById(sid, aid):
+    if request.method == 'GET':
+        return RequestedSuppliesHandler().getRequestedSuppliesByID(sid, aid)
+    elif request.method == 'PUT':
+        return RequestedSuppliesHandler().updateRequestedSupplies(aid, sid, request.form)
+    elif request.method == 'DELETE':
+        return RequestedSuppliesHandler().deleteRequestedSupplies(aid, sid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 if __name__ == '__main__':
     app.run()
