@@ -11,7 +11,7 @@ class ClothingHandler:
         result['rprice'] = row[4]
         result['rsupplier'] = row[5]
         result['rlocation'] = row[6]
-        result['clothes_id'] = row[7]
+        result['cl_id'] = row[7]
         result['cpiece'] = row[8]
         result['csex'] = row[9]
 	result['csize'] = row[10]
@@ -20,7 +20,7 @@ class ClothingHandler:
     def build_clothing_consumed_dict(self, row):
         result = {}
         result['cid'] = row[0]
-        result['clothes_id'] = row[1]
+        result['cl_id'] = row[1]
         result['cfirstname'] = row[2]
 	result['clastname'] = row[3]
         result['cpiece'] = row[4]
@@ -41,9 +41,9 @@ class ClothingHandler:
             result_list.append(result)
         return jsonify(Clothing=result_list)
 
-    def getClothingByID(self, clothing_id):
+    def getClothingByID(self, cl_id):
         dao = ClothingDAO()
-        row = dao.getClothingByID(clothing_id)
+        row = dao.getClothingByID(cl_id)
         if not row:
             return jsonify(Error="Part Not Found"), 404
         else:
@@ -60,17 +60,17 @@ class ClothingHandler:
             return jsonify(Error = "Malformed post request"), 400
         else:
             
-            cname = form['cname']
-            cbrand = form['cbrand']
-	    cnumavailable = form['cnumavailable']
-	    cprice = form['cprice']
-            csupplier = form['csupplier']
-            cquantity = form['cquantity']
-            clocation = form['clocation']
+            cl_name = form['cl_name']
+            cl_brand = form['cl_brand']
+	    cl_numavailable = form['cl_numavailable']
+	    cl_price = form['cl_price']
+            cl_supplier = form['cl_supplier']
+            cl_quantity = form['cl_quantity']
+            cl_location = form['cl_location']
 	    cpiece = form['cpiece']
 	    csex = form['csex']
 	    csize = form['csize']
-            if cname and cbrand and cnumavailable and cprice and csupplier and cquantity and clocation and cpiece and csex and csize:
+            if cl_name and cl_brand and cl_numavailable and cl_price and cl_supplier and cl_quantity and cl_location and cpiece and csex and csize:
                 dao = ClothingDAO()
                 result = dao.insert(cname, cbrand, cnumavailable, cprice, csupplier, cquantity, clocation, cpiece, csex, csize)
                 return jsonify(Clothing=result), 201
@@ -78,32 +78,32 @@ class ClothingHandler:
 		return jsonify(Error="Unexpected attributes in post request"),$
 
     def insertClothingJson(self, json):
-        cname = json['cname']
-        cbrand = json['cbrand']
-	cnumavailable = json['cnumavailable']
-	cprice = json['cprice']
-        csupplier = json['csupplier']
-        cquantity = json['cquantity']
-        clocation = json['clocation']
+        cl_name = json['cl_name']
+        cl_brand = json['cl_brand']
+	cl_numavailable = json['cl_numavailable']
+	cl_price = json['cl_price']
+        cl_supplier = json['cl_supplier']
+        cl_quantity = json['cl_quantity']
+        cl_location = json['cl_location']
 	cpiece = json['cpiece']
 	csex = json['csex']
 	csize = json['csize']
-        if cname and cbrand and cnumavailable and cprice and csupplier and cquantity and clocation and cpiece and csex and csize:
+        if cl_name and cl_brand and cl_numavailable and cl_price and cl_supplier and cl_quantity and cl_location and cpiece and csex and csize:
             dao = ClothingDAO()
-	    result = dao.insert(cname, cbrand, cnumavailable, cprice, csupplier, cquantity, clocation, cpiece, csex, csize)
+	    result = dao.insert(cl_name, cl_brand, cl_numavailable, cl_price, cl_supplier, cl_quantity, cl_location, cpiece, csex, csize)
             return jsonify(Clothing=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def deleteClothing(self, clothing_id):
+    def deleteClothing(self, cl_id):
         dao = ClothingDAO()
-        result = dao.delete(clothing_id)
+        result = dao.delete(cl_id)
         return jsonify(DeleteStatus = result), 200
 
-    def updateMed(self, clothing_id, form):
+    def updateMed(self, cl_id, form):
         dao = ClothingDAO()
-	if not dao.getClothingByID(clothing_id):
+	if not dao.getClothingByID(cl_id):
             return jsonify(Error="Medication not found."), 404
         else:
-            return jsonify(dao.getClothingByID(mid)), 201
+            return jsonify(dao.getClothingByID(cl_id)), 201
 
