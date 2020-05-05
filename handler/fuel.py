@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.fuel import FuelDAO
+ from dao.resources import FuelDAO
 
 class FuelHandler:
     def build_fuel_dict(self, row):
@@ -20,30 +20,38 @@ class FuelHandler:
         return result
 
     def getAllFuel(self):
-        dao = FuelDAO()
+	dao = FuelDAO()
         fuel_list = dao.getAllFuel()
-        return jsonify(Fuel=fuel_list)
+        result_list = []
+        for row in fuel_list:
+            result = self.build_fuel_dict(row)
+            result_list.append(result)
+        return jsonify(Fuel=result_list)
 
     def getFuelByID(self, fuid):
         dao = FuelDAO()
-        result = dao.getFuelByID()
-        return jsonify(Fuel=result)
+        row = dao.getFuelByID(fuid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            fuel = self.build_fuel_dict(row)
+            return jsonify(Fuel=fuel)
 
     def searchFuel(self, args):
-        if len(args) > 1:
-            return jsonify(Error="Malformed search string."), 400
+        type = args.get("type")
+        dao = FuelDAO()
+        uel_list = []
+        result_list = []
+        if (len(args) == 1) and type:
+#            fuel_list = dao.getFuelByType(type)
+            for row in medications_list:
+                result = self.build_medication_dict(row)
+                result_list.append(result)
         else:
-            location = args.get("location")
-            if location:
-                dao = FuelDAO()
-                fuel_list = dao.getFuelByLocation(location)
-                # result_list = []
-                # for row in fuel_list:
-                #     result = self.build_fuel_dict(row)
-                #     result_list.append(row)
-                return jsonify(Fuel=fuel_list)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return jsonify(Error="Malformed query string"), 400
+
+        return jsonify(Fuel=result_list)
+
 
     def insertFuel(self, form):
         print("form: ", form)

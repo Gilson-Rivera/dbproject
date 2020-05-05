@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.medical_devices import MedDevDAO
+from dao.resources import MedDevDAO
 
 class MedDevHandler:
     def build_MedDev_dict(self, row):
@@ -23,18 +23,21 @@ class MedDevHandler:
 
     def getAllMedDev(self):
         dao = MedDevDAO()
-        MedDev_list = dao.getAllMedDev()
-        return jsonify(MedDev=MedDev_list)
+        medDev_list = dao.getAllMedicalDevices()
+        result_list = []
+        for row in medDev_list:
+            result = self.build_medicalDevices_dict(row)
+            result_list.append(result)
+        return jsonify(MedicalDevices=result_list)
 
     def getMedDevByID(self, mdid):
         dao = MedDevDAO()
-        result = dao.getMedDevByID(mdid)
-        # if not row:
-        #     return jsonify(Error = "MedDev Not Found"), 404
-        # else:
-        #     MedDev = self.build_MedDev_dict(row)
-        return jsonify(MedDev = result)
-
+        row = dao.getMedicalDevicesByID(mdid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            medDev = self.build_medicalDevices_dict(row)
+            return jsonify(MedicalDevices=medDev)
 
     def searchMedDev(self, args):
         if len(args) > 1:
@@ -51,7 +54,6 @@ class MedDevHandler:
                 return jsonify(MedDev=MedDev_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
-
 
     def insertMedDev(self, form):
         print("form: ", form)

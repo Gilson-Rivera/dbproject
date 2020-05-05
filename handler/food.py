@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.food import FoodDAO
+from dao.resources import FoodDAO
 
 class FoodHandler:
     def build_food_dict(self, row):
@@ -48,33 +48,21 @@ class FoodHandler:
 
     def getFoodByID(self, fid):
         dao = FoodDAO()
-        row = dao.getFoodByID(fid)
+        row = dao.getFoodId(fid)
         if not row:
             return jsonify(Error="Part Not Found"), 404
         else:
             food = self.build_food_dict(row)
             return jsonify(Food=food)
 
-
     def searchFood(self, args):
-        type = args.get("type")
-        status = args.get("status")  # reserved or purchased
+#        type = args.get("type")
         location = args.get("location")
         dao = FoodDAO()
         food_list = []
         result_list = []
         if (len(args) == 1) and type:
-            food_list = dao.getFoodByType(type)
-            for row in food_list:
-                result = self.build_food_dict(row)
-                result_list.append(result)
-        elif (len(args) == 1) and status:
-            food_list = dao.getFoodByStatus(status)
-            for row in food_list:
-                result = self.build_food_consumed_dict(row)  # also need to add consumer's information
-                result_list.append(result)
-        elif (len(args) == 1) and location:
-            food_list = dao.getFoodByLocation(location)
+            food_list = dao.getFoodByName(type)
             for row in food_list:
                 result = self.build_food_dict(row)
                 result_list.append(result)
@@ -128,7 +116,7 @@ class FoodHandler:
 
     def updateFood(self, fid, form):
         dao = FoodDAO()
-        if not dao.getFoodByID(fid):
+        if not dao.getFoodId(fid):
             return jsonify(Error="Consumer not found."), 404
         else:
-            return jsonify(dao.getFoodByID(fid)), 201
+            return jsonify(dao.getFoodId(fid)), 201
