@@ -38,7 +38,7 @@ class RequestedSuppliesHandler:
             return jsonify(Error="Part Not Found"), 404
         else:
             requested_supply = self.build_request_supplies_dict(row)
-            return jsonify(MedicalDevices=requested_supply)
+            return jsonify(RequestedSupplies=requested_supply)
 
     def searchRequestedSupplies(self, args):
         type = args.get("type")
