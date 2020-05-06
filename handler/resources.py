@@ -10,6 +10,7 @@ from dao.resources import FuelDAO
 from dao.resources import ClothingDAO
 from dao.resources import WaterDAO
 
+
 class ResourcesHandler:
     def build_resources_dict(self, row):
         result = {}
@@ -35,7 +36,6 @@ class ResourcesHandler:
         result['rconsume_date'] = row[8]
         result['rconsume_payment_method'] = row[9]
         return result
-
 
     def getAllResources(self):
         dao = ResourcesDAO()
@@ -82,14 +82,23 @@ class ResourcesHandler:
             resource = self.build_resources_dict(row)
             return jsonify(Resource=resource)
 
-    def getResourcesConsumedById(self, cid):
+    def getResourcesConsumedByConsumerId(self, cid):
         dao = ResourcesDAO()
-        resources_list = dao.getResourcesConsumedById(cid)
+        resources_list = dao.getResourcesConsumedByConsumerId(cid)
         result_list = []
         for row in resources_list:
             result = self.build_resources_consumed_dict(row)
             result_list.append(result)
         return jsonify(Resources=result_list)
+
+    def getResourcesConsumedById(self, cid, rid):
+        dao = ResourcesDAO()
+        row = dao.getResourcesConsumedById(cid, rid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            requested_supply = self.build_resources_consumed_dict(row)
+            return jsonify(MedicalDevices=requested_supply)
 
     def getResourcesByType(self, rtype):
         dao = ResourcesDAO()
@@ -136,9 +145,8 @@ class ResourcesHandler:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
 
-
 class FoodHandler(ResourcesHandler):
-    def build_Food_dict(self, row):
+    def build_food_dict(self, row):
         result = {}
         result['rid'] = row[0]
         result['rtype'] = row[1]
@@ -152,8 +160,7 @@ class FoodHandler(ResourcesHandler):
         result['fexpdate'] = row[9]
         return result
 
-
-    def build_Food_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fid, fname, fexpdate):
+    def build_food_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fid, fname, fexpdate):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -169,40 +176,42 @@ class FoodHandler(ResourcesHandler):
 
     def getAllFood(self):
         dao = FoodDAO()
-        Food_list = dao.getAllFood()
-        return jsonify(Food=Food_list)
+        food_list = dao.getAllFood()
+        result_list = []
+        for row in food_list:
+            result = self.build_food_dict(row)
+            result_list.append(result)
+        return jsonify(Food=result_list)
 
     def getFoodByID(self, fid):
         dao = FoodDAO()
-        result = dao.getFoodByID(fid)
-        # if not row:
-        #     return jsonify(Error = "Food Not Found"), 404
-        # else:
-        #     Food = self.build_Food_dict(row)
-        return jsonify(Food = result)
-
+        row = dao.getFoodById(fid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            food = self.build_food_dict(row)
+            return jsonify(Food=food)
 
     def searchFood(self, args):
-        if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+        #        type = args.get("type")
+        location = args.get("location")
+        dao = FoodDAO()
+        food_list = []
+        result_list = []
+        if (len(args) == 1) and type:
+            food_list = dao.getFoodByName(type)
+            for row in food_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
         else:
-            location = args.get("location")
-            if location:
-                dao = FoodDAO()
-                Food_list = dao.getFoodByLocation(location)
-                # result_list = []
-                # for row in Food_list:
-                #     result = self.build_Food_dict(row)
-                #     result_list.append(row)
-                return jsonify(Food=Food_list)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return jsonify(Error="Malformed query string"), 400
 
+        return jsonify(Food=result_list)
 
     def insertFood(self, form):
         print("form: ", form)
         if len(form) != 5:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error="Malformed post request"), 400
         else:
             fname = form['fname']
             fbrand = form['fbrand']
@@ -217,7 +226,6 @@ class FoodHandler(ResourcesHandler):
                 return jsonify(Food=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
 
     def insertFoodJson(self, json):
         fname = json['fname']
@@ -238,8 +246,8 @@ class FoodHandler(ResourcesHandler):
         # if not dao.getFoodByID(fid):
         #     return jsonify(Error = "Food not found."), 404
         # else:
-        result =  dao.delete(fid)
-        return jsonify(DeleteStatus = result), 200
+        result = dao.delete(fid)
+        return jsonify(DeleteStatus=result), 200
 
     def updateFood(self, fid, form):
         dao = FoodDAO()
@@ -247,8 +255,6 @@ class FoodHandler(ResourcesHandler):
             return jsonify(Error="Consumer not found."), 404
         else:
             return jsonify(dao.getFoodByID(fid)), 201
-
-
 
     def insertSupplierJson(self, json):
         rtype = json['rtype']
@@ -266,7 +272,7 @@ class FoodHandler(ResourcesHandler):
 
 
 class FuelHandler(ResourcesHandler):
-    def build_Fuel_dict(self, row):
+    def build_fuel_dict(self, row):
         result = {}
         result['rid'] = row[0]
         result['rtype'] = row[1]
@@ -276,8 +282,9 @@ class FuelHandler(ResourcesHandler):
         result['rsupplier'] = row[5]
         result['rlocation'] = row[6]
         result['fuid'] = row[7]
+        return result
 
-    def build_Fuel_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fuid):
+    def build_fuel_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fuid):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -292,12 +299,20 @@ class FuelHandler(ResourcesHandler):
     def getAllFuel(self):
         dao = FuelDAO()
         fuel_list = dao.getAllFuel()
-        return jsonify(Fuel=fuel_list)
+        result_list = []
+        for row in fuel_list:
+            result = self.build_fuel_dict(row)
+            result_list.append(result)
+        return jsonify(Fuel=result_list)
 
     def getFuelByID(self, fuid):
         dao = FuelDAO()
-        result = dao.getFuelByID()
-        return jsonify(Fuel=result)
+        row = dao.getFuelByID(fuid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            fuel = self.build_fuel_dict(row)
+            return jsonify(Fuel=fuel)
 
     def searchFuel(self, args):
         if len(args) > 1:
@@ -362,8 +377,8 @@ class FuelHandler(ResourcesHandler):
             return jsonify(dao.getFuelByID(fuid)), 201
 
 
-class EquipmentHanlder(ResourcesHandler):
-    def build_Equipment_dict(self, row):
+class EquipmentHandler(ResourcesHandler):
+    def build_equipment_dict(self, row):
         result = {}
         result['rid'] = row[0]
         result['rtype'] = row[1]
@@ -373,8 +388,9 @@ class EquipmentHanlder(ResourcesHandler):
         result['rsupplier'] = row[5]
         result['rlocation'] = row[6]
         result['eid'] = row[7]
+        return result
 
-    def build_Equipment_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, eid):
+    def build_equipment_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, eid):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -388,22 +404,25 @@ class EquipmentHanlder(ResourcesHandler):
 
     def getAllEquipment(self):
         dao = EquipmentDAO()
-        Equipment_list = dao.getAllEquip()
-        return jsonify(Equipment=Equipment_list)
+        Equipment_list = dao.getAllEquipment()
+        result_list = []
+        for row in Equipment_list:
+            result = self.build_equipment_dict(row)
+            result_list.append(result)
+        return jsonify(Equipment=result_list)
 
     def getEquipmentByID(self, eid):
         dao = EquipmentDAO()
-        result = dao.getEquipByID(eid)
-        # if not row:
-        #     return jsonify(Error = "Equipment Not Found"), 404
-        # else:
-        #     Equipment = self.build_Equipment_dict(row)
-        return jsonify(Equipment = result)
-
+        row = dao.getEquipmentByID(eid)
+        if not row:
+            return jsonify(Error="Equipment Not Found"), 404
+        else:
+            equipment = self.build_equipment_dict(row)
+            return jsonify(Equipment=equipment)
 
     def searchEquipment(self, args):
         if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+            return jsonify(Error="Malformed search string."), 400
         else:
             location = args.get("location")
             if location:
@@ -417,13 +436,12 @@ class EquipmentHanlder(ResourcesHandler):
             else:
                 return jsonify(Error="Malformed search string."), 400
 
-
     def insertEquipment(self, form):
         print("form: ", form)
         if len(form) != 5:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error="Malformed post request"), 400
         else:
-            #remove eid later
+            # remove eid later
             eid = form['eid']
             etype = form['etype']
             ebrand = form['ebrand']
@@ -437,7 +455,6 @@ class EquipmentHanlder(ResourcesHandler):
                 return jsonify(Equipment=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
 
     def insertEquipmentJson(self, json):
         eid = json['eid']
@@ -460,7 +477,7 @@ class EquipmentHanlder(ResourcesHandler):
         #     return jsonify(Error = "Equipment not found."), 404
         # else:
         #     dao.delete(eid)
-        return jsonify(DeleteStatus = result), 200
+        return jsonify(DeleteStatus=result), 200
 
     def updateEquipment(self, eid, form):
         dao = EquipmentDAO()
@@ -468,6 +485,7 @@ class EquipmentHanlder(ResourcesHandler):
             return jsonify(Error="Equiment not found."), 404
         else:
             return jsonify(dao.getEquipByID(eid)), 201
+
 
 class MedDevHandler(ResourcesHandler):
     def build_MedDev_dict(self, row):
@@ -480,6 +498,7 @@ class MedDevHandler(ResourcesHandler):
         result['rsupplier'] = row[5]
         result['rlocation'] = row[6]
         result['mdid'] = row[7]
+        return result
 
     def build_MedDev_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, mdid):
         result = {}
@@ -495,22 +514,25 @@ class MedDevHandler(ResourcesHandler):
 
     def getAllMedDev(self):
         dao = MedDevDAO()
-        MedDev_list = dao.getAllMedDev()
-        return jsonify(MedDev=MedDev_list)
+        medDev_list = dao.getAllMedicalDevices()
+        result_list = []
+        for row in medDev_list:
+            result = self.build_MedDev_dict(row)
+            result_list.append(result)
+        return jsonify(MedicalDevices=result_list)
 
     def getMedDevByID(self, mdid):
         dao = MedDevDAO()
-        result = dao.getMedDevByID(mdid)
-        # if not row:
-        #     return jsonify(Error = "MedDev Not Found"), 404
-        # else:
-        #     MedDev = self.build_MedDev_dict(row)
-        return jsonify(MedDev = result)
-
+        row = dao.getMedicalDevicesByID(mdid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            medDev = self.build_MedDev_dict(row)
+            return jsonify(MedicalDevices=medDev)
 
     def searchMedDev(self, args):
         if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+            return jsonify(Error="Malformed search string."), 400
         else:
             location = args.get("location")
             if location:
@@ -524,13 +546,12 @@ class MedDevHandler(ResourcesHandler):
             else:
                 return jsonify(Error="Malformed search string."), 400
 
-
     def insertMedDev(self, form):
         print("form: ", form)
         if len(form) != 5:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error="Malformed post request"), 400
         else:
-            #remove mdid later
+            # remove mdid later
             # mdid = form['mdid']
             mdtype = form['mdtype']
             mdbrand = form['mdbrand']
@@ -544,7 +565,6 @@ class MedDevHandler(ResourcesHandler):
                 return jsonify(MedDev=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
 
     def insertMedDevJson(self, json):
         mdtype = json['mdtype']
@@ -565,7 +585,7 @@ class MedDevHandler(ResourcesHandler):
         #     return jsonify(Error = "MedDev not found."), 404
         # else:
         result = dao.delete(mdid)
-        return jsonify(DeleteStatus = result), 200
+        return jsonify(DeleteStatus=result), 200
 
     def updateMedDev(self, mdid, form):
         dao = MedDevDAO()
@@ -573,6 +593,7 @@ class MedDevHandler(ResourcesHandler):
             return jsonify(Error="Consumer not found."), 404
         else:
             return jsonify(dao.getMedDevByID(mdid)), 201
+
 
 class MedicationHandler(ResourcesHandler):
     def build_Med_dict(self, row):
@@ -619,12 +640,11 @@ class MedicationHandler(ResourcesHandler):
         #     return jsonify(Error = "Med Not Found"), 404
         # else:
         #     Med = self.build_Med_dict(row)
-        return jsonify(Med = result)
-
+        return jsonify(Med=result)
 
     def searchMed(self, args):
         if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+            return jsonify(Error="Malformed search string."), 400
         else:
             location = args.get("location")
             if location:
@@ -638,13 +658,12 @@ class MedicationHandler(ResourcesHandler):
             else:
                 return jsonify(Error="Malformed search string."), 400
 
-
     def insertMed(self, form):
         print("form: ", form)
         if len(form) != 5:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error="Malformed post request"), 400
         else:
-            #remove mid later
+            # remove mid later
             mname = form['mname']
             mbrand = form['mbrand']
             mexpdate = form['mexpdate']
@@ -657,7 +676,6 @@ class MedicationHandler(ResourcesHandler):
                 return jsonify(Med=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
 
     def insertMedJson(self, json):
         mname = json['mname']
@@ -676,7 +694,7 @@ class MedicationHandler(ResourcesHandler):
     def deleteMed(self, mid):
         dao = MedicationDAO()
         result = dao.delete(mid)
-        return jsonify(DeleteStatus = result), 200
+        return jsonify(DeleteStatus=result), 200
 
     def updateMed(self, mid, form):
         dao = MedicationDAO()
@@ -685,8 +703,9 @@ class MedicationHandler(ResourcesHandler):
         else:
             return jsonify(dao.getMedByID(mid)), 201
 
+
 class WaterHandler(ResourcesHandler):
-    def build_Water_dict(self, row):
+    def build_water_dict(self, row):
         result = {}
         result['rid'] = row[0]
         result['rtype'] = row[1]
@@ -698,8 +717,9 @@ class WaterHandler(ResourcesHandler):
         result['wid'] = row[7]
         result['wvolume'] = row[8]
         result['wexpdate'] = row[9]
+        return result
 
-    def build_Water_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, wid, wvolume, wexpdate):
+    def build_water_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, wid, wvolume, wexpdate):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -715,22 +735,26 @@ class WaterHandler(ResourcesHandler):
 
     def getAllWater(self):
         dao = WaterDAO()
-        Water_list = dao.getAllWater()
-        return jsonify(Water=Water_list)
+        water_list = dao.getAllWater()
+        result_list = []
+        for row in water_list:
+            result = self.build_water_dict(row)
+            result_list.append(result)
+        return jsonify(Water=result_list)
 
-    def getWaterByID(self, fid):
+    def getWaterByID(self, wid):
         dao = WaterDAO()
-        result = dao.getWaterByID(fid)
-        # if not row:
-        #     return jsonify(Error = "Food Not Found"), 404
-        # else:
-        #     Food = self.build_Food_dict(row)
-        return jsonify(Water = result)
+        row = dao.getWaterByID(wid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            water = self.build_water_dict(row)
+            return jsonify(Water=water)
 
 
     def searchWater(self, args):
         if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+            return jsonify(Error="Malformed search string."), 400
         else:
             location = args.get("location")
             if location:
@@ -744,11 +768,10 @@ class WaterHandler(ResourcesHandler):
             else:
                 return jsonify(Error="Malformed search string."), 400
 
-
     def insertWater(self, form):
         print("form: ", form)
         if len(form) != 5:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error="Malformed post request"), 400
         else:
             fname = form['fname']
             fbrand = form['fbrand']
@@ -763,7 +786,6 @@ class WaterHandler(ResourcesHandler):
                 return jsonify(Water=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
 
     def insertWaterJson(self, json):
         fname = json['fname']
@@ -784,8 +806,8 @@ class WaterHandler(ResourcesHandler):
         # if not dao.getWaterByID(fid):
         #     return jsonify(Error = "Water not found."), 404
         # else:
-        result =  dao.delete(fid)
-        return jsonify(DeleteStatus = result), 200
+        result = dao.delete(fid)
+        return jsonify(DeleteStatus=result), 200
 
     def updateWater(self, fid, form):
         dao = WaterDAO()
@@ -794,8 +816,9 @@ class WaterHandler(ResourcesHandler):
         else:
             return jsonify(dao.getWaterByID(fid)), 201
 
-class ClothingHandlers(ResourcesHandler):
-    def build_Clothing_dict(self, row):
+
+class ClothingHandler(ResourcesHandler):
+    def build_clothing_dict(self, row):
         result = {}
         result['rid'] = row[0]
         result['rtype'] = row[1]
@@ -804,12 +827,14 @@ class ClothingHandlers(ResourcesHandler):
         result['rprice'] = row[4]
         result['rsupplier'] = row[5]
         result['rlocation'] = row[6]
-        result['cid'] = row[7]
+        result['clothes_id'] = row[7]
         result['cpiece'] = row[8]
         result['csex'] = row[9]
         result['csize'] = row[10]
+        return result
 
-    def build_Clothing_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, cid, cpiece, csex, csize):
+    def build_clothing_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, cid, cpiece, csex,
+                            csize):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -818,30 +843,33 @@ class ClothingHandlers(ResourcesHandler):
         result['rprice'] = rprice
         result['rsupplier'] = rsupplier
         result['rlocation'] = rlocation
-        result['cid'] = cid
+        result['clothes_id'] = cid
         result['cpiece'] = cpiece
         result['csex'] = csex
         result['csize'] = csize
         return result
 
     def getAllClothing(self):
-        dao = FoodDAO()
-        Food_list = dao.getAllFood()
-        return jsonify(Food=Food_list)
-
-    def getClothingByID(self, cid):
         dao = ClothingDAO()
-        result = dao.getClothingByID(cid)
-        # if not row:
-        #     return jsonify(Error = "Clothing Not Found"), 404
-        # else:
-        #     Food = self.build_Clothing_dict(row)
-        return jsonify(Clothing = result)
+        clothing_list = dao.getAllClothing()
+        result_list = []
+        for row in clothing_list:
+            result = self.build_clothing_dict(row)
+            result_list.append(result)
+        return jsonify(Clothing=result_list)
 
+    def getClothingByID(self, cl_id):
+        dao = ClothingDAO()
+        row = dao.getClothingByID(cl_id)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            clothing = self.build_clothing_dict(row)
+            return jsonify(Clothing=clothing)
 
     def searchClothing(self, args):
         if len(args) > 1:
-            return jsonify(Error = "Malformed search string."), 400
+            return jsonify(Error="Malformed search string."), 400
         else:
             location = args.get("location")
             if location:
@@ -855,11 +883,10 @@ class ClothingHandlers(ResourcesHandler):
             else:
                 return jsonify(Error="Malformed search string."), 400
 
-
     def insertClothing(self, form):
         print("form: ", form)
         if len(form) != 5:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error="Malformed post request"), 400
         else:
             fname = form['fname']
             fbrand = form['fbrand']
@@ -874,7 +901,6 @@ class ClothingHandlers(ResourcesHandler):
                 return jsonify(Clothing=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
 
     def insertClothingJson(self, json):
         fname = json['fname']
@@ -895,8 +921,8 @@ class ClothingHandlers(ResourcesHandler):
         # if not dao.getClothingByID(fid):
         #     return jsonify(Error = "Clothing not found."), 404
         # else:
-        result =  dao.delete(fid)
-        return jsonify(DeleteStatus = result), 200
+        result = dao.delete(fid)
+        return jsonify(DeleteStatus=result), 200
 
     def updateClothing(self, fid, form):
         dao = ClothingDAO()

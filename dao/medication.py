@@ -50,7 +50,7 @@ class MedDAO:
 
     def getMedicationByID(self, mid):
         cursor = self.conn.cursor()
-        query = "select mid, mname, mexpdate, mnumavailable, mbrand, sorganization, mlocation, mispill, misliquid from medications natural inner join msupplier natural inner join suppliers natural inner join mlocation where mid = %s;"
+        query = "select rid, rtype, rbrand, rnumavailable, rprice, sorganization, rlocation, mid, mexpdate, mclass from resources natural inner join rsupplier natural inner join medications natural inner join suppliers natural inner join rlocation where mid = %s;"
         cursor.execute(query, (mid,))
         result = cursor.fetchone()
         return result

@@ -1,13 +1,13 @@
 from flask import Flask, jsonify, request
-from handler.food import FoodHandler
+#from handler.food import FoodHandler
 from handler.request_supplies import RequestedSuppliesHandler
 from handler.consumers import ConsumerHandler
 from handler.administrators import AdministratorHandler
 from handler.supplier import SupplierHandler
-from handler.fuel import FuelHandler
-from handler.resources import ResourcesHandler, MedicationHandler
-from handler.equipment import EquipHandler
-from handler.medical_devices import MedDevHandler
+#from handler.fuel import FuelHandler
+from handler.resources import ResourcesHandler, MedicationHandler, FuelHandler, EquipmentHandler, MedDevHandler, WaterHandler, ClothingHandler, FoodHandler
+#from handler.equipment import EquipHandler
+#from handler.medical_devices import MedDevHandler
 from handler.fuel_supplies import FuelSuppliesHandler
 from handler.food_supplies import FoodSuppliesHandler
 from handler.esupplies import ESuppliesHandler
@@ -76,10 +76,23 @@ def getResourcesById(rid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+#Return a list of the resources being consumed by customer with cid
 @app.route('/DBApp1/resources_consumed/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
-def getResourcesConsumedById(cid):
+def getResourcesConsumedByConsumerId(cid):
     if request.method == 'GET':
-        return ResourcesHandler().getResourcesConsumedById(cid)
+        return ResourcesHandler().getResourcesConsumedByConsumerId(cid)
+    elif request.method == 'PUT':
+            return ResourcesHandler().updateResources(cid, request.form)
+    elif request.method == 'DELETE':
+        return ResourcesHandler().deleteResources(cid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Return a specific row from rconsumes given cid and rid
+@app.route('/DBApp1/resources_consumed/<int:cid>/<int:rid>', methods=['GET', 'PUT', 'DELETE'])
+def getResourcesConsumedByIds(cid, rid):
+    if request.method == 'GET':
+        return ResourcesHandler().getResourcesConsumedById(cid, rid)
     elif request.method == 'PUT':
             return ResourcesHandler().updateResources(cid, request.form)
     elif request.method == 'DELETE':
@@ -99,6 +112,29 @@ def getAllConsumers():
         else:
             return ConsumerHandler().searchConsumers(request.args)
 
+@app.route('/DBApp1/food', methods=['GET', 'POST'])
+def getAllFood():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return FoodHandler().insertFoodJson(request.json)
+    else:
+        if not request.args:
+            return FoodHandler().getAllFood()
+        else:
+            # change to searchFood() once implemented in handlers
+            return FoodHandler().searchFood(request.args)
+
+@app.route('/DBApp1/food/<int:fid>', methods=['GET', 'PUT', 'DELETE'])
+def getFoodById(fid):
+    if request.method == 'GET':
+        return FoodHandler().getFoodByID(fid)
+    elif request.method == 'PUT':
+        return FoodHandler().updateFood(fid, request.form)
+    elif request.method == 'DELETE':
+        return FoodHandler().deleteFood(fid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 @app.route('/DBApp1/medication_supplies', methods=['GET', 'POST'])
 def getAllMedSupplies():
     if request.method == 'POST':
@@ -109,6 +145,54 @@ def getAllMedSupplies():
             return MedSuppliesHandler().getAllMedSupplies()
         else:
             return MedSuppliesHandler().searchMedSupplies(request.args)
+
+@app.route('/DBApp1/water', methods=['GET', 'POST'])
+def getAllWater():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return WaterHandler().insertWaterJson(request.json)
+    else:
+        if not request.args:
+            return WaterHandler().getAllWater()
+        else:
+            # change to searchFood() once implemented in handlers
+            return WaterHandler().searchWater(request.args)
+
+@app.route('/DBApp1/water/<int:wid>', methods=['GET', 'PUT', 'DELETE'])
+def getWaterById(wid):
+    if request.method == 'GET':
+        return WaterHandler().getWaterByID(wid)
+    elif request.method == 'PUT':
+        return WaterHandler().updateWater(wid, request.form)
+    elif request.method == 'DELETE':
+        return WaterHandler().deleteWater(wid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+@app.route('/DBApp1/clothing', methods=['GET', 'POST'])
+def getAllClothing():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ClothingHandler().insertClothingJson(request.json)
+    else:
+        if not request.args:
+            return ClothingHandler().getAllClothing()
+        else:
+            # change to searchFood() once implemented in handlers
+            return ClothingHandler().searchClothing(request.args)
+
+
+@app.route('/DBApp1/clothing/<int:clothes_id>', methods=['GET', 'PUT', 'DELETE'])
+def getClothingById(clothes_id):
+    if request.method == 'GET':
+        return ClothingHandler().getClothingByID(clothes_id)
+    elif request.method == 'PUT':
+        return ClothingHandler().updateClothing(clothes_id, request.form)
+    elif request.method == 'DELETE':
+        return ClothingHandler().deleteClothing(clothes_id)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/DBApp1/food_supplies', methods=['GET', 'POST'])
 def getAllFoodSupplies():
@@ -132,6 +216,17 @@ def getAllRequestedSupplies():
         else:
             return RequestedSuppliesHandler().searchRequestedSupplies(request.args)
 
+@app.route('/DBApp1/requested_supplies/<int:aid>/<int:sid>', methods=['GET', 'PUT', 'DELETE'])
+def getRequestedSuppliesById(aid, sid):
+    if request.method == 'GET':
+        return RequestedSuppliesHandler().getRequestedSuppliesByID(aid, sid)
+    elif request.method == 'PUT':
+        return RequestedSuppliesHandler().updateRequestedSupplies(aid, sid, request.form)
+    elif request.method == 'DELETE':
+        return RequestedSuppliesHandler().deleteRequestedSupplies(aid, sid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 @app.route('/DBApp1/medications', methods=['GET', 'POST'])
 def getAllMedications():
     if request.method == 'POST':
@@ -142,18 +237,6 @@ def getAllMedications():
             return MedHandler().getAllMedications()
         else:
             return MedHandler().searchMedications(request.args)
-
-@app.route('/DBApp1/food', methods=['GET', 'POST'])
-def getAllFood():
-    if request.method == 'POST':
-        print("REQUEST: ", request.json)
-        return FoodHandler().insertFoodJson(request.json)
-    else:
-        if not request.args:
-            return FoodHandler().getAllFood()
-        else:
-            # change to searchFood() once implemented in handlers
-            return FoodHandler().searchFood(request.args)
 
 
 @app.route('/DBApp1/consumers/<int:cid>', methods=['GET', 'PUT', 'DELETE'])
@@ -175,17 +258,6 @@ def getMedicationById(mid):
         return MedHandler().updateMed(mid, request.form)
     elif request.method == 'DELETE':
         return MedHandler().deleteMed(mid)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-@app.route('/DBApp1/food/<int:fid>', methods=['GET', 'PUT', 'DELETE'])
-def getFoodById(fid):
-    if request.method == 'GET':
-        return FoodHandler().getFoodByID(fid)
-    elif request.method == 'PUT':
-        return FoodHandler().updateFood(fid, request.form)
-    elif request.method == 'DELETE':
-        return FoodHandler().deleteFood(fid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -283,23 +355,23 @@ def getAllMDSupplies():
 def getAllEquipment():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        return EquipHandler().insertEquipmentJson(request.json)
+        return EquipmentHandler().insertEquipmentJson(request.json)
     else:
         if not request.args:
-            return EquipHandler().getAllEquipment()
+            return EquipmentHandler().getAllEquipment()
         else:
             # change to searchEquipment() once implemented in handlers
-            return EquipHandler().searchEquipment(request.args)
+            return EquipmentHandler().searchEquipment(request.args)
 
 
 @app.route('/DBApp1/equipment/<int:eid>', methods=['GET', 'PUT', 'DELETE'])
 def getEquipmentById(eid):
     if request.method == 'GET':
-        return EquipHandler().getEquipmentByID(eid)
+        return EquipmentHandler().getEquipmentByID(eid)
     elif request.method == 'PUT':
-        return EquipHandler().updateEquipment(eid, request.form)
+        return EquipmentHandler().updateEquipment(eid, request.form)
     elif request.method == 'DELETE':
-        return EquipHandler().deleteEquipment(eid)
+        return EquipmentHandler().deleteEquipment(eid)
     else:
         return jsonify(Error="Method not allowed."), 405
 

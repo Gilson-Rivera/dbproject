@@ -31,6 +31,15 @@ class RequestedSuppliesHandler:
             result_list.append(result)
         return jsonify(RequestedSupplies=result_list)
 
+    def getRequestedSuppliesByID(self, aid, sid):
+        dao = RequestedSuppliesDAO()
+        row = dao.getRequestedSuppliesByID(aid, sid)
+        if not row:
+            return jsonify(Error="Part Not Found"), 404
+        else:
+            requested_supply = self.build_request_supplies_dict(row)
+            return jsonify(MedicalDevices=requested_supply)
+
     def searchRequestedSupplies(self, args):
         type = args.get("type")
         dao = RequestedSuppliesDAO()
