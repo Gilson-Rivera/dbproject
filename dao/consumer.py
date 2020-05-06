@@ -39,7 +39,7 @@ class ConsumersDAO:
         return result
 
     def insert(self, cfirstname, clastname, clocation, cage, cphone):
-        result = "consumer inserted"
+        result = "Consumer inserted"
         return result
 
     def delete(self, cid):
