@@ -37,6 +37,36 @@ class ResourcesHandler:
         result['rconsume_payment_method'] = row[9]
         return result
 
+    def build_resources_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation):
+        result = {}
+        result['rid'] = rid
+        result['rtype'] = rtype
+        result['rbrand'] = rbrand
+        result['rnumavailable'] = rnumavailable
+        result['rprice'] = rprice
+        result['rsupplier'] = rsupplier
+        result['rlocation'] = rlocation
+        return result
+
+    def build_rconsumes_attributes(self, cid, rid, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method):
+        result = {}
+        result['cid'] = cid
+        result['rid'] = rid
+        result['rconsume_price'] = rconsume_price
+        result['rconsume_quantity'] = rconsume_quantity
+        result['rconsume_date'] = rconsume_date
+        result['rconsume_payment_method'] = rconsume_payment_method
+        return result
+
+    def build_rsupplies_attributes(self, sid, rid, rsupply_price, rsupply_quantity, rsupply_date):
+        result = {}
+        result['sid'] = sid
+        result['rid'] = rid
+        result['rsupply_price'] = rsupply_price
+        result['rsupply_quantity'] = rsupply_quantity
+        result['rsupply_date'] = rsupply_date
+        return result
+
     def getAllResources(self):
         dao = ResourcesDAO()
         resources_list = dao.getAllResources()
@@ -139,8 +169,41 @@ class ResourcesHandler:
         rlocation = json['rlocation']
         if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation:
             dao = ResourcesDAO()
-            result = dao.insert(rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation)
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            result = self.build_resources_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation)
             return jsonify(Resources=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+
+
+    def insertConsumptionJson(self, json):
+        cid = json['cid']
+        rid = json['rid']
+        rconsume_price = json['rconsume_price']
+        rconsume_quantity = json['rconsume_quantity']
+        rconsume_date = json['rconsume_date']
+        rconsume_payment_method = json['rconsume_payment_method']
+        if cid and rid and rconsume_price and rconsume_quantity and rconsume_date and rconsume_payment_method:
+            dao = ResourcesDAO()
+            consume_id = dao.insertConsumption(cid, rid, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method)
+            result = self.build_rconsumes_attributes(cid, rid, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method)
+            return jsonify(RConsumes=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def insertRSuppliesJson(self, json):
+        sid = json['sid']
+        rid = json['rid']
+        rsupply_price = json['rsupply_price']
+        rsupply_quantity = json['rsupply_quantity']
+        rsupply_date = json['rsupply_date']
+        if sid and rid and rsupply_price and rsupply_quantity and rsupply_date:
+            dao = ResourcesDAO()
+            supply_id = dao.insertRSupplies(sid, rid, rsupply_price, rsupply_quantity, rsupply_date)
+            result = self.build_rsupplies_attributes(sid, rid, rsupply_price, rsupply_quantity, rsupply_date)
+            return jsonify(RSupplies=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
@@ -160,7 +223,7 @@ class FoodHandler(ResourcesHandler):
         result['fexpdate'] = row[9]
         return result
 
-    def build_food_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fid, fname, fexpdate):
+    def build_food_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fid, fname, fexpdate):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -228,15 +291,21 @@ class FoodHandler(ResourcesHandler):
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertFoodJson(self, json):
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
         fname = json['fname']
         fexpdate = json['fexpdate']
-        fsupplier = json['fsupplier']
-        fbrand = json['fbrand']
-        fquantity = json['fquantity']
-        flocation = json['flocation']
-        if fname and fexpdate and fsupplier and fquantity and flocation:
-            dao = FoodDAO()
-            result = dao.insert(fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation and fname and fexpdate:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            fid = dao.insertFood(rid, fname, fexpdate)
+            result = self.build_food_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fid, fname, fexpdate)
             return jsonify(Food=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -284,7 +353,7 @@ class FuelHandler(ResourcesHandler):
         result['fuid'] = row[7]
         return result
 
-    def build_fuel_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fuid):
+    def build_fuel_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fuelid):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -293,7 +362,7 @@ class FuelHandler(ResourcesHandler):
         result['rprice'] = rprice
         result['rsupplier'] = rsupplier
         result['rlocation'] = rlocation
-        result['fuid'] = fuid
+        result['fuelid'] = fuelid
         return result
 
     def getAllFuel(self):
@@ -350,13 +419,19 @@ class FuelHandler(ResourcesHandler):
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertFuelJson(self, json):
-        ftype = json['ftype']
-        fsupplier = json['fsupplier']
-        fquantity = json['fquantity']
-        flocation = json['flocation']
-        if ftype and fsupplier and fquantity and flocation:
-            dao = FuelDAO()
-            result = dao.insert(ftype, fsupplier, fquantity, flocation)
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            fuelid = dao.insertFuel(rid,)
+            result = self.build_fuel_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, fuelid)
             return jsonify(Fuel=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -390,7 +465,7 @@ class EquipmentHandler(ResourcesHandler):
         result['eid'] = row[7]
         return result
 
-    def build_equipment_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, eid):
+    def build_equipment_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, eid):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -457,15 +532,19 @@ class EquipmentHandler(ResourcesHandler):
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertEquipmentJson(self, json):
-        eid = json['eid']
-        etype = json['etype']
-        esupplier = json['esupplier']
-        ebrand = json['ebrand']
-        equantity = json['equantity']
-        elocation = json['elocation']
-        if eid and etype and esupplier and equantity and elocation:
-            dao = EquipmentDAO()
-            result = dao.insert(eid, etype, esupplier, ebrand, equantity, elocation)
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            eid = dao.insertEquipment(rid,)
+            result = self.build_equipment_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, eid)
             return jsonify(Equipment=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -567,15 +646,21 @@ class MedDevHandler(ResourcesHandler):
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertMedDevJson(self, json):
-        mdtype = json['mdtype']
-        mdsupplier = json['mdsupplier']
-        mdbrand = json['mdbrand']
-        mdquantity = json['mdquantity']
-        mdlocation = json['mdlocation']
-        if mdtype and mdsupplier and mdbrand and mdquantity and mdlocation:
-            dao = MedDevDAO()
-            result = dao.insert(mdtype, mdsupplier, mdbrand, mdquantity, mdlocation)
-            return jsonify(MedDev=result), 201
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            mdid = dao.insertMedicalDevices(rid, )
+            result = self.build_MedDev_attr(rid, rtype, rbrand, rnumavailable, rprice, rsupplier,
+                                            rlocation, mdid)
+            return jsonify(Medical_Devices=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
@@ -610,7 +695,7 @@ class MedicationHandler(ResourcesHandler):
         result['mclass'] = row[9]
         return result
 
-    def build_Med_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, mid, mexpdate, mclass):
+    def build_medication_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, mid, mexpdate, mclass):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -677,19 +762,26 @@ class MedicationHandler(ResourcesHandler):
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def insertMedJson(self, json):
-        mname = json['mname']
+    def insertMedicationJson(self, json):
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
         mexpdate = json['mexpdate']
-        msupplier = json['msupplier']
-        mbrand = json['mbrand']
-        mquantity = json['mquantity']
-        mlocation = json['mlocation']
-        if mname and mexpdate and msupplier and mbrand and mquantity and mlocation:
-            dao = MedicationDAO()
-            result = dao.insert(mname, mexpdate, msupplier, mbrand, mquantity, mlocation)
-            return jsonify(Med=result), 201
+        mclass = json['mclass']
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation and mexpdate and mclass:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            mid = dao.insertMedication(rid, mexpdate, mclass)
+            result = self.build_medication_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, mid,
+                                                mexpdate, mclass)
+            return jsonify(Medication=result), 201
         else:
-            return jsonify(Error="Unexpected attributes in post request"), 400
+            return jsonify(Medication="Unexpected attributes in post request"), 400
 
     def deleteMed(self, mid):
         dao = MedicationDAO()
@@ -719,7 +811,7 @@ class WaterHandler(ResourcesHandler):
         result['wexpdate'] = row[9]
         return result
 
-    def build_water_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, wid, wvolume, wexpdate):
+    def build_water_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, wid, wvolume, wexpdate):
         result = {}
         result['rid'] = rid
         result['rtype'] = rtype
@@ -788,15 +880,22 @@ class WaterHandler(ResourcesHandler):
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertWaterJson(self, json):
-        fname = json['fname']
-        fexpdate = json['fexpdate']
-        fsupplier = json['fsupplier']
-        fbrand = json['fbrand']
-        fquantity = json['fquantity']
-        flocation = json['flocation']
-        if fname and fexpdate and fsupplier and fquantity and flocation:
-            dao = WaterDAO()
-            result = dao.insert(fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
+        wvolume = json['wvolume']
+        wexpdate = json['wexpdate']
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation and wvolume and wexpdate:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            wid = dao.insertWater(rid, wvolume, wexpdate)
+            result = self.build_water_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, wid,
+                                                wvolume, wexpdate)
             return jsonify(Water=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -833,7 +932,7 @@ class ClothingHandler(ResourcesHandler):
         result['csize'] = row[10]
         return result
 
-    def build_clothing_attr(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, cid, cpiece, csex,
+    def build_clothing_attributes(self, rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation, cid, cpiece, csex,
                             csize):
         result = {}
         result['rid'] = rid
@@ -903,18 +1002,26 @@ class ClothingHandler(ResourcesHandler):
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertClothingJson(self, json):
-        fname = json['fname']
-        fexpdate = json['fexpdate']
-        fsupplier = json['fsupplier']
-        fbrand = json['fbrand']
-        fquantity = json['fquantity']
-        flocation = json['flocation']
-        if fname and fexpdate and fsupplier and fquantity and flocation:
-            dao = ClothingDAO()
-            result = dao.insert(fname, fexpdate, fsupplier, fbrand, fquantity, flocation)
+        rtype = json['rtype']
+        rbrand = json['rbrand']
+        rnumavailable = json['rnumavailable']
+        rprice = json['rprice']
+        rsupplier = json['rsupplier']
+        rlocation = json['rlocation']
+        cpiece = json['cpiece']
+        csex = json['csex']
+        csize = json['csize']
+        if rtype and rbrand and rnumavailable and rprice and rsupplier and rlocation and cpiece and csex and csize:
+            dao = ResourcesDAO()
+            rid = dao.insert(rtype, rbrand, rnumavailable, rprice)
+            rsupplier_id = dao.insertSupplier(rid, rsupplier)
+            rlocation_id = dao.insertLocation(rid, rlocation)
+            clothes_id = dao.insertClothing(rid, cpiece, csex, csize)
+            result = self.build_clothing_attributes(rid, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation,
+                                                      clothes_id, cpiece, csex, csize)
             return jsonify(Clothing=result), 201
         else:
-            return jsonify(Error="Unexpected attributes in post request"), 400
+            return jsonify(Clothing="Unexpected attributes in post request"), 400
 
     def deleteClothing(self, fid):
         dao = ClothingDAO()

@@ -112,6 +112,22 @@ def getAllConsumers():
         else:
             return ConsumerHandler().searchConsumers(request.args)
 
+@app.route('/DBApp1/post_consumption', methods=['POST'])
+def postConsumption():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ResourcesHandler().insertConsumptionJson(request.json)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/DBApp1/supply_resource', methods=['POST'])
+def supplyResource():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ResourcesHandler().insertRSuppliesJson(request.json)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 @app.route('/DBApp1/food', methods=['GET', 'POST'])
 def getAllFood():
     if request.method == 'POST':
@@ -231,7 +247,7 @@ def getRequestedSuppliesById(aid, sid):
 def getAllMedications():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        return MedHandler().insertMedicationJson(request.json)
+        return MedicationHandler().insertMedicationJson(request.json)
     else:
         if not request.args:
             return MedHandler().getAllMedications()

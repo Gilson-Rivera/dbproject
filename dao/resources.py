@@ -40,7 +40,7 @@ class ResourcesDAO:
     def getResourcesByStatus(self, status):
         cursor = self.conn.cursor()
         if(status == 'reserved'):
-            query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where rconsume_price = 0;"
+            query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where rconsume_price = 0 or rconsume_payment_method = 'none' or rconsume_payment_method = 'None' or rconsume_payment_method = 'N/A';"
         elif (status == 'purchased'):
             query = "select cid, rid, cfirstname, clastname, rtype, rbrand, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method from consumers natural inner join resources natural inner join rconsumes where rconsume_price > 0;"
         cursor.execute(query)
@@ -111,10 +111,101 @@ class ResourcesDAO:
         return result
 
 
-    def insert(self, rtype, rbrand, rnumavailable, rprice, rsupplier, rlocation):
-        result = "Supplier inserted"
-        return result
+    def insert(self, rtype, rbrand, rnumavailable, rprice):
+        cursor = self.conn.cursor()
+        query = "insert into resources(rtype, rbrand, rnumavailable, rprice) values (%s, %s, %s, %s) returning rid;"
+        cursor.execute(query, (rtype, rbrand, rnumavailable, rprice,))
+        rid = cursor.fetchone()[0]
+        self.conn.commit()
+        return rid
 
+    def insertSupplier(self, rid, rsupplier):
+        cursor = self.conn.cursor()
+        query = "insert into rsupplier(rid, sid) values (%s, %s) returning rsupplier_id;"
+        cursor.execute(query, (rid, rsupplier,))
+        rsupplier_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return rsupplier_id
+
+    def insertLocation(self, rid, rlocation):
+        cursor = self.conn.cursor()
+        query = "insert into rlocation(rid, rlocation) values (%s, %s) returning rlocation_id;"
+        cursor.execute(query, (rid, rlocation,))
+        rlocation_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return rlocation_id
+
+    def insertFood(self, rid, fname, fexpdate):
+        cursor = self.conn.cursor()
+        query = "insert into food(rid, fname, fexpdate) values (%s, %s, %s) returning fid;"
+        cursor.execute(query, (rid, fname, fexpdate,))
+        fid = cursor.fetchone()[0]
+        self.conn.commit()
+        return fid
+
+    def insertFuel(self, rid):
+        cursor = self.conn.cursor()
+        query = "insert into fuel(rid) values (%s) returning fuelid;"
+        cursor.execute(query, (rid,))
+        fuelid = cursor.fetchone()[0]
+        self.conn.commit()
+        return fuelid
+
+    def insertEquipment(self, rid):
+        cursor = self.conn.cursor()
+        query = "insert into equipment(rid) values (%s) returning eid;"
+        cursor.execute(query, (rid,))
+        eid = cursor.fetchone()[0]
+        self.conn.commit()
+        return eid
+
+    def insertMedicalDevices(self, rid):
+        cursor = self.conn.cursor()
+        query = "insert into medical_devices(rid) values (%s) returning mdid;"
+        cursor.execute(query, (rid,))
+        mdid = cursor.fetchone()[0]
+        self.conn.commit()
+        return mdid
+
+    def insertWater(self, rid, wvolume, wexpdate):
+        cursor = self.conn.cursor()
+        query = "insert into water(rid, wvolume, wexpdate) values (%s, %s, %s) returning wid;"
+        cursor.execute(query, (rid, wvolume, wexpdate,))
+        wid = cursor.fetchone()[0]
+        self.conn.commit()
+        return wid
+
+    def insertMedication(self, rid, mexpdate, mclass):
+        cursor = self.conn.cursor()
+        query = "insert into medications(rid, mexpdate, mclass) values (%s, %s, %s) returning mid;"
+        cursor.execute(query, (rid, mexpdate, mclass,))
+        mid = cursor.fetchone()[0]
+        self.conn.commit()
+        return mid
+
+    def insertClothing(self, rid, cpiece, csex, csize):
+        cursor = self.conn.cursor()
+        query = "insert into clothing(rid, cpiece, csex, csize) values (%s, %s, %s, %s) returning clothes_id;"
+        cursor.execute(query, (rid, cpiece, csex, csize,))
+        clothes_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return clothes_id
+
+    def insertConsumption(self, cid, rid, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method):
+        cursor = self.conn.cursor()
+        query = "insert into rconsumes(cid, rid, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method) values (%s, %s, %s, %s, %s, %s) returning cid;"
+        cursor.execute(query, (cid, rid, rconsume_price, rconsume_quantity, rconsume_date, rconsume_payment_method,))
+        cid = cursor.fetchone()[0]
+        self.conn.commit()
+        return cid
+
+    def insertRSupplies(self, sid, rid, rsupply_price, rsupply_quantity, rsupply_date):
+        cursor = self.conn.cursor()
+        query = "insert into rsupplies(sid, rid, rsupply_price, rsupply_quantity, rsupply_date) values (%s, %s, %s, %s, %s) returning sid;"
+        cursor.execute(query, (sid, rid, rsupply_price, rsupply_quantity, rsupply_date,))
+        sid = cursor.fetchone()[0]
+        self.conn.commit()
+        return sid
 
 class FoodDAO(ResourcesDAO):
     def getAllFood(self):
