@@ -33,6 +33,15 @@ class RequestedSuppliesDAO:
             result.append(row)
         return result
 
+    def insert(self, aid, sid, request_type, request_brand, request_quantity):
+        cursor = self.conn.cursor()
+        query = "insert into request_supplies(aid, sid, request_type, request_quantity, request_brand) values (%s, %s, %s, %s, %s) returning aid;"
+        cursor.execute(query, (aid, sid, request_type, request_quantity, request_brand,))
+        aid = cursor.fetchone()[0]
+        self.conn.commit()
+        return aid
+
+
     # def searchConsumerBeta(self):
     #     result = "This is a searched consumer"
     #     return result

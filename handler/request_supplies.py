@@ -12,15 +12,28 @@ class RequestedSuppliesHandler:
         result['request_brand'] = row[4]
         return result
 
-    # def build_consumer_attributes(self, cid, cfirstname, clastname, clocation, cage, cphone):
-    #     result = {}
-    #     result['cid'] = cid
-    #     result['cfirstname'] = cfirstname
-    #     result['clastname'] = clastname
-    #     result['clocation'] = clocation
-    #     result['cage'] = cage
-    #     result['cphone'] = cphone
-    #     return result
+    def build_request_supplies_attributes(self, aid, sid, request_type, request_brand, request_quantity):
+        result = {}
+        result['aid'] = aid
+        result['sid'] = sid
+        result['request_type'] = request_type
+        result['request_brand'] = request_brand
+        result['request_quantity'] = request_quantity
+        return result
+
+    def insertRequestedSuppliesJson(self, json):
+        aid = json['aid']
+        sid = json['sid']
+        request_type = json['request_type']
+        request_brand = json['request_brand']
+        request_quantity = json['request_quantity']
+        if aid and sid and request_type and request_brand and request_quantity:
+            dao = RequestedSuppliesDAO()
+            rqid = dao.insert(aid, sid, request_type, request_brand, request_quantity)
+            result = self.build_request_supplies_attributes(aid, sid, request_type, request_brand, request_quantity)
+            return jsonify(RequestSupplies=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
     def getAllRequestedSupplies(self):
         dao = RequestedSuppliesDAO()
@@ -124,6 +137,7 @@ class RequestedSuppliesHandler:
     #         return jsonify(Error = "Consumer not found."), 404
     #     else:
     #         return jsonify(dao.getConsumerById(cid)), 201
+
 
 
 
