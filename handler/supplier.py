@@ -13,6 +13,16 @@ class SupplierHandler:
         result['sphone'] = row[5]
         return result
 
+    def build_supplier_attributes(self, sid, sfirstname, slastname, sorganization, slocation, sphone):
+        result = {}
+        result['sid'] = sid
+        result['sfirstname'] = sfirstname
+        result['slastname'] = slastname
+        result['sorganization'] = sorganization
+        result['slocation'] = slocation
+        result['sphone'] = sphone
+        return result
+
     def getAllSuppliers(self):
         dao = SupplierDAO()
         suppliers_list = dao.getAllSuppliers()
@@ -50,11 +60,12 @@ class SupplierHandler:
         sfirstname = json['sfirstname']
         slastname = json['slastname']
         sorganization = json['sorganization']
-        sphone = json['sphone']
         slocation = json['slocation']
-        if sfirstname and slastname and sorganization and sphone and slocation:
+        sphone = json['sphone']
+        if sfirstname and slastname and sorganization and slocation and sphone:
             dao = SupplierDAO()
-            result = dao.insert(sfirstname, slastname, sorganization, sphone, slocation)
+            sid = dao.insert(sfirstname, slastname, sorganization, slocation, sphone)
+            result = self.build_supplier_attributes(sid, sfirstname, slastname, sorganization, slocation, sphone)
             return jsonify(Supplier=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400

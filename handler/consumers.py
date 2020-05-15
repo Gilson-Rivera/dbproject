@@ -83,7 +83,9 @@ class ConsumerHandler:
         cphone = json['cphone']
         if cfirstname and clastname and clocation and cage and cphone:
             dao = ConsumersDAO()
-            result = dao.insert(cfirstname, clastname, clocation, cage, cphone)
+            cid = dao.insert(cfirstname, clastname, clocation, cage)
+            phone_id = dao.insertPhone(cid, cphone)
+            result = self.build_consumer_attributes(cid, cfirstname, clastname, clocation, cage, cphone)
             return jsonify(Consumer=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400

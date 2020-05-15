@@ -70,7 +70,7 @@ class AdministratorHandler:
             if afirstname and alastname and alocation and a_age and aphone:
                 dao = AdministratorsDAO()
                 aid = dao.insert(afirstname, alastname, alocation, a_age, aphone)
-                result = self.build_Administrator_attributes(aid, afirstname, alastname, alocation, a_age, aphone)
+                result = self.build_administrator_attributes(aid, afirstname, alastname, alocation, a_age, aphone)
                 return jsonify(Part=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
@@ -80,9 +80,11 @@ class AdministratorHandler:
         alastname = json['alastname']
         alocation = json['alocation']
         a_age = json['a_age']
-        if afirstname and alastname and alocation and a_age:
+        aphone = json['aphone']
+        if afirstname and alastname and alocation and a_age and aphone:
             dao = AdministratorsDAO()
-            result = dao.insert(afirstname, alastname, alocation, a_age)
+            aid = dao.insert(afirstname, alastname, alocation, a_age, aphone)
+            result = self.build_administrator_attributes(aid, afirstname, alastname, alocation, a_age, aphone)
             return jsonify(Administrator=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400

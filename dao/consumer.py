@@ -38,9 +38,21 @@ class ConsumersDAO:
             result.append(row)
         return result
 
-    def insert(self, cfirstname, clastname, clocation, cage, cphone):
-        result = "Consumer inserted"
-        return result
+    def insert(self, cfirstname, clastname, clocation, cage):
+        cursor = self.conn.cursor()
+        query = "insert into consumers(cfirstname, clastname, clocation, cage) values (%s, %s, %s, %s) returning cid;"
+        cursor.execute(query, (cfirstname, clastname, clocation, cage,))
+        cid = cursor.fetchone()[0]
+        self.conn.commit()
+        return cid
+
+    def insertPhone(self, cid, cphone):
+        cursor = self.conn.cursor()
+        query = "insert into cphone(cid, phone) values (%s, %s) returning cphone_id;"
+        cursor.execute(query, (cid, cphone,))
+        cphone_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return cphone_id
 
     def delete(self, cid):
         result = "Consumer deleted"

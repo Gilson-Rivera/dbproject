@@ -37,9 +37,13 @@ class AdministratorsDAO:
             result.append(row)
         return result
 
-    def insert(self, afirstname, alastname, alocation, a_age):
-        result = "Administrator inserted"
-        return result
+    def insert(self, afirstname, alastname, alocation, a_age, aphone):
+        cursor = self.conn.cursor()
+        query = "insert into administrators(afirstname, alastname, alocation, a_age, aphone) values (%s, %s, %s, %s, %s) returning aid;"
+        cursor.execute(query, (afirstname, alastname, alocation, a_age, aphone,))
+        aid = cursor.fetchone()[0]
+        self.conn.commit()
+        return aid
 
     def delete(self, aid):
         result = "Administrator deleted"

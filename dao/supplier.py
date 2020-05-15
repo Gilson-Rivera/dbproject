@@ -38,6 +38,10 @@ class SupplierDAO:
             result.append(row)
         return result
 
-    def insert(self, sfirstname, slastname, sorganization, sphone, slocation):
-        result = "Supplier inserted"
-        return result
+    def insert(self, sfirstname, slastname, sorganization, slocation, sphone):
+        cursor = self.conn.cursor()
+        query = "insert into suppliers(sfirstname, slastname, sorganization, slocation, sphone) values (%s, %s, %s, %s, %s) returning sid;"
+        cursor.execute(query, (sfirstname, slastname, sorganization, slocation, sphone,))
+        sid = cursor.fetchone()[0]
+        self.conn.commit()
+        return sid
